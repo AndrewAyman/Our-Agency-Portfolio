@@ -1,8 +1,8 @@
 export const NAV_LINKS = [
-  { label: "Home",     href: "/"        },
-  { label: "About",    href: "/about"   },
-  { label: "Services", href: "/services"},
-  { label: "Contact",  href: "/contact" },
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
+  { label: "Contact", href: "/contact" },
 ];
 
 // ─── SERVICES (from PDF page 7) ───────────────────────────────────────────
@@ -74,10 +74,10 @@ export const VALUES = [
 
 // ─── METRICS ──────────────────────────────────────────────────────────────
 export const METRICS = [
-  { value: "1M+",  label: "Impressions Delivered",  sub: "In KSA alone"              },
-  { value: "3",    label: "Countries Served",        sub: "KSA · Egypt · and growing" },
-  { value: "5",    label: "Core Services",           sub: "Full-funnel capability"     },
-  { value: "100%", label: "Commitment",              sub: "To every brand we take on"  },
+  { value: "1M+", label: "Impressions Delivered", sub: "In KSA alone" },
+  { value: "3", label: "Countries Served", sub: "KSA · Egypt · and growing" },
+  { value: "5", label: "Core Services", sub: "Full-funnel capability" },
+  { value: "100%", label: "Commitment", sub: "To every brand we take on" },
 ];
 
 // ─── CLIENTS (from PDF pages 8–11) ────────────────────────────────────────
@@ -215,22 +215,40 @@ export const PROCESS = [
 // ─── CONTACTS (from PDF page 14 — REAL DATA) ─────────────────────────────
 export const CONTACTS = {
   phones: [
-    { label: "Egypt — Line 1", number: "+20 155 452 9053", flag: "🇪🇬" },
-    { label: "Egypt — Line 2", number: "+20 102 608 1399", flag: "🇪🇬" },
-    { label: "Egypt — Line 3", number: "+20 103 514 0832", flag: "🇪🇬" },
+    { label: "Line 1", number: "+20 103 514 0832" },
+    { label: "Line 2", number: "+20 102 608 1399" },
+    { label: "Line 3", number: "+966 59 919 4160" },
   ],
   email: "ouragency259@gmail.com",
   socials: [
-    { label: "Instagram", handle: "@our_agency5",  href: "https://instagram.com/our_agency5", icon: "instagram" },
-    { label: "TikTok",    handle: "@our_agency2",  href: "https://tiktok.com/@our_agency2",   icon: "tiktok"    },
-    { label: "Facebook",  handle: "our agency",    href: "https://facebook.com/ouragency",     icon: "facebook"  },
+    {
+      label: "Instagram",
+      handle: "@our_agency",
+      href: "https://instagram.com/our_agency5",
+      icon: "instagram",
+    },
+    {
+      label: "TikTok",
+      handle: "@our_agency",
+      href: "https://tiktok.com/@our_agency2",
+      icon: "tiktok",
+    },
+    {
+      label: "Facebook",
+      handle: "our agency",
+      href: "https://www.facebook.com/share/1Bpf7RwLhh/",
+      icon: "facebook",
+    },
   ],
 };
 
 // ─── ABOUT CONTENT (from PDF pages 2–5) ──────────────────────────────────
 export const ABOUT = {
-  description: "OUR is a digital marketing agency powered by a team of young creatives. We work with passion and real effort — believing that every brand deserves a marketing plan built on deep market understanding, powerful content, and realistic execution that supports the goal.",
+  description:
+    "OUR is a digital marketing agency powered by a team of young creatives. We work with passion and real effort — believing that every brand deserves a marketing plan built on deep market understanding, powerful content, and realistic execution that supports the goal.",
   tagline: "We are not just service providers — we are growth partners.",
-  vision: "To become the turning point for ambitious brands. We provide marketing strategies built on creativity, data, and real market understanding — drawing a clear path to growth amidst competitors, creating real measurable value, and being the partner that walks with them step by step toward a stronger presence that competes with the biggest players.",
-  mission: "We deliver practical marketing solutions that support brand building, attract the right customers, and achieve measurable results — through powerful content management, strategic ad campaigns, and building an impactful digital identity.",
+  vision:
+    "To become the turning point for ambitious brands. We provide marketing strategies built on creativity, data, and real market understanding — drawing a clear path to growth amidst competitors, creating real measurable value, and being the partner that walks with them step by step toward a stronger presence that competes with the biggest players.",
+  mission:
+    "We deliver practical marketing solutions that support brand building, attract the right customers, and achieve measurable results — through powerful content management, strategic ad campaigns, and building an impactful digital identity.",
 };
