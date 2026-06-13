@@ -11,16 +11,15 @@ import { NAV_LINKS } from "@/constants";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 const SOCIALS = [
-  { Icon: FiInstagram, href: "https://instagram.com/our_agency5", label: "Instagram", color: "#E1306C" },
-  { Icon: SiTiktok, href: "https://tiktok.com/@our_agency2", label: "TikTok", color: "#ffffff" },
-  { Icon: FaWhatsapp, href: "https://wa.me/201554529053", label: "WhatsApp", color: "#25D366" },
+  { Icon: FiInstagram, href: "https://www.instagram.com/our_agency5?igsh=MTBzaTMxNDU5MHMxOA%3D%3D&utm_source=qr", label: "Instagram", color: "#E1306C" },
+  { Icon: SiTiktok, href: "https://www.tiktok.com/@our_agency2?_r=1&_t=ZS-976Xmp8ZXjY", label: "TikTok", color: "#ffffff" },
+  { Icon: FaWhatsapp, href: "https://wa.me/201026081399", label: "WhatsApp", color: "#25D366" },
   { Icon: FiMail, href: "mailto:ouragency259@gmail.com", label: "Email", color: "#007AFF" },
 ];
 
 const CONTACTS = [
-  { flag: "🇪🇬", number: "+20 155 452 9053", href: "tel:+201554529053" },
+  { flag: "🇪🇬", number: "+966 59 919 4160", href: "tel:+966599194160" },
   { flag: "🇪🇬", number: "+20 102 608 1399", href: "tel:+201026081399" },
-  { flag: "🇪🇬", number: "+20 103 514 0832", href: "tel:+201035140832" },
 ];
 
 /* ── Animated item that appears one by one ── */
