@@ -463,10 +463,10 @@ const SERVICES = [
 
 /* ─── Values ─── */
 const VALUES = [
-  { word: "Commitment", ar: "الالتزام", glyph: "◈", color: BLUE },
-  { word: "Creativity", ar: "الإبداع", glyph: "✦", color: "#3395FF" },
-  { word: "Transparency", ar: "الشفافية", glyph: "◉", color: "#56AFFF" },
-  { word: "Growth", ar: "التطور", glyph: "◐", color: BLUE },
+  { word: "Commitment", ar: "", glyph: "◈", color: BLUE },
+  { word: "Creativity", ar: "", glyph: "✦", color: "#3395FF" },
+  { word: "Transparency", ar: "", glyph: "◉", color: "#56AFFF" },
+  { word: "Growth", ar: "", glyph: "◐", color: BLUE },
 ];
 
 /* ─── Process steps ─── */

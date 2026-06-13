@@ -9,7 +9,7 @@ export default function HomePage() {
     <>
       <HeroSection />
       <TrustBar />
-      <MetricsSection />
+      {/* <MetricsSection /> */}
       <ServicesPreview />
       <CTASection />
     </>

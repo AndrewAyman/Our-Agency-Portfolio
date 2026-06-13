@@ -1,9 +1,16 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, MessageCircle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
+import { FiInstagram, FiMail } from "react-icons/fi";
+import { SiTiktok } from "react-icons/si";
 import { Reveal } from "@/components/ui/Reveal";
+
+const EASE = [0.22, 1, 0.36, 1] as const;
+const BLUE = "#007AFF";
 
 const WHY = [
   { icon: "⚡", text: "Fast execution, no delays" },
@@ -12,109 +19,270 @@ const WHY = [
   { icon: "🤝", text: "Real growth partner" },
 ];
 
-export default function CTASection() {
+const SOCIALS = [
+  { label: "Instagram", handle: "@our_agency5", href: "https://instagram.com/our_agency5", Icon: FiInstagram, color: "#E1306C" },
+  { label: "TikTok", handle: "@our_agency2", href: "https://tiktok.com/@our_agency2", Icon: SiTiktok, color: "#ffffff" },
+  { label: "Email", handle: "ouragency259@gmail.com", href: "mailto:ouragency259@gmail.com", Icon: FiMail, color: BLUE },
+];
+
+/* ── Rotating rings ── */
+function RotatingRings() {
   return (
-    <section style={{ position: "relative", padding: "6rem 1.5rem", overflow: "hidden" }}>
+    <div
+      aria-hidden
+      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] pointer-events-none"
+    >
+      {[680, 540, 400, 280].map((size, i) => (
+        <motion.div
+          key={size}
+          animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
+          transition={{ duration: 18 + i * 7, repeat: Infinity, ease: "linear" }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{
+            width: size,
+            height: size,
+            border: `1px dashed rgba(0,122,255,${0.06 + i * 0.02})`,
+          }}
+        />
+      ))}
 
-      {/* Strong center glow */}
-      <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 800, height: 400, pointerEvents: "none", background: "radial-gradient(ellipse,rgba(0,122,255,0.14) 0%,transparent 68%)", filter: "blur(50px)" }} />
+      {[0, 120, 240].map((startDeg, i) => (
+        <motion.div
+          key={startDeg}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 8 + i * 3, repeat: Infinity, ease: "linear" }}
+          className="absolute top-1/2 left-1/2 w-[540px] h-[540px]"
+          style={{ transform: `translate(-50%,-50%) rotate(${startDeg}deg)` }}
+        >
+          <div
+            className="absolute -top-1 left-1/2 -translate-x-1/2 w-[7px] h-[7px] rounded-full bg-[#007AFF]"
+            style={{ boxShadow: "0 0 10px #007AFF, 0 0 20px rgba(0,122,255,0.6)" }}
+          />
+        </motion.div>
+      ))}
+    </div>
+  );
+}
 
-      {/* Top border accent */}
-      <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: "60%", maxWidth: 500, height: 1, background: "linear-gradient(to right,transparent,rgba(0,122,255,0.5),transparent)" }} />
+/* ════════════════════════════════════════════ */
+export default function CTASection() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
 
-      <div style={{ position: "relative", zIndex: 1, maxWidth: 1000, margin: "0 auto" }}>
+  return (
+    <section
+      ref={ref}
+      aria-label="Call to action"
+      className="relative py-28 px-6 overflow-hidden"
+      style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+    >
+      {/* Ambient bg */}
+      <motion.div
+        animate={{ scale: [1, 1.18, 1], opacity: [0.3, 0.6, 0.3] }}
+        transition={{ duration: 10, repeat: Infinity }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse, rgba(0,122,255,0.12) 0%, transparent 65%)",
+          filter: "blur(60px)",
+        }}
+      />
 
+      <RotatingRings />
+
+      {/* Top accent border */}
+      <motion.div
+        initial={{ scaleX: 0 }}
+        animate={inView ? { scaleX: 1 } : {}}
+        transition={{ duration: 1.2, ease: EASE }}
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[55%] max-w-[500px] h-px origin-center"
+        style={{ background: "linear-gradient(to right, transparent, rgba(0,122,255,0.6), transparent)" }}
+      />
+
+      <div className="relative z-10 max-w-[960px] mx-auto">
         {/* Main CTA card */}
         <Reveal>
           <motion.div
-            whileHover={{ boxShadow: "0 24px 64px rgba(0,0,0,0.5), 0 0 40px rgba(0,122,255,0.12)" }}
-            style={{ background: "rgba(255,255,255,0.03)", backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 24, padding: "clamp(2rem,5vw,4rem)", textAlign: "center", position: "relative", overflow: "hidden", transition: "box-shadow 0.4s" }}
+            whileHover={{ boxShadow: "0 32px 80px rgba(0,0,0,0.5), 0 0 50px rgba(0,122,255,0.1)" }}
+            className="relative rounded-[28px] text-center overflow-hidden transition-shadow duration-500 backdrop-blur-2xl"
+            style={{
+              background: "rgba(255,255,255,0.03)",
+              border: "1px solid rgba(255,255,255,0.09)",
+              padding: "clamp(2.5rem,5vw,4.5rem)",
+            }}
           >
             {/* Corner glows */}
-            <div style={{ position: "absolute", top: -60, left: -60, width: 200, height: 200, background: "radial-gradient(circle,rgba(0,122,255,0.12) 0%,transparent 70%)", pointerEvents: "none" }} />
-            <div style={{ position: "absolute", bottom: -60, right: -60, width: 200, height: 200, background: "radial-gradient(circle,rgba(0,122,255,0.1) 0%,transparent 70%)", pointerEvents: "none" }} />
+            <div
+              className="absolute -top-[70px] -left-[70px] w-[220px] h-[220px] pointer-events-none"
+              style={{ background: "radial-gradient(circle, rgba(0,122,255,0.1) 0%, transparent 70%)" }}
+            />
+            <div
+              className="absolute -bottom-[70px] -right-[70px] w-[220px] h-[220px] pointer-events-none"
+              style={{ background: "radial-gradient(circle, rgba(0,122,255,0.08) 0%, transparent 70%)" }}
+            />
 
-            {/* Label */}
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 20, padding: "6px 16px", borderRadius: 100, background: "rgba(0,122,255,0.1)", border: "1px solid rgba(0,122,255,0.25)" }}>
-              <span style={{ fontSize: 10, fontFamily: "var(--font-mono,'JetBrains Mono',monospace)", color: "#007AFF", letterSpacing: "0.25em", textTransform: "uppercase" }}>
+            {/* Shimmer sweep */}
+            <motion.div
+              animate={{ x: ["-120%", "120%"] }}
+              transition={{ duration: 4, repeat: Infinity, repeatDelay: 5 }}
+              className="absolute top-0 left-0 right-0 h-px pointer-events-none"
+              style={{ background: "linear-gradient(90deg, transparent, rgba(0,122,255,0.9), transparent)" }}
+            />
+
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={inView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="inline-flex items-center gap-2 mb-6 px-[18px] py-[7px] rounded-full"
+              style={{
+                background: "rgba(0,122,255,0.09)",
+                border: "1px solid rgba(0,122,255,0.25)",
+              }}
+            >
+              <motion.div
+                animate={{ scale: [1, 1.5, 1], opacity: [0.7, 1, 0.7] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-1.5 h-1.5 rounded-full bg-[#007AFF]"
+              />
+              <span className="text-[10px] font-mono text-[#007AFF] tracking-[0.28em] uppercase">
                 Ready to grow?
               </span>
-            </div>
+            </motion.div>
 
             {/* Headline */}
-            <h2 style={{ fontFamily: "var(--font-display,'Bebas Neue',Impact,sans-serif)", fontSize: "clamp(2.8rem,7vw,6rem)", lineHeight: 0.95, margin: "0 0 20px", color: "#fff" }}>
+            <motion.h2
+              initial={{ opacity: 0, y: 24 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.18, ease: EASE }}
+              className="font-['Bebas_Neue',Impact,sans-serif] text-white leading-[0.93] m-0 mb-6 tracking-[-0.01em]"
+              style={{ fontSize: "clamp(2.8rem,8vw,6.5rem)" }}
+            >
               LET&apos;S BUILD YOUR{" "}
-              <span style={{ color: "#3395FF", textShadow: "0 0 40px rgba(0,122,255,0.5)" }}>BRAND</span>
-            </h2>
+              <motion.span
+                animate={{
+                  textShadow: [
+                    "0 0 30px rgba(0,122,255,0.4)",
+                    "0 0 60px rgba(0,122,255,0.7)",
+                    "0 0 30px rgba(0,122,255,0.4)",
+                  ],
+                }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="text-[#3395FF]"
+              >
+                BRAND
+              </motion.span>
+            </motion.h2>
 
-            <p style={{ fontSize: "clamp(0.9rem,1.5vw,1.05rem)", color: "rgba(255,255,255,0.45)", maxWidth: 480, margin: "0 auto 36px", lineHeight: 1.75 }}>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              transition={{ delay: 0.3 }}
+              className="text-white/40 max-w-[480px] mx-auto mb-10 leading-[1.8]"
+              style={{ fontSize: "clamp(0.9rem,1.6vw,1.05rem)" }}
+            >
               From identity to ads to content — we handle the full picture so you can focus on what you do best.
-            </p>
+            </motion.p>
 
-            {/* Why us pills */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center", marginBottom: 36 }}>
+            {/* Why-us pills */}
+            <div className="flex flex-wrap gap-2.5 justify-center mb-10">
               {WHY.map((w, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, y: 8 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.07 }}
-                  style={{ display: "flex", alignItems: "center", gap: 7, padding: "7px 15px", borderRadius: 100, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)" }}
+                  initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                  animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+                  transition={{ delay: 0.35 + i * 0.08, duration: 0.5 }}
+                  whileHover={{
+                    scale: 1.06,
+                    background: "rgba(0,122,255,0.1)",
+                    borderColor: "rgba(0,122,255,0.3)",
+                  }}
+                  className="flex items-center gap-2 px-[18px] py-2 rounded-full transition-all duration-300 cursor-default"
+                  style={{
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(255,255,255,0.09)",
+                  }}
                 >
-                  <span style={{ fontSize: 14 }}>{w.icon}</span>
-                  <span style={{ fontSize: 12, color: "rgba(255,255,255,0.55)" }}>{w.text}</span>
+                  <span className="text-sm">{w.icon}</span>
+                  <span className="text-xs text-white/50 font-mono">{w.text}</span>
                 </motion.div>
               ))}
             </div>
 
             {/* Buttons */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.55 }}
+              className="flex flex-wrap gap-3.5 justify-center"
+            >
               <Link href="/contact">
                 <motion.button
-                  whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(0,122,255,0.6)" }}
-                  whileTap={{ scale: 0.97 }}
-                  style={{ display: "flex", alignItems: "center", gap: 8, padding: "15px 34px", borderRadius: 14, background: "#007AFF", color: "white", fontWeight: 600, fontSize: 14, border: "none", cursor: "pointer" }}
+                  whileHover={{ scale: 1.06, boxShadow: "0 0 50px rgba(0,122,255,0.65)" }}
+                  whileTap={{ scale: 0.96 }}
+                  className="relative flex items-center gap-2.5 px-10 py-4 rounded-[14px] bg-[#007AFF] text-white font-bold text-sm tracking-[0.04em] overflow-hidden cursor-pointer border-0"
                 >
-                  Start a Project <ArrowRight size={15} />
+                  <motion.span
+                    animate={{ x: ["-120%", "120%"] }}
+                    transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 3 }}
+                    className="absolute inset-0 pointer-events-none"
+                    style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent)" }}
+                  />
+                  Start a Project
+                  <ArrowRight size={14} />
                 </motion.button>
               </Link>
+
               <a href="https://wa.me/201554529053" target="_blank" rel="noopener noreferrer">
                 <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  style={{ display: "flex", alignItems: "center", gap: 8, padding: "15px 28px", borderRadius: 14, background: "rgba(37,211,102,0.08)", border: "1px solid rgba(37,211,102,0.25)", color: "rgba(37,211,102,0.9)", fontWeight: 500, fontSize: 14, cursor: "pointer" }}
+                  whileHover={{
+                    scale: 1.04,
+                    background: "rgba(37,211,102,0.14)",
+                    borderColor: "rgba(37,211,102,0.4)",
+                  }}
+                  whileTap={{ scale: 0.96 }}
+                  className="flex items-center gap-2.5 px-8 py-4 rounded-[14px] font-semibold text-sm tracking-[0.04em] cursor-pointer transition-all duration-300"
+                  style={{
+                    background: "rgba(37,211,102,0.07)",
+                    border: "1px solid rgba(37,211,102,0.22)",
+                    color: "rgba(37,211,102,0.9)",
+                  }}
                 >
-                  <MessageCircle size={15} />
+                  <FaWhatsapp size={16} />
                   WhatsApp Us
                 </motion.button>
               </a>
-            </div>
+            </motion.div>
 
-            {/* Response time note */}
-            <p style={{ fontSize: 11, color: "rgba(255,255,255,0.2)", marginTop: 20, fontFamily: "var(--font-mono,'JetBrains Mono',monospace)" }}>
+            <p className="text-[11px] text-white/[0.18] mt-6 font-mono tracking-[0.1em]">
               We respond within 24 hours · KSA &amp; Egypt
             </p>
           </motion.div>
         </Reveal>
 
-        {/* Bottom social proof row */}
-        <Reveal delay={0.15}>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "2rem", justifyContent: "center", marginTop: "3rem" }}>
-            {[
-              { label: "Instagram", handle: "@our_agency5", href: "https://instagram.com/our_agency5", color: "#E1306C" },
-              { label: "TikTok",    handle: "@our_agency2", href: "https://tiktok.com/@our_agency2",   color: "#ffffff" },
-              { label: "Email",     handle: "ouragency259@gmail.com", href: "mailto:ouragency259@gmail.com", color: "#007AFF" },
-            ].map((s) => (
+        {/* Social proof row */}
+        <Reveal delay={0.2}>
+          <div className="flex flex-wrap gap-8 justify-center mt-14">
+            {SOCIALS.map((s) => (
               <motion.a
                 key={s.label}
                 href={s.href}
                 target="_blank"
-                whileHover={{ y: -2 }}
-                style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4, textDecoration: "none" }}
+                rel="noopener noreferrer"
+                whileHover={{ y: -4, scale: 1.04 }}
+                className="flex flex-col items-center gap-1.5 no-underline"
               >
-                <span style={{ fontSize: 10, color: "rgba(255,255,255,0.25)", fontFamily: "var(--font-mono,'JetBrains Mono',monospace)", letterSpacing: "0.2em", textTransform: "uppercase" }}>{s.label}</span>
-                <span style={{ fontSize: 13, color: s.color, fontWeight: 500 }}>{s.handle}</span>
+                <motion.div
+                  whileHover={{ color: s.color }}
+                  className="text-white/30 transition-colors duration-300"
+                >
+                  <s.Icon size={18} />
+                </motion.div>
+                <span className="text-[9px] text-white/22 font-mono tracking-[0.25em] uppercase">
+                  {s.label}
+                </span>
+                <span className="text-[13px] font-medium" style={{ color: s.color }}>
+                  {s.handle}
+                </span>
               </motion.a>
             ))}
           </div>
