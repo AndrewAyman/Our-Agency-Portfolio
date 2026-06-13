@@ -131,7 +131,8 @@ function CursorBlob() {
         width: 400,
         height: 400,
         borderRadius: "50%",
-        background: "radial-gradient(circle,rgba(0,122,255,0.08) 0%,transparent 70%)",
+        background:
+          "radial-gradient(circle,rgba(0,122,255,0.08) 0%,transparent 70%)",
         pointerEvents: "none",
         zIndex: 0,
         x: springX,
@@ -203,7 +204,11 @@ function OrbitRings({ style }: { style?: React.CSSProperties }) {
         <motion.div
           key={i}
           animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
-          transition={{ duration: 18 + i * 8, repeat: Infinity, ease: "linear" }}
+          transition={{
+            duration: 18 + i * 8,
+            repeat: Infinity,
+            ease: "linear",
+          }}
           style={{
             position: "absolute",
             inset: `${i * 28}px`,
@@ -285,7 +290,11 @@ function SpinningIcon({
       {/* Outer spinning ring */}
       <motion.div
         animate={{ rotate: reverse ? -360 : 360 }}
-        transition={{ duration: spinDuration, repeat: Infinity, ease: "linear" }}
+        transition={{
+          duration: spinDuration,
+          repeat: Infinity,
+          ease: "linear",
+        }}
         style={{
           position: "absolute",
           inset: -6,
@@ -355,7 +364,12 @@ function RotatingGlyph({
         ],
       }}
       transition={{ duration, repeat: Infinity, ease: "linear", delay }}
-      style={{ fontSize: size, color, display: "inline-block", marginBottom: 16 }}
+      style={{
+        fontSize: size,
+        color,
+        display: "inline-block",
+        marginBottom: 16,
+      }}
     >
       {glyph}
     </motion.div>
@@ -367,7 +381,10 @@ function AnimatedDivider() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
   return (
-    <div ref={ref} style={{ overflow: "hidden", height: 1, margin: "0 auto", maxWidth: 600 }}>
+    <div
+      ref={ref}
+      style={{ overflow: "hidden", height: 1, margin: "0 auto", maxWidth: 600 }}
+    >
       <motion.div
         initial={{ scaleX: 0 }}
         animate={inView ? { scaleX: 1 } : {}}
@@ -454,11 +471,31 @@ const CLIENTS_EGY = [
 
 /* ─── Services ─── */
 const SERVICES = [
-  { icon: "✦", title: "Social Media Management", desc: "Full account management from content to analytics — growing engagement and refining performance continuously." },
-  { icon: "◈", title: "Paid Ads & Performance", desc: "Multi-platform ad campaigns laser-focused on attracting serious buyers and driving measurable sales growth." },
-  { icon: "◉", title: "Content Creation & Copy", desc: "Professional content written in your brand's voice — educational, marketing, and sales-oriented copy that converts." },
-  { icon: "◐", title: "Branding & Visual Identity", desc: "From logo to color palette to tone — building a complete visual identity that makes your brand unforgettable." },
-  { icon: "◑", title: "Graphic Design & Video", desc: "Compelling designs and professional video edits that reflect brand personality and serve the marketing message." },
+  {
+    icon: "✦",
+    title: "Social Media Management",
+    desc: "Full account management from content to analytics — growing engagement and refining performance continuously.",
+  },
+  {
+    icon: "◈",
+    title: "Paid Ads & Performance",
+    desc: "Multi-platform ad campaigns laser-focused on attracting serious buyers and driving measurable sales growth.",
+  },
+  {
+    icon: "◉",
+    title: "Content Creation & Copy",
+    desc: "Professional content written in your brand's voice — educational, marketing, and sales-oriented copy that converts.",
+  },
+  {
+    icon: "◐",
+    title: "Branding & Visual Identity",
+    desc: "From logo to color palette to tone — building a complete visual identity that makes your brand unforgettable.",
+  },
+  {
+    icon: "◑",
+    title: "Graphic Design & Video",
+    desc: "Compelling designs and professional video edits that reflect brand personality and serve the marketing message.",
+  },
 ];
 
 /* ─── Values ─── */
@@ -471,16 +508,35 @@ const VALUES = [
 
 /* ─── Process steps ─── */
 const PROCESS = [
-  { num: "01", title: "Research & Discovery", desc: "Deep-diving into your brand, audience, and competitive landscape to find the real opportunity." },
-  { num: "02", title: "Planning & Strategy", desc: "A clear, custom marketing roadmap — no copy-paste templates, every plan built for one brand only." },
-  { num: "03", title: "Execution", desc: "Content + design + ad management running in perfect sync toward one goal: measurable impact." },
-  { num: "04", title: "Optimization", desc: "Continuous result analysis and performance refinement — because every percentage point matters." },
+  {
+    num: "01",
+    title: "Research & Discovery",
+    desc: "Deep-diving into your brand, audience, and competitive landscape to find the real opportunity.",
+  },
+  {
+    num: "02",
+    title: "Planning & Strategy",
+    desc: "A clear, custom marketing roadmap — no copy-paste templates, every plan built for one brand only.",
+  },
+  {
+    num: "03",
+    title: "Execution",
+    desc: "Content + design + ad management running in perfect sync toward one goal: measurable impact.",
+  },
+  {
+    num: "04",
+    title: "Optimization",
+    desc: "Continuous result analysis and performance refinement — because every percentage point matters.",
+  },
 ];
 
 /* ────────────────────────────────────────────────── */
 export default function AboutPage() {
   const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
   const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
@@ -508,9 +564,21 @@ export default function AboutPage() {
         }}
       >
         {/* ambient orbs */}
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0 }}>
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            zIndex: 0,
+          }}
+        >
           <motion.div
-            animate={{ scale: [1, 1.25, 1], opacity: [0.5, 0.9, 0.5], x: [0, 30, 0], y: [0, -20, 0] }}
+            animate={{
+              scale: [1, 1.25, 1],
+              opacity: [0.5, 0.9, 0.5],
+              x: [0, 30, 0],
+              y: [0, -20, 0],
+            }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
             style={{
               position: "absolute",
@@ -519,13 +587,23 @@ export default function AboutPage() {
               width: 700,
               height: 700,
               borderRadius: "50%",
-              background: "radial-gradient(circle,rgba(0,122,255,0.22) 0%,transparent 65%)",
+              background:
+                "radial-gradient(circle,rgba(0,122,255,0.22) 0%,transparent 65%)",
               filter: "blur(80px)",
             }}
           />
           <motion.div
-            animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.7, 0.3], x: [0, -20, 0] }}
-            transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+            animate={{
+              scale: [1, 1.15, 1],
+              opacity: [0.3, 0.7, 0.3],
+              x: [0, -20, 0],
+            }}
+            transition={{
+              duration: 11,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 2,
+            }}
             style={{
               position: "absolute",
               bottom: "10%",
@@ -533,14 +611,20 @@ export default function AboutPage() {
               width: 500,
               height: 500,
               borderRadius: "50%",
-              background: "radial-gradient(circle,rgba(51,149,255,0.15) 0%,transparent 65%)",
+              background:
+                "radial-gradient(circle,rgba(51,149,255,0.15) 0%,transparent 65%)",
               filter: "blur(100px)",
             }}
           />
           {/* Extra orb center */}
           <motion.div
             animate={{ scale: [1, 1.3, 1], opacity: [0.1, 0.25, 0.1] }}
-            transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+            transition={{
+              duration: 14,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 4,
+            }}
             style={{
               position: "absolute",
               top: "40%",
@@ -548,14 +632,25 @@ export default function AboutPage() {
               width: 400,
               height: 300,
               borderRadius: "50%",
-              background: "radial-gradient(circle,rgba(0,122,255,0.12) 0%,transparent 65%)",
+              background:
+                "radial-gradient(circle,rgba(0,122,255,0.12) 0%,transparent 65%)",
               filter: "blur(120px)",
             }}
           />
         </div>
 
         {/* Big orbit rings in hero background */}
-        <div style={{ position: "absolute", right: "5%", top: "10%", width: 500, height: 500, pointerEvents: "none", zIndex: 0 }}>
+        <div
+          style={{
+            position: "absolute",
+            right: "5%",
+            top: "10%",
+            width: 500,
+            height: 500,
+            pointerEvents: "none",
+            zIndex: 0,
+          }}
+        >
           <OrbitRings />
         </div>
 
@@ -585,9 +680,12 @@ export default function AboutPage() {
                       key={word}
                       initial={{ y: "110%", opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
-                      transition={{ duration: 0.75, delay: 0.2 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                      transition={{
+                        duration: 0.75,
+                        delay: 0.2 + i * 0.12,
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
                       whileHover={{
-                        WebkitTextFillColor: "transparent",
                         filter: "brightness(1.3)",
                         x: 6,
                       }}
@@ -616,17 +714,33 @@ export default function AboutPage() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.7 }}
-                  style={{ fontSize: 16, color: WHITE55, lineHeight: 1.85, maxWidth: 480, marginBottom: 12, marginTop: 24 }}
+                  style={{
+                    fontSize: 16,
+                    color: WHITE55,
+                    lineHeight: 1.85,
+                    maxWidth: 480,
+                    marginBottom: 12,
+                    marginTop: 24,
+                  }}
                 >
-                  OUR is a digital marketing agency powered by a team of young creatives. We work with passion and real effort — believing every brand deserves a marketing plan built on deep understanding, powerful content, and authentic execution that drives results.
+                  OUR is a digital marketing agency powered by a team of young
+                  creatives. We work with passion and real effort — believing
+                  every brand deserves a marketing plan built on deep
+                  understanding, powerful content, and authentic execution that
+                  drives results.
                 </motion.p>
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.85 }}
-                  style={{ fontSize: 14, fontWeight: 600, color: BLUE, letterSpacing: "0.05em" }}
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 600,
+                    color: BLUE,
+                    letterSpacing: "0.05em",
+                  }}
                 >
-                  We're not just service providers — we're growth partners.
+                  We are not just service providers — we are growth partners.
                 </motion.p>
               </motion.div>
 
@@ -658,7 +772,15 @@ export default function AboutPage() {
                     >
                       <Counter to={s.value} suffix={s.suffix} />
                     </div>
-                    <div style={{ fontSize: 12, color: WHITE35, fontFamily: MONO, letterSpacing: "0.2em", textTransform: "uppercase" }}>
+                    <div
+                      style={{
+                        fontSize: 12,
+                        color: WHITE35,
+                        fontFamily: MONO,
+                        letterSpacing: "0.2em",
+                        textTransform: "uppercase",
+                      }}
+                    >
                       {s.label}
                     </div>
                   </motion.div>
@@ -670,10 +792,17 @@ export default function AboutPage() {
             <motion.div
               initial={{ opacity: 0, x: 60 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              transition={{
+                duration: 0.9,
+                delay: 0.3,
+                ease: [0.22, 1, 0.36, 1],
+              }}
             >
               <motion.div
-                whileHover={{ y: -6, boxShadow: "0 30px 80px rgba(0,122,255,0.2)" }}
+                whileHover={{
+                  y: -6,
+                  boxShadow: "0 30px 80px rgba(0,122,255,0.2)",
+                }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 style={{ ...glassCard, borderColor: BLUE_BORDER }}
               >
@@ -693,7 +822,12 @@ export default function AboutPage() {
                 />
                 <motion.div
                   animate={{ x: ["-100%", "200%"] }}
-                  transition={{ duration: 3, repeat: Infinity, repeatDelay: 4, delay: 1.5 }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    repeatDelay: 4,
+                    delay: 1.5,
+                  }}
                   style={{
                     position: "absolute",
                     bottom: 0,
@@ -726,11 +860,22 @@ export default function AboutPage() {
                     pointerEvents: "none",
                   }}
                 />
-                <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", gap: 24 }}>
+                <div
+                  style={{
+                    position: "relative",
+                    zIndex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 24,
+                  }}
+                >
                   {[
                     { label: "Type", value: "Digital Marketing Agency" },
                     { label: "Founded", value: "KSA & Egypt" },
-                    { label: "Services", value: "Branding · Ads · Content · SMM · Video" },
+                    {
+                      label: "Services",
+                      value: "Branding · Ads · Content · SMM · Video",
+                    },
                   ].map(({ label, value }) => (
                     <div key={label}>
                       <div
@@ -745,7 +890,11 @@ export default function AboutPage() {
                       >
                         {label}
                       </div>
-                      <div style={{ fontSize: 14, color: "rgba(255,255,255,0.8)" }}>{value}</div>
+                      <div
+                        style={{ fontSize: 14, color: "rgba(255,255,255,0.8)" }}
+                      >
+                        {value}
+                      </div>
                     </div>
                   ))}
                   <div>
@@ -765,7 +914,11 @@ export default function AboutPage() {
                       {["🇸🇦 Saudi Arabia", "🇪🇬 Egypt"].map((m) => (
                         <motion.span
                           key={m}
-                          whileHover={{ borderColor: BLUE, color: WHITE, scale: 1.05 }}
+                          whileHover={{
+                            borderColor: BLUE,
+                            color: WHITE,
+                            scale: 1.05,
+                          }}
                           transition={{ type: "spring", stiffness: 400 }}
                           style={{
                             fontSize: 13,
@@ -796,13 +949,24 @@ export default function AboutPage() {
                       Sectors
                     </div>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                      {["Construction", "Medical", "F&B", "Podcast", "E-Commerce", "Tech"].map((s, i) => (
+                      {[
+                        "Construction",
+                        "Medical",
+                        "F&B",
+                        "Podcast",
+                        "E-Commerce",
+                        "Tech",
+                      ].map((s, i) => (
                         <motion.span
                           key={s}
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: 0.5 + i * 0.07 }}
-                          whileHover={{ background: BLUE_DIM, borderColor: BLUE, scale: 1.07 }}
+                          whileHover={{
+                            background: BLUE_DIM,
+                            borderColor: BLUE,
+                            scale: 1.07,
+                          }}
                           style={{
                             fontSize: 12,
                             padding: "4px 12px",
@@ -847,7 +1011,14 @@ export default function AboutPage() {
             pointerEvents: "none",
           }}
         />
-        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
+        <div
+          style={{
+            maxWidth: 1280,
+            margin: "0 auto",
+            position: "relative",
+            zIndex: 1,
+          }}
+        >
           <FadeUp style={{ textAlign: "center", marginBottom: "4rem" }}>
             <Eyebrow>Who We Are</Eyebrow>
             <GradientHeadline>VISION & MISSION</GradientHeadline>
@@ -881,7 +1052,11 @@ export default function AboutPage() {
                 <motion.div
                   whileHover={{ y: -8, borderColor: item.accent + "40" }}
                   transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                  style={{ ...glassCard, borderColor: item.accent + "20", height: "100%" }}
+                  style={{
+                    ...glassCard,
+                    borderColor: item.accent + "20",
+                    height: "100%",
+                  }}
                 >
                   <div
                     style={{
@@ -910,8 +1085,21 @@ export default function AboutPage() {
                       borderRadius: "20px 20px 0 0",
                     }}
                   />
-                  <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-                    <SpinningIcon icon={item.icon} color={item.accent} size={48} spinDuration={10} reverse={i % 2 !== 0} />
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 12,
+                      marginBottom: 16,
+                    }}
+                  >
+                    <SpinningIcon
+                      icon={item.icon}
+                      color={item.accent}
+                      size={48}
+                      spinDuration={10}
+                      reverse={i % 2 !== 0}
+                    />
                     <div
                       style={{
                         fontSize: 10,
@@ -924,7 +1112,16 @@ export default function AboutPage() {
                       {item.label}
                     </div>
                   </div>
-                  <p style={{ fontSize: 15, color: WHITE55, lineHeight: 1.85, margin: 0 }}>{item.text}</p>
+                  <p
+                    style={{
+                      fontSize: 15,
+                      color: WHITE55,
+                      lineHeight: 1.85,
+                      margin: 0,
+                    }}
+                  >
+                    {item.text}
+                  </p>
                 </motion.div>
               </FadeUp>
             ))}
@@ -960,7 +1157,14 @@ export default function AboutPage() {
           }}
         />
 
-        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
+        <div
+          style={{
+            maxWidth: 1280,
+            margin: "0 auto",
+            position: "relative",
+            zIndex: 1,
+          }}
+        >
           <FadeUp style={{ textAlign: "center", marginBottom: "5rem" }}>
             <Eyebrow>What Drives Us</Eyebrow>
             <GradientHeadline>OUR VALUES</GradientHeadline>
@@ -975,9 +1179,17 @@ export default function AboutPage() {
             {VALUES.map((v, i) => (
               <FadeUp key={v.word} delay={i * 0.1}>
                 <motion.div
-                  whileHover={{ y: -10, borderColor: v.color + "50", boxShadow: `0 20px 60px ${v.color}20` }}
+                  whileHover={{
+                    y: -10,
+                    borderColor: v.color + "50",
+                    boxShadow: `0 20px 60px ${v.color}20`,
+                  }}
                   transition={{ type: "spring", stiffness: 260, damping: 18 }}
-                  style={{ ...glassCard, textAlign: "center", cursor: "default" }}
+                  style={{
+                    ...glassCard,
+                    textAlign: "center",
+                    cursor: "default",
+                  }}
                 >
                   {/* Spinning glyph */}
                   <RotatingGlyph
@@ -999,12 +1211,23 @@ export default function AboutPage() {
                   >
                     {v.word}
                   </div>
-                  <div style={{ fontSize: 13, color: WHITE35, fontFamily: MONO }}>{v.ar}</div>
+                  <div
+                    style={{ fontSize: 13, color: WHITE35, fontFamily: MONO }}
+                  >
+                    {v.ar}
+                  </div>
 
                   {/* Animated bottom glow line */}
                   <motion.div
-                    animate={{ opacity: [0.3, 0.8, 0.3], scaleX: [0.5, 1, 0.5] }}
-                    transition={{ duration: 3 + i, repeat: Infinity, ease: "easeInOut" }}
+                    animate={{
+                      opacity: [0.3, 0.8, 0.3],
+                      scaleX: [0.5, 1, 0.5],
+                    }}
+                    transition={{
+                      duration: 3 + i,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
                     style={{
                       position: "absolute",
                       bottom: 0,
@@ -1047,10 +1270,19 @@ export default function AboutPage() {
               <FadeUp>
                 <Eyebrow>Why OUR</Eyebrow>
                 <GradientHeadline size="clamp(2.5rem,6vw,5rem)">
-                  WHAT MAKES<br />US DIFFERENT
+                  WHAT MAKES
+                  <br />
+                  US DIFFERENT
                 </GradientHeadline>
               </FadeUp>
-              <div style={{ marginTop: 36, display: "flex", flexDirection: "column", gap: 20 }}>
+              <div
+                style={{
+                  marginTop: 36,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 20,
+                }}
+              >
                 {[
                   "A young team that genuinely understands the market",
                   "We focus on results — not just impressions",
@@ -1060,14 +1292,25 @@ export default function AboutPage() {
                   <FadeUp key={i} delay={i * 0.1}>
                     <motion.div
                       whileHover={{ x: 6 }}
-                      style={{ display: "flex", gap: 16, alignItems: "flex-start" }}
+                      style={{
+                        display: "flex",
+                        gap: 16,
+                        alignItems: "flex-start",
+                      }}
                     >
                       <motion.div
                         initial={{ scale: 0, rotate: -90 }}
                         whileInView={{ scale: 1, rotate: 0 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.3 + i * 0.1, type: "spring", stiffness: 200 }}
-                        whileHover={{ scale: 1.2, boxShadow: `0 0 16px ${BLUE}60` }}
+                        transition={{
+                          delay: 0.3 + i * 0.1,
+                          type: "spring",
+                          stiffness: 200,
+                        }}
+                        whileHover={{
+                          scale: 1.2,
+                          boxShadow: `0 0 16px ${BLUE}60`,
+                        }}
                         style={{
                           width: 28,
                           height: 28,
@@ -1086,7 +1329,16 @@ export default function AboutPage() {
                       >
                         ✓
                       </motion.div>
-                      <p style={{ fontSize: 15, color: WHITE55, lineHeight: 1.7, margin: 0 }}>{point}</p>
+                      <p
+                        style={{
+                          fontSize: 15,
+                          color: WHITE55,
+                          lineHeight: 1.7,
+                          margin: 0,
+                        }}
+                      >
+                        {point}
+                      </p>
                     </motion.div>
                   </FadeUp>
                 ))}
@@ -1099,7 +1351,11 @@ export default function AboutPage() {
                 {/* Multi-layered orbit rings */}
                 <motion.div
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                  transition={{
+                    duration: 30,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
                   style={{
                     position: "absolute",
                     inset: -30,
@@ -1110,7 +1366,11 @@ export default function AboutPage() {
                 />
                 <motion.div
                   animate={{ rotate: -360 }}
-                  transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
+                  transition={{
+                    duration: 22,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
                   style={{
                     position: "absolute",
                     inset: -12,
@@ -1154,7 +1414,13 @@ export default function AboutPage() {
                   }}
                 >
                   <motion.div
-                    animate={{ filter: ["brightness(1)", "brightness(1.3)", "brightness(1)"] }}
+                    animate={{
+                      filter: [
+                        "brightness(1)",
+                        "brightness(1.3)",
+                        "brightness(1)",
+                      ],
+                    }}
                     transition={{ duration: 4, repeat: Infinity }}
                     style={{
                       fontFamily: DISPLAY,
@@ -1192,16 +1458,35 @@ export default function AboutPage() {
                       gap: 32,
                     }}
                   >
-                    {[{ n: "1M+", label: "Impressions" }, { n: "2", label: "Markets" }].map((s) => (
+                    {[
+                      { n: "1M+", label: "Impressions" },
+                      { n: "2", label: "Markets" },
+                    ].map((s) => (
                       <motion.div
                         key={s.label}
                         whileHover={{ scale: 1.1 }}
                         style={{ textAlign: "center" }}
                       >
-                        <div style={{ fontFamily: DISPLAY, fontSize: "1.8rem", color: WHITE, lineHeight: 1 }}>
+                        <div
+                          style={{
+                            fontFamily: DISPLAY,
+                            fontSize: "1.8rem",
+                            color: WHITE,
+                            lineHeight: 1,
+                          }}
+                        >
                           {s.n}
                         </div>
-                        <div style={{ fontSize: 11, color: WHITE35, fontFamily: MONO, marginTop: 4, letterSpacing: "0.15em", textTransform: "uppercase" }}>
+                        <div
+                          style={{
+                            fontSize: 11,
+                            color: WHITE35,
+                            fontFamily: MONO,
+                            marginTop: 4,
+                            letterSpacing: "0.15em",
+                            textTransform: "uppercase",
+                          }}
+                        >
                           {s.label}
                         </div>
                       </motion.div>
@@ -1228,16 +1513,26 @@ export default function AboutPage() {
             <Eyebrow>What We Do</Eyebrow>
             <GradientHeadline>OUR SERVICES</GradientHeadline>
           </FadeUp>
-          <div style={{ display: "flex", flexDirection: "column", gap: "1px", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 20, overflow: "hidden" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "1px",
+              border: "1px solid rgba(255,255,255,0.06)",
+              borderRadius: 20,
+              overflow: "hidden",
+            }}
+          >
             {SERVICES.map((svc, i) => (
               <FadeUp key={i} delay={i * 0.07}>
                 <motion.div
                   onHoverStart={() => setHoveredService(i)}
                   onHoverEnd={() => setHoveredService(null)}
                   animate={{
-                    background: hoveredService === i
-                      ? "rgba(0,122,255,0.06)"
-                      : "rgba(255,255,255,0.01)",
+                    background:
+                      hoveredService === i
+                        ? "rgba(0,122,255,0.06)"
+                        : "rgba(255,255,255,0.01)",
                   }}
                   style={{
                     display: "grid",
@@ -1245,7 +1540,10 @@ export default function AboutPage() {
                     alignItems: "center",
                     gap: "2rem",
                     padding: "1.75rem 2rem",
-                    borderBottom: i < SERVICES.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
+                    borderBottom:
+                      i < SERVICES.length - 1
+                        ? "1px solid rgba(255,255,255,0.05)"
+                        : "none",
                     cursor: "default",
                     position: "relative",
                     overflow: "hidden",
@@ -1271,7 +1569,10 @@ export default function AboutPage() {
                       color: hoveredService === i ? BLUE : WHITE35,
                       rotate: hoveredService === i ? [0, 15, -10, 0] : 0,
                       scale: hoveredService === i ? 1.2 : 1,
-                      filter: hoveredService === i ? `drop-shadow(0 0 8px ${BLUE})` : "none",
+                      filter:
+                        hoveredService === i
+                          ? `drop-shadow(0 0 8px ${BLUE})`
+                          : "none",
                     }}
                     transition={{ duration: 0.4 }}
                     style={{
@@ -1285,7 +1586,12 @@ export default function AboutPage() {
                   </motion.div>
                   <div>
                     <motion.h3
-                      animate={{ color: hoveredService === i ? WHITE : "rgba(255,255,255,0.8)" }}
+                      animate={{
+                        color:
+                          hoveredService === i
+                            ? WHITE
+                            : "rgba(255,255,255,0.8)",
+                      }}
                       style={{
                         fontFamily: DISPLAY,
                         fontSize: "1.4rem",
@@ -1295,7 +1601,15 @@ export default function AboutPage() {
                     >
                       {svc.title}
                     </motion.h3>
-                    <p style={{ fontSize: 14, color: WHITE35, margin: 0, maxWidth: 600, lineHeight: 1.7 }}>
+                    <p
+                      style={{
+                        fontSize: 14,
+                        color: WHITE35,
+                        margin: 0,
+                        maxWidth: 600,
+                        lineHeight: 1.7,
+                      }}
+                    >
                       {svc.desc}
                     </p>
                   </div>
@@ -1334,7 +1648,13 @@ export default function AboutPage() {
           </FadeUp>
 
           {/* Tab switcher */}
-          <FadeUp style={{ display: "flex", justifyContent: "center", marginBottom: "3.5rem" }}>
+          <FadeUp
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginBottom: "3.5rem",
+            }}
+          >
             <div
               style={{
                 display: "inline-flex",
@@ -1352,7 +1672,8 @@ export default function AboutPage() {
                   animate={{
                     background: activeTab === tab ? BLUE : "transparent",
                     color: activeTab === tab ? WHITE : WHITE55,
-                    boxShadow: activeTab === tab ? `0 4px 20px ${BLUE}50` : "none",
+                    boxShadow:
+                      activeTab === tab ? `0 4px 20px ${BLUE}50` : "none",
                   }}
                   whileHover={{ color: WHITE, scale: 1.03 }}
                   transition={{ duration: 0.2 }}
@@ -1386,70 +1707,96 @@ export default function AboutPage() {
                 gap: "1.25rem",
               }}
             >
-              {(activeTab === "ksa" ? CLIENTS_KSA : CLIENTS_EGY).map((client, i) => (
-                <motion.div
-                  key={client.name}
-                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ delay: i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  whileHover={{ y: -6, borderColor: BLUE_BORDER, boxShadow: `0 20px 60px rgba(0,122,255,0.12)` }}
-                  style={{ ...glassCard }}
-                >
-                  {/* Spinning icon in client card */}
-                  <div style={{ marginBottom: 14 }}>
-                    <SpinningIcon
-                      icon={client.icon}
-                      color={BLUE}
-                      size={50}
-                      spinDuration={12 + i * 2}
-                      reverse={i % 2 !== 0}
-                    />
-                  </div>
-                  <div
-                    style={{
-                      fontSize: 10,
-                      color: BLUE,
-                      fontFamily: MONO,
-                      letterSpacing: "0.2em",
-                      textTransform: "uppercase",
-                      marginBottom: 8,
-                    }}
-                  >
-                    {client.sector}
-                  </div>
-                  <h3
-                    style={{
-                      fontFamily: DISPLAY,
-                      fontSize: "1.4rem",
-                      color: WHITE,
-                      margin: "0 0 4px",
-                      letterSpacing: "0.04em",
-                    }}
-                  >
-                    {client.name}
-                  </h3>
-                  <div style={{ fontSize: 12, color: WHITE35, fontFamily: MONO, marginBottom: 12 }}>
-                    {client.nameAr}
-                  </div>
-                  <p style={{ fontSize: 13, color: WHITE35, lineHeight: 1.75, margin: 0 }}>{client.desc}</p>
-
-                  {/* Hover accent bar */}
+              {(activeTab === "ksa" ? CLIENTS_KSA : CLIENTS_EGY).map(
+                (client, i) => (
                   <motion.div
-                    initial={{ scaleX: 0 }}
-                    whileHover={{ scaleX: 1 }}
-                    style={{
-                      position: "absolute",
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      height: 2,
-                      background: `linear-gradient(90deg, ${BLUE}, transparent)`,
-                      transformOrigin: "left",
-                      borderRadius: "0 0 20px 20px",
+                    key={client.name}
+                    initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{
+                      delay: i * 0.08,
+                      duration: 0.5,
+                      ease: [0.22, 1, 0.36, 1],
                     }}
-                  />
-                </motion.div>
-              ))}
+                    whileHover={{
+                      y: -6,
+                      borderColor: BLUE_BORDER,
+                      boxShadow: `0 20px 60px rgba(0,122,255,0.12)`,
+                    }}
+                    style={{ ...glassCard }}
+                  >
+                    {/* Spinning icon in client card */}
+                    <div style={{ marginBottom: 14 }}>
+                      <SpinningIcon
+                        icon={client.icon}
+                        color={BLUE}
+                        size={50}
+                        spinDuration={12 + i * 2}
+                        reverse={i % 2 !== 0}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 10,
+                        color: BLUE,
+                        fontFamily: MONO,
+                        letterSpacing: "0.2em",
+                        textTransform: "uppercase",
+                        marginBottom: 8,
+                      }}
+                    >
+                      {client.sector}
+                    </div>
+                    <h3
+                      style={{
+                        fontFamily: DISPLAY,
+                        fontSize: "1.4rem",
+                        color: WHITE,
+                        margin: "0 0 4px",
+                        letterSpacing: "0.04em",
+                      }}
+                    >
+                      {client.name}
+                    </h3>
+                    <div
+                      style={{
+                        fontSize: 12,
+                        color: WHITE35,
+                        fontFamily: MONO,
+                        marginBottom: 12,
+                      }}
+                    >
+                      {client.nameAr}
+                    </div>
+                    <p
+                      style={{
+                        fontSize: 13,
+                        color: WHITE35,
+                        lineHeight: 1.75,
+                        margin: 0,
+                      }}
+                    >
+                      {client.desc}
+                    </p>
+
+                    {/* Hover accent bar */}
+                    <motion.div
+                      initial={{ scaleX: 0 }}
+                      whileHover={{ scaleX: 1 }}
+                      style={{
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        height: 2,
+                        background: `linear-gradient(90deg, ${BLUE}, transparent)`,
+                        transformOrigin: "left",
+                        borderRadius: "0 0 20px 20px",
+                      }}
+                    />
+                  </motion.div>
+                ),
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -1468,7 +1815,15 @@ export default function AboutPage() {
           <FadeUp style={{ textAlign: "center", marginBottom: "4rem" }}>
             <Eyebrow>Proof of Work</Eyebrow>
             <GradientHeadline>CAMPAIGN RESULTS</GradientHeadline>
-            <p style={{ color: WHITE35, fontSize: 14, marginTop: 16, maxWidth: 460, margin: "16px auto 0" }}>
+            <p
+              style={{
+                color: WHITE35,
+                fontSize: 14,
+                marginTop: 16,
+                maxWidth: 460,
+                margin: "16px auto 0",
+              }}
+            >
               Real before & after — one campaign that brought in 60+ clients.
             </p>
           </FadeUp>
@@ -1487,10 +1842,30 @@ export default function AboutPage() {
               }}
             >
               {[
-                { value: "60+", label: "New Clients", sub: "From one campaign", icon: "🎯" },
-                { value: "1M+", label: "Impressions", sub: "Reached fast", icon: "👁️" },
-                { value: "2", label: "Markets", sub: "KSA & Egypt", icon: "🌍" },
-                { value: "5", label: "Services", sub: "Delivered together", icon: "⚡" },
+                {
+                  value: "60+",
+                  label: "New Clients",
+                  sub: "From one campaign",
+                  icon: "🎯",
+                },
+                {
+                  value: "1M+",
+                  label: "Impressions",
+                  sub: "Reached fast",
+                  icon: "👁️",
+                },
+                {
+                  value: "2",
+                  label: "Markets",
+                  sub: "KSA & Egypt",
+                  icon: "🌍",
+                },
+                {
+                  value: "5",
+                  label: "Services",
+                  sub: "Delivered together",
+                  icon: "⚡",
+                },
               ].map((stat, i) => (
                 <motion.div
                   key={stat.label}
@@ -1507,7 +1882,11 @@ export default function AboutPage() {
                 >
                   <motion.div
                     animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.1, 1] }}
-                    transition={{ duration: 4 + i, repeat: Infinity, delay: i * 0.8 }}
+                    transition={{
+                      duration: 4 + i,
+                      repeat: Infinity,
+                      delay: i * 0.8,
+                    }}
                     style={{ fontSize: "1.8rem", marginBottom: 10 }}
                   >
                     {stat.icon}
@@ -1523,10 +1902,21 @@ export default function AboutPage() {
                   >
                     {stat.value}
                   </div>
-                  <div style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", marginBottom: 4, fontWeight: 500 }}>
+                  <div
+                    style={{
+                      fontSize: 13,
+                      color: "rgba(255,255,255,0.7)",
+                      marginBottom: 4,
+                      fontWeight: 500,
+                    }}
+                  >
                     {stat.label}
                   </div>
-                  <div style={{ fontSize: 11, color: WHITE35, fontFamily: MONO }}>{stat.sub}</div>
+                  <div
+                    style={{ fontSize: 11, color: WHITE35, fontFamily: MONO }}
+                  >
+                    {stat.sub}
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -1540,10 +1930,19 @@ export default function AboutPage() {
               gap: "1.5rem",
             }}
           >
-            {["Before Campaign", "After Campaign", "Campaign Creative", "Results Dashboard"].map((label, i) => (
+            {[
+              "Before Campaign",
+              "After Campaign",
+              "Campaign Creative",
+              "Results Dashboard",
+            ].map((label, i) => (
               <FadeUp key={label} delay={i * 0.1}>
                 <motion.div
-                  whileHover={{ borderColor: BLUE_BORDER, y: -4, boxShadow: `0 16px 50px rgba(0,122,255,0.1)` }}
+                  whileHover={{
+                    borderColor: BLUE_BORDER,
+                    y: -4,
+                    boxShadow: `0 16px 50px rgba(0,122,255,0.1)`,
+                  }}
                   style={{
                     ...glassCard,
                     aspectRatio: "16/10",
@@ -1562,10 +1961,25 @@ export default function AboutPage() {
                   >
                     {i < 2 ? "📸" : i === 2 ? "🎨" : "📊"}
                   </motion.div>
-                  <div style={{ fontSize: 12, color: WHITE35, fontFamily: MONO, letterSpacing: "0.15em", textTransform: "uppercase" }}>
+                  <div
+                    style={{
+                      fontSize: 12,
+                      color: WHITE35,
+                      fontFamily: MONO,
+                      letterSpacing: "0.15em",
+                      textTransform: "uppercase",
+                    }}
+                  >
                     {label}
                   </div>
-                  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.2)", textAlign: "center", maxWidth: 200 }}>
+                  <div
+                    style={{
+                      fontSize: 11,
+                      color: "rgba(255,255,255,0.2)",
+                      textAlign: "center",
+                      maxWidth: 200,
+                    }}
+                  >
                     Drop your campaign image here
                   </div>
                 </motion.div>
@@ -1602,7 +2016,11 @@ export default function AboutPage() {
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+              transition={{
+                duration: 1.5,
+                ease: [0.22, 1, 0.36, 1],
+                delay: 0.3,
+              }}
               style={{
                 position: "absolute",
                 top: "60px",
@@ -1619,15 +2037,28 @@ export default function AboutPage() {
             {PROCESS.map((step, i) => (
               <FadeUp key={step.num} delay={i * 0.12}>
                 <motion.div
-                  whileHover={{ y: -8, borderColor: BLUE_BORDER, boxShadow: `0 20px 60px rgba(0,122,255,0.12)` }}
+                  whileHover={{
+                    y: -8,
+                    borderColor: BLUE_BORDER,
+                    boxShadow: `0 20px 60px rgba(0,122,255,0.12)`,
+                  }}
                   transition={{ type: "spring", stiffness: 280, damping: 20 }}
-                  style={{ ...glassCard, textAlign: "center", height: "100%", zIndex: 1 }}
+                  style={{
+                    ...glassCard,
+                    textAlign: "center",
+                    height: "100%",
+                    zIndex: 1,
+                  }}
                 >
                   <motion.div
                     initial={{ scale: 0, rotate: -90 }}
                     whileInView={{ scale: 1, rotate: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: 0.2 + i * 0.1, type: "spring", stiffness: 200 }}
+                    transition={{
+                      delay: 0.2 + i * 0.1,
+                      type: "spring",
+                      stiffness: 200,
+                    }}
                     whileHover={{
                       scale: 1.15,
                       boxShadow: `0 0 20px ${BLUE}60`,
@@ -1664,11 +2095,23 @@ export default function AboutPage() {
                   >
                     {step.title}
                   </h3>
-                  <p style={{ fontSize: 13, color: WHITE35, lineHeight: 1.75, margin: 0 }}>{step.desc}</p>
+                  <p
+                    style={{
+                      fontSize: 13,
+                      color: WHITE35,
+                      lineHeight: 1.75,
+                      margin: 0,
+                    }}
+                  >
+                    {step.desc}
+                  </p>
 
                   {/* Animated accent line */}
                   <motion.div
-                    animate={{ opacity: [0.3, 0.8, 0.3], scaleX: [0.4, 1, 0.4] }}
+                    animate={{
+                      opacity: [0.3, 0.8, 0.3],
+                      scaleX: [0.4, 1, 0.4],
+                    }}
                     transition={{ duration: 3 + i * 0.5, repeat: Infinity }}
                     style={{
                       position: "absolute",
@@ -1716,12 +2159,26 @@ export default function AboutPage() {
         />
 
         {/* Rotating outer rings */}
-        <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 700, height: 700, pointerEvents: "none" }}>
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%,-50%)",
+            width: 700,
+            height: 700,
+            pointerEvents: "none",
+          }}
+        >
           {[600, 500, 400].map((size, i) => (
             <motion.div
               key={size}
               animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
-              transition={{ duration: 20 + i * 8, repeat: Infinity, ease: "linear" }}
+              transition={{
+                duration: 20 + i * 8,
+                repeat: Infinity,
+                ease: "linear",
+              }}
               style={{
                 position: "absolute",
                 top: "50%",
@@ -1736,10 +2193,14 @@ export default function AboutPage() {
           ))}
         </div>
 
-        <FadeUp style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
+        <FadeUp
+          style={{ textAlign: "center", position: "relative", zIndex: 1 }}
+        >
           <Eyebrow>Ready to grow?</Eyebrow>
           <GradientHeadline size="clamp(3rem,8vw,7rem)">
-            YOUR VISION,<br />OUR MISSION
+            YOUR VISION,
+            <br />
+            OUR MISSION
           </GradientHeadline>
           <p
             style={{
@@ -1750,9 +2211,17 @@ export default function AboutPage() {
               lineHeight: 1.8,
             }}
           >
-            Let's build something that makes your competitors nervous. One brand, one plan, real results.
+            Lets build something that makes your competitors nervous. One brand,
+            one plan, real results.
           </p>
-          <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: 16,
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
             <motion.a
               href="mailto:ouragency259@gmail.com"
               whileHover={{
@@ -1780,7 +2249,8 @@ export default function AboutPage() {
                 style={{
                   position: "absolute",
                   inset: 0,
-                  background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
+                  background:
+                    "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
                   pointerEvents: "none",
                 }}
               />
