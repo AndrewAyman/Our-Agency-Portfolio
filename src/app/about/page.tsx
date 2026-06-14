@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import {
   motion,
   useScroll,
@@ -9,47 +9,38 @@ import {
   AnimatePresence,
   useMotionValue,
   useSpring,
-  useAnimationFrame,
 } from "framer-motion";
-
-/* ─── Design tokens ─── */
-const BLUE = "#007AFF";
-const BLUE_DIM = "rgba(0,122,255,0.12)";
-const BLUE_BORDER = "rgba(0,122,255,0.25)";
-const WHITE = "#ffffff";
-const WHITE55 = "rgba(255,255,255,0.55)";
-const WHITE35 = "rgba(255,255,255,0.35)";
-const WHITE08 = "rgba(255,255,255,0.08)";
-const WHITE04 = "rgba(255,255,255,0.04)";
-const MONO = "'JetBrains Mono', 'Fira Code', monospace";
-const DISPLAY = "'Bebas Neue', Impact, sans-serif";
-
-/* ─── Reusable glass card ─── */
-const glassCard: React.CSSProperties = {
-  background: WHITE04,
-  backdropFilter: "blur(20px)",
-  WebkitBackdropFilter: "blur(20px)",
-  border: `1px solid ${WHITE08}`,
-  borderRadius: 20,
-  padding: "2rem",
-  position: "relative",
-  overflow: "hidden",
-};
+import {
+  HardHat,
+  Building2,
+  Settings2,
+  Layers,
+  Monitor,
+  Stethoscope,
+  CreditCard,
+  UtensilsCrossed,
+  ShoppingBag,
+  Telescope,
+  Rocket,
+  Target,
+  Eye,
+  Globe,
+  Zap,
+  Camera,
+  Palette,
+  BarChart2,
+  CheckCircle2,
+  Diamond,
+  Sparkles,
+  Scale,
+  TrendingUp,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 /* ─── Eyebrow label ─── */
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <span
-      style={{
-        display: "inline-block",
-        fontSize: 11,
-        fontFamily: MONO,
-        color: BLUE,
-        letterSpacing: "0.35em",
-        textTransform: "uppercase",
-        marginBottom: 16,
-      }}
-    >
+    <span className="inline-block text-[13px] font-mono text-[#007AFF] tracking-[0.35em] uppercase mb-4 font-semibold">
       {children}
     </span>
   );
@@ -58,25 +49,186 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 /* ─── Gradient headline ─── */
 function GradientHeadline({
   children,
-  size = "clamp(3rem,7vw,6rem)",
+  className = "text-[clamp(3rem,7vw,6rem)]",
 }: {
   children: React.ReactNode;
-  size?: string;
+  className?: string;
 }) {
   return (
     <h2
-      style={{
-        fontFamily: DISPLAY,
-        fontSize: size,
-        lineHeight: 1,
-        background: `linear-gradient(135deg,${WHITE} 0%,${BLUE} 55%,#3395FF 100%)`,
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent",
-        backgroundClip: "text",
-        margin: 0,
-      }}
+      className={`font-display leading-none bg-gradient-to-br from-white via-[#007AFF] to-[#3395FF] bg-clip-text text-transparent m-0 ${className}`}
+      style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}
     >
       {children}
+    </h2>
+  );
+}
+
+/* ─── UNIQUE animated title variants ─── */
+
+// Variant 1: Letters fall down one by one
+function TitleDropLetters({ text, delay = 0, color = "#007AFF" }: { text: string; delay?: number; color?: string }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: false, margin: "-60px" });
+  const letters = text.split("");
+  return (
+    <h2
+      ref={ref}
+      className="font-display leading-none m-0 flex flex-wrap"
+      style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}
+    >
+      {letters.map((char, i) => (
+        <motion.span
+          key={i}
+          initial={{ y: -80, opacity: 0, rotateX: -90 }}
+          animate={inView ? { y: 0, opacity: 1, rotateX: 0 } : { y: -80, opacity: 0, rotateX: -90 }}
+          transition={{
+            duration: 0.5,
+            delay: delay + i * 0.05,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="inline-block text-[clamp(3rem,7vw,6rem)] bg-gradient-to-br from-white via-[#007AFF] to-[#3395FF] bg-clip-text text-transparent"
+          style={{ transformOrigin: "top center" }}
+        >
+          {char === " " ? "\u00A0" : char}
+        </motion.span>
+      ))}
+    </h2>
+  );
+}
+
+// Variant 2: Letters rise from bottom one by one (reverse)
+function TitleRiseLetters({ text, delay = 0 }: { text: string; delay?: number }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: false, margin: "-60px" });
+  const letters = text.split("");
+  return (
+    <h2
+      ref={ref}
+      className="font-display leading-none m-0 flex flex-wrap"
+      style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}
+    >
+      {letters.map((char, i) => (
+        <motion.span
+          key={i}
+          initial={{ y: 80, opacity: 0, scale: 0.5 }}
+          animate={inView ? { y: 0, opacity: 1, scale: 1 } : { y: 80, opacity: 0, scale: 0.5 }}
+          transition={{
+            duration: 0.55,
+            delay: delay + (letters.length - i) * 0.045,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="inline-block text-[clamp(3rem,7vw,6rem)] bg-gradient-to-br from-white via-[#007AFF] to-[#3395FF] bg-clip-text text-transparent"
+        >
+          {char === " " ? "\u00A0" : char}
+        </motion.span>
+      ))}
+    </h2>
+  );
+}
+
+// Variant 3: Blur then sharpen, word by word
+function TitleBlurReveal({ children, delay = 0 }: { children: string; delay?: number }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: false, margin: "-60px" });
+  const words = children.split(" ");
+  return (
+    <h2
+      ref={ref}
+      className="font-display leading-none m-0 flex flex-wrap gap-x-4"
+      style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}
+    >
+      {words.map((word, i) => (
+        <motion.span
+          key={i}
+          initial={{ filter: "blur(20px)", opacity: 0, x: -30 }}
+          animate={inView ? { filter: "blur(0px)", opacity: 1, x: 0 } : { filter: "blur(20px)", opacity: 0, x: -30 }}
+          transition={{ duration: 0.7, delay: delay + i * 0.15, ease: [0.22, 1, 0.36, 1] }}
+          className="inline-block text-[clamp(3rem,7vw,6rem)] bg-gradient-to-br from-white via-[#007AFF] to-[#3395FF] bg-clip-text text-transparent"
+        >
+          {word}
+        </motion.span>
+      ))}
+    </h2>
+  );
+}
+
+// Variant 4: Glitch effect with skew
+function TitleGlitch({ text, delay = 0 }: { text: string; delay?: number }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: false, margin: "-60px" });
+  return (
+    <div ref={ref} className="overflow-hidden">
+      <motion.h2
+        initial={{ y: "110%", skewY: 8, opacity: 0 }}
+        animate={inView ? { y: "0%", skewY: 0, opacity: 1 } : { y: "110%", skewY: 8, opacity: 0 }}
+        transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+        className="font-display leading-none m-0 text-[clamp(3rem,7vw,6rem)] bg-gradient-to-br from-white via-[#007AFF] to-[#3395FF] bg-clip-text text-transparent"
+        style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}
+      >
+        {text}
+      </motion.h2>
+    </div>
+  );
+}
+
+// Variant 5: Scale + fade from center
+function TitleScaleFade({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: false, margin: "-60px" });
+  return (
+    <motion.h2
+      ref={ref}
+      initial={{ scale: 0.5, opacity: 0, letterSpacing: "0.5em" }}
+      animate={inView ? { scale: 1, opacity: 1, letterSpacing: "0em" } : { scale: 0.5, opacity: 0, letterSpacing: "0.5em" }}
+      transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
+      className="font-display leading-none m-0 text-[clamp(3rem,7vw,6rem)] bg-gradient-to-br from-white via-[#007AFF] to-[#3395FF] bg-clip-text text-transparent"
+      style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}
+    >
+      {children}
+    </motion.h2>
+  );
+}
+
+// Variant 6: Typewriter effect
+function TitleTypewriter({ text, delay = 0 }: { text: string; delay?: number }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: false, margin: "-60px" });
+  const [displayed, setDisplayed] = useState("");
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    if (inView && !started) {
+      setStarted(true);
+      setDisplayed("");
+      const timeout = setTimeout(() => {
+        let i = 0;
+        const interval = setInterval(() => {
+          setDisplayed(text.slice(0, i + 1));
+          i++;
+          if (i >= text.length) clearInterval(interval);
+        }, 50);
+      }, delay * 1000);
+      return () => clearTimeout(timeout);
+    }
+    if (!inView) {
+      setStarted(false);
+      setDisplayed("");
+    }
+  }, [inView, text, delay, started]);
+
+  return (
+    <h2
+      ref={ref}
+      className="font-display leading-none m-0 text-[clamp(3rem,7vw,6rem)] bg-gradient-to-br from-white via-[#007AFF] to-[#3395FF] bg-clip-text text-transparent"
+      style={{ fontFamily: "'Bebas Neue', Impact, sans-serif", minHeight: "1em" }}
+    >
+      {displayed}
+      <motion.span
+        animate={{ opacity: [1, 0] }}
+        transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
+        className="inline-block w-1 h-[0.8em] bg-[#007AFF] ml-1 align-middle"
+      />
     </h2>
   );
 }
@@ -85,11 +237,11 @@ function GradientHeadline({
 function FadeUp({
   children,
   delay = 0,
-  style,
+  className = "",
 }: {
   children: React.ReactNode;
   delay?: number;
-  style?: React.CSSProperties;
+  className?: string;
 }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -99,7 +251,7 @@ function FadeUp({
       initial={{ opacity: 0, y: 40 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
-      style={style}
+      className={className}
     >
       {children}
     </motion.div>
@@ -124,70 +276,66 @@ function CursorBlob() {
 
   return (
     <motion.div
+      className="fixed top-0 left-0 w-[400px] h-[400px] rounded-full pointer-events-none z-0"
       style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: 400,
-        height: 400,
-        borderRadius: "50%",
         background: "radial-gradient(circle,rgba(0,122,255,0.08) 0%,transparent 70%)",
-        pointerEvents: "none",
-        zIndex: 0,
+        filter: "blur(60px)",
         x: springX,
         y: springY,
-        filter: "blur(60px)",
       }}
     />
   );
 }
 
-/* ─── Floating Particles Background ─── */
+/* ─── Floating Particles Background — FIX: stable seeds via useMemo ─── */
 function FloatingParticles() {
-  const particles = Array.from({ length: 28 }, (_, i) => ({
-    id: i,
-    size: Math.random() * 3 + 1,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    duration: Math.random() * 15 + 10,
-    delay: Math.random() * 8,
-    opacity: Math.random() * 0.4 + 0.1,
-  }));
+  // useMemo ensures particles are generated once and stay stable across hydration
+  const particles = useMemo(() =>
+    Array.from({ length: 28 }, (_, i) => {
+      // Deterministic pseudo-random using index as seed
+      const seed = (i * 2654435761) >>> 0;
+      const r1 = ((seed ^ (seed >> 16)) * 0x45d9f3b) >>> 0;
+      const r2 = ((r1 ^ (r1 >> 16)) * 0x45d9f3b) >>> 0;
+      const r3 = ((r2 ^ (r2 >> 16)) * 0x45d9f3b) >>> 0;
+      const r4 = ((r3 ^ (r3 >> 16)) * 0x45d9f3b) >>> 0;
+      const r5 = ((r4 ^ (r4 >> 16)) * 0x45d9f3b) >>> 0;
+      const r6 = ((r5 ^ (r5 >> 16)) * 0x45d9f3b) >>> 0;
+      const r7 = ((r6 ^ (r6 >> 16)) * 0x45d9f3b) >>> 0;
+      const norm = (n: number) => (n >>> 0) / 0xffffffff;
+      return {
+        id: i,
+        size: norm(r1) * 3 + 1,
+        x: norm(r2) * 100,
+        y: norm(r3) * 100,
+        duration: norm(r4) * 15 + 10,
+        delay: norm(r5) * 8,
+        opacity: norm(r6) * 0.4 + 0.1,
+        drift: norm(r7) * 60 - 30,
+      };
+    }),
+    []
+  );
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        pointerEvents: "none",
-        zIndex: 0,
-        overflow: "hidden",
-      }}
-    >
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
       {particles.map((p) => (
         <motion.div
           key={p.id}
           animate={{
             y: [0, -120, 0],
-            x: [0, Math.random() * 60 - 30, 0],
+            x: [0, p.drift, 0],
             opacity: [0, p.opacity, 0],
             scale: [0.5, 1.2, 0.5],
           }}
-          transition={{
-            duration: p.duration,
-            delay: p.delay,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
+          transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute rounded-full"
           style={{
-            position: "absolute",
             left: `${p.x}%`,
             top: `${p.y}%`,
             width: p.size,
             height: p.size,
-            borderRadius: "50%",
-            background: BLUE,
-            boxShadow: `0 0 ${p.size * 3}px ${BLUE}`,
+            background: "#007AFF",
+            boxShadow: `0 0 ${p.size * 3}px #007AFF`,
           }}
         />
       ))}
@@ -195,20 +343,19 @@ function FloatingParticles() {
   );
 }
 
-/* ─── Orbiting rings background element ─── */
-function OrbitRings({ style }: { style?: React.CSSProperties }) {
+/* ─── Orbiting rings ─── */
+function OrbitRings({ className = "" }: { className?: string }) {
   return (
-    <div style={{ position: "absolute", pointerEvents: "none", ...style }}>
+    <div className={`absolute pointer-events-none ${className}`}>
       {[1, 0.65, 0.38].map((scale, i) => (
         <motion.div
           key={i}
           animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
           transition={{ duration: 18 + i * 8, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 rounded-full"
           style={{
-            position: "absolute",
             inset: `${i * 28}px`,
             border: `1px dashed rgba(0,122,255,${0.08 + i * 0.04})`,
-            borderRadius: "50%",
             transform: `scale(${scale})`,
           }}
         />
@@ -221,11 +368,8 @@ function OrbitRings({ style }: { style?: React.CSSProperties }) {
 function GridBackground() {
   return (
     <div
+      className="fixed inset-0 pointer-events-none z-0"
       style={{
-        position: "fixed",
-        inset: 0,
-        pointerEvents: "none",
-        zIndex: 0,
         backgroundImage: `
           linear-gradient(rgba(0,122,255,0.03) 1px, transparent 1px),
           linear-gradient(90deg, rgba(0,122,255,0.03) 1px, transparent 1px)
@@ -248,98 +392,71 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
     const step = to / 50;
     const timer = setInterval(() => {
       start += step;
-      if (start >= to) {
-        setCount(to);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(start));
-      }
+      if (start >= to) { setCount(to); clearInterval(timer); }
+      else { setCount(Math.floor(start)); }
     }, 30);
     return () => clearInterval(timer);
   }, [inView, to]);
 
-  return (
-    <span ref={ref}>
-      {count}
-      {suffix}
-    </span>
-  );
+  return <span ref={ref}>{count}{suffix}</span>;
 }
 
 /* ─── Spinning Icon Badge ─── */
 function SpinningIcon({
-  icon,
+  Icon,
   color,
   size = 56,
   spinDuration = 8,
   reverse = false,
 }: {
-  icon: string;
+  Icon: LucideIcon;
   color: string;
   size?: number;
   spinDuration?: number;
   reverse?: boolean;
 }) {
+  const iconSize = Math.round(size * 0.42);
   return (
-    <div style={{ position: "relative", width: size, height: size }}>
-      {/* Outer spinning ring */}
+    <div className="relative" style={{ width: size, height: size }}>
       <motion.div
         animate={{ rotate: reverse ? -360 : 360 }}
         transition={{ duration: spinDuration, repeat: Infinity, ease: "linear" }}
-        style={{
-          position: "absolute",
-          inset: -6,
-          borderRadius: "50%",
-          border: `1px dashed ${color}60`,
-        }}
+        className="absolute rounded-full"
+        style={{ inset: -6, border: `1px dashed ${color}60` }}
       />
-      {/* Inner pulsing glow ring */}
       <motion.div
         animate={{ scale: [1, 1.15, 1], opacity: [0.5, 1, 0.5] }}
         transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-        style={{
-          position: "absolute",
-          inset: 0,
-          borderRadius: "50%",
-          border: `1px solid ${color}40`,
-          boxShadow: `0 0 12px ${color}30`,
-        }}
+        className="absolute inset-0 rounded-full"
+        style={{ border: `1px solid ${color}40`, boxShadow: `0 0 12px ${color}30` }}
       />
-      {/* Icon container */}
       <motion.div
         whileHover={{ scale: 1.15, rotate: 15 }}
+        className="relative z-10 flex items-center justify-center rounded-full cursor-default"
         style={{
           width: size,
           height: size,
-          borderRadius: "50%",
           background: `radial-gradient(circle, ${color}20 0%, ${color}08 100%)`,
           border: `1px solid ${color}40`,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: size * 0.42,
-          position: "relative",
-          zIndex: 1,
-          cursor: "default",
         }}
       >
-        {icon}
+        <Icon size={iconSize} color={color} strokeWidth={1.5} />
       </motion.div>
     </div>
   );
 }
 
-/* ─── Rotating Glyph ─── */
-function RotatingGlyph({
-  glyph,
+/* ─── Rotating Icon ─── */
+function RotatingIcon({
+  Icon,
   color,
-  size = "2.5rem",
+  size = 36,
   duration = 6,
   delay = 0,
 }: {
-  glyph: string;
+  Icon: LucideIcon;
   color: string;
-  size?: string;
+  size?: number;
   duration?: number;
   delay?: number;
 }) {
@@ -355,9 +472,10 @@ function RotatingGlyph({
         ],
       }}
       transition={{ duration, repeat: Infinity, ease: "linear", delay }}
-      style={{ fontSize: size, color, display: "inline-block", marginBottom: 16 }}
+      className="inline-flex mb-4"
+      style={{ color }}
     >
-      {glyph}
+      <Icon size={size} strokeWidth={1.5} />
     </motion.div>
   );
 }
@@ -367,114 +485,67 @@ function AnimatedDivider() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
   return (
-    <div ref={ref} style={{ overflow: "hidden", height: 1, margin: "0 auto", maxWidth: 600 }}>
+    <div ref={ref} className="overflow-hidden h-px mx-auto max-w-[600px]">
       <motion.div
         initial={{ scaleX: 0 }}
         animate={inView ? { scaleX: 1 } : {}}
         transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        style={{
-          height: 1,
-          background: `linear-gradient(90deg, transparent, ${BLUE}, transparent)`,
-          transformOrigin: "left",
-        }}
+        className="h-px origin-left"
+        style={{ background: "linear-gradient(90deg, transparent, #007AFF, transparent)" }}
       />
     </div>
   );
 }
 
-/* ─── Clients data ─── */
+/* ─── Clients data (Arabic removed) ─── */
 const CLIENTS_KSA = [
-  {
-    name: "Sadeef",
-    nameAr: "سديف",
-    sector: "Engineering & Architecture",
-    desc: "Leading consultancy in architectural design & engineering solutions — residential and commercial projects.",
-    icon: "🏗️",
-  },
-  {
-    name: "Aamal",
-    nameAr: "أعمال",
-    sector: "Construction",
-    desc: "Jeddah-based contractor specializing in high-quality construction, known for timeline precision across diverse projects.",
-    icon: "🏢",
-  },
-  {
-    name: "Yamas Arabia",
-    nameAr: "يماس العربية",
-    sector: "General Contracting",
-    desc: "Prominent KSA contractor managing large-scale projects with cutting-edge construction technology from foundation to handover.",
-    icon: "⚙️",
-  },
-  {
-    name: "Silver Lines",
-    nameAr: "خطوط فضية",
-    sector: "Glass & Facades",
-    desc: "Specialist in glass systems, facades, railings, and stainless steel installations across the Kingdom.",
-    icon: "🪟",
-  },
-  {
-    name: "Fawtara",
-    nameAr: "افوترة",
-    sector: "F&B Tech / ERP",
-    desc: "Tech company building ERP solutions tailored for restaurants and cafés — streamlining daily operations with precision.",
-    icon: "💻",
-  },
+  { name: "Sadeef", sector: "Engineering & Architecture", desc: "Leading consultancy in architectural design & engineering solutions — residential and commercial projects.", Icon: HardHat },
+  { name: "Aamal", sector: "Construction", desc: "Jeddah-based contractor specializing in high-quality construction, known for timeline precision across diverse projects.", Icon: Building2 },
+  { name: "Yamas Arabia", sector: "General Contracting", desc: "Prominent KSA contractor managing large-scale projects with cutting-edge construction technology from foundation to handover.", Icon: Settings2 },
+  { name: "Silver Lines", sector: "Glass & Facades", desc: "Specialist in glass systems, facades, railings, and stainless steel installations across the Kingdom.", Icon: Layers },
+  { name: "Fawtara", sector: "F&B Tech / ERP", desc: "Tech company building ERP solutions tailored for restaurants and cafes — streamlining daily operations with precision.", Icon: Monitor },
 ];
 
 const CLIENTS_EGY = [
-  {
-    name: "D Smile Clinic",
-    nameAr: "دي سمايل كلينك",
-    sector: "Medical / Dental",
-    desc: "Dental aesthetics clinic offering comprehensive cosmetic and preventive care with the latest technology.",
-    icon: "🦷",
-  },
-  {
-    name: "Egyptinor",
-    nameAr: "إيجيبتينور",
-    sector: "Digital Finance",
-    desc: "Digital economy & e-wallet company delivering innovative fintech solutions for a cashless society.",
-    icon: "💳",
-  },
-  {
-    name: "Dream Restaurant",
-    nameAr: "مطعم دريم",
-    sector: "F&B",
-    desc: "Full-service restaurant delivering a complete dining experience with a focus on quality and service excellence.",
-    icon: "🍽️",
-  },
-  {
-    name: "Twelve Store",
-    nameAr: "توِيلف",
-    sector: "Fashion / E-Commerce",
-    desc: "Fashion-forward clothing store offering contemporary pieces blending simplicity and elegance for all tastes.",
-    icon: "👗",
-  },
-];
-
-/* ─── Services ─── */
-const SERVICES = [
-  { icon: "✦", title: "Social Media Management", desc: "Full account management from content to analytics — growing engagement and refining performance continuously." },
-  { icon: "◈", title: "Paid Ads & Performance", desc: "Multi-platform ad campaigns laser-focused on attracting serious buyers and driving measurable sales growth." },
-  { icon: "◉", title: "Content Creation & Copy", desc: "Professional content written in your brand's voice — educational, marketing, and sales-oriented copy that converts." },
-  { icon: "◐", title: "Branding & Visual Identity", desc: "From logo to color palette to tone — building a complete visual identity that makes your brand unforgettable." },
-  { icon: "◑", title: "Graphic Design & Video", desc: "Compelling designs and professional video edits that reflect brand personality and serve the marketing message." },
+  { name: "D Smile Clinic", sector: "Medical / Dental", desc: "Dental aesthetics clinic offering comprehensive cosmetic and preventive care with the latest technology.", Icon: Stethoscope },
+  { name: "Egyptinor", sector: "Digital Finance", desc: "Digital economy & e-wallet company delivering innovative fintech solutions for a cashless society.", Icon: CreditCard },
+  { name: "Dream Restaurant", sector: "F&B", desc: "Full-service restaurant delivering a complete dining experience with a focus on quality and service excellence.", Icon: UtensilsCrossed },
+  { name: "Twelve Store", sector: "Fashion / E-Commerce", desc: "Fashion-forward clothing store offering contemporary pieces blending simplicity and elegance for all tastes.", Icon: ShoppingBag },
 ];
 
 /* ─── Values ─── */
 const VALUES = [
-  { word: "Commitment", ar: "", glyph: "◈", color: BLUE },
-  { word: "Creativity", ar: "", glyph: "✦", color: "#3395FF" },
-  { word: "Transparency", ar: "", glyph: "◉", color: "#56AFFF" },
-  { word: "Growth", ar: "", glyph: "◐", color: BLUE },
+  { word: "Commitment", Icon: CheckCircle2, color: "#007AFF" },
+  { word: "Creativity",  Icon: Sparkles,     color: "#3395FF" },
+  { word: "Transparency",Icon: Scale,         color: "#56AFFF" },
+  { word: "Growth",      Icon: TrendingUp,    color: "#007AFF" },
 ];
 
 /* ─── Process steps ─── */
 const PROCESS = [
   { num: "01", title: "Research & Discovery", desc: "Deep-diving into your brand, audience, and competitive landscape to find the real opportunity." },
-  { num: "02", title: "Planning & Strategy", desc: "A clear, custom marketing roadmap — no copy-paste templates, every plan built for one brand only." },
-  { num: "03", title: "Execution", desc: "Content + design + ad management running in perfect sync toward one goal: measurable impact." },
-  { num: "04", title: "Optimization", desc: "Continuous result analysis and performance refinement — because every percentage point matters." },
+  { num: "02", title: "Planning & Strategy",  desc: "A clear, custom marketing roadmap — no copy-paste templates, every plan built for one brand only." },
+  { num: "03", title: "Execution",            desc: "Content + design + ad management running in perfect sync toward one goal: measurable impact." },
+  { num: "04", title: "Optimization",         desc: "Continuous result analysis and performance refinement — because every percentage point matters." },
+];
+
+/* ─── Glass card base classes ─── */
+const glass = "bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-8 relative overflow-hidden";
+
+/* ─── Campaign stats ─── */
+const CAMPAIGN_STATS = [
+  { value: "60+", label: "New Clients",  sub: "From one campaign",  Icon: Target },
+  { value: "1M+", label: "Impressions",  sub: "Reached fast",        Icon: Eye },
+  { value: "2",   label: "Markets",      sub: "KSA & Egypt",          Icon: Globe },
+  { value: "5",   label: "Services",     sub: "Delivered together",   Icon: Zap },
+];
+
+/* ─── Campaign placeholders ─── */
+const CAMPAIGN_PLACEHOLDERS = [
+  { label: "Before Campaign",    Icon: Camera },
+  { label: "After Campaign",     Icon: Camera },
+  { label: "Campaign Creative",  Icon: Palette },
+  { label: "Results Dashboard",  Icon: BarChart2 },
 ];
 
 /* ────────────────────────────────────────────────── */
@@ -485,7 +556,6 @@ export default function AboutPage() {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   const [activeTab, setActiveTab] = useState<"ksa" | "egypt">("ksa");
-  const [hoveredService, setHoveredService] = useState<number | null>(null);
 
   return (
     <>
@@ -493,289 +563,178 @@ export default function AboutPage() {
       <GridBackground />
       <FloatingParticles />
 
-      {/* ═══════════════════════════════════════════
-          HERO
-      ═══════════════════════════════════════════ */}
-      <section
-        ref={heroRef}
-        style={{
-          position: "relative",
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          padding: "9rem 1.5rem 6rem",
-          overflow: "hidden",
-        }}
-      >
-        {/* ambient orbs */}
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0 }}>
+      {/* ═══════════════ HERO ═══════════════ */}
+      <section ref={heroRef} className="relative min-h-screen flex items-start lg:items-center px-4 sm:px-6 pt-28 sm:pt-32 pb-16 overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none z-0">
           <motion.div
             animate={{ scale: [1, 1.25, 1], opacity: [0.5, 0.9, 0.5], x: [0, 30, 0], y: [0, -20, 0] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            style={{
-              position: "absolute",
-              top: "-10%",
-              right: "-5%",
-              width: 700,
-              height: 700,
-              borderRadius: "50%",
-              background: "radial-gradient(circle,rgba(0,122,255,0.22) 0%,transparent 65%)",
-              filter: "blur(80px)",
-            }}
+            className="absolute top-[-10%] right-[-5%] w-[min(700px,90vw)] h-[min(700px,90vw)] rounded-full"
+            style={{ background: "radial-gradient(circle,rgba(0,122,255,0.22) 0%,transparent 65%)", filter: "blur(80px)" }}
           />
           <motion.div
             animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.7, 0.3], x: [0, -20, 0] }}
             transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-            style={{
-              position: "absolute",
-              bottom: "10%",
-              left: "-8%",
-              width: 500,
-              height: 500,
-              borderRadius: "50%",
-              background: "radial-gradient(circle,rgba(51,149,255,0.15) 0%,transparent 65%)",
-              filter: "blur(100px)",
-            }}
+            className="absolute bottom-[10%] left-[-8%] w-[min(500px,70vw)] h-[min(500px,70vw)] rounded-full"
+            style={{ background: "radial-gradient(circle,rgba(51,149,255,0.15) 0%,transparent 65%)", filter: "blur(100px)" }}
           />
-          {/* Extra orb center */}
           <motion.div
             animate={{ scale: [1, 1.3, 1], opacity: [0.1, 0.25, 0.1] }}
             transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 4 }}
-            style={{
-              position: "absolute",
-              top: "40%",
-              left: "40%",
-              width: 400,
-              height: 300,
-              borderRadius: "50%",
-              background: "radial-gradient(circle,rgba(0,122,255,0.12) 0%,transparent 65%)",
-              filter: "blur(120px)",
-            }}
+            className="absolute top-[40%] left-[40%] w-[min(400px,60vw)] h-[min(300px,50vw)] rounded-full"
+            style={{ background: "radial-gradient(circle,rgba(0,122,255,0.12) 0%,transparent 65%)", filter: "blur(120px)" }}
           />
         </div>
 
-        {/* Big orbit rings in hero background */}
-        <div style={{ position: "absolute", right: "5%", top: "10%", width: 500, height: 500, pointerEvents: "none", zIndex: 0 }}>
+        <div className="absolute right-[5%] top-[10%] w-[min(500px,80vw)] h-[min(500px,80vw)] pointer-events-none z-0">
           <OrbitRings />
         </div>
 
-        <motion.div
-          style={{ y: heroY, opacity: heroOpacity }}
-          className="relative z-10 max-w-[1280px] mx-auto w-full"
-        >
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: "5rem",
-              alignItems: "center",
-            }}
-          >
+        <motion.div style={{ y: heroY, opacity: heroOpacity }} className="relative z-10 max-w-[1280px] mx-auto w-full">
+          {/* RESPONSIVE FIX: stack on mobile, side by side on lg+ */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             {/* Left */}
-            <div>
-              <motion.div
-                initial={{ opacity: 0, y: 60 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              >
+            <div className="min-w-0">
+              <motion.div initial={{ opacity: 0, y: 60 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}>
                 <Eyebrow>About OUR Agency</Eyebrow>
-                <div style={{ overflow: "hidden", marginBottom: 28 }}>
+
+                {/* RESPONSIVE FIX: clamp font size tighter on mobile */}
+                <div className="overflow-hidden mb-7">
                   {["YOUNG.", "HUNGRY.", "CREATIVE."].map((word, i) => (
                     <motion.div
                       key={word}
                       initial={{ y: "110%", opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ duration: 0.75, delay: 0.2 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
-                      whileHover={{
-                        WebkitTextFillColor: "transparent",
-                        filter: "brightness(1.3)",
-                        x: 6,
-                      }}
+                      whileHover={{ x: 6 }}
+                      className="block cursor-default leading-[0.95] bg-gradient-to-br from-white via-[#007AFF] to-[#3395FF] bg-clip-text text-transparent transition-all duration-300"
                       style={{
-                        fontFamily: DISPLAY,
-                        fontSize: "clamp(3.5rem,8vw,7rem)",
-                        lineHeight: 0.95,
-                        background: `linear-gradient(135deg,${WHITE} 0%,${BLUE} 55%,#3395FF 100%)`,
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        backgroundClip: "text",
-                        display: "block",
-                        cursor: "default",
-                        transition: "all 0.3s ease",
+                        fontFamily: "'Bebas Neue', Impact, sans-serif",
+                        fontSize: "clamp(2.8rem, 12vw, 7rem)",
                       }}
                     >
                       {word}
                     </motion.div>
                   ))}
                 </div>
-
-                {/* Animated divider */}
                 <AnimatedDivider />
-
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7 }}
-                  style={{ fontSize: 16, color: WHITE55, lineHeight: 1.85, maxWidth: 480, marginBottom: 12, marginTop: 24 }}
-                >
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="text-base text-white/55 leading-[1.85] max-w-[480px] mb-3 mt-6">
                   OUR is a digital marketing agency powered by a team of young creatives. We work with passion and real effort — believing every brand deserves a marketing plan built on deep understanding, powerful content, and authentic execution that drives results.
                 </motion.p>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.85 }}
-                  style={{ fontSize: 14, fontWeight: 600, color: BLUE, letterSpacing: "0.05em" }}
-                >
-                  We're not just service providers — we're growth partners.
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }} className="text-sm font-semibold text-[#007AFF] tracking-[0.05em]">
+                  We&apos;re not just service providers — we&apos;re growth partners.
                 </motion.p>
               </motion.div>
 
-              {/* Stats row */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.1 }}
-                style={{ display: "flex", gap: 32, marginTop: 40 }}
-              >
-                {[
-                  { value: 60, suffix: "+", label: "Campaigns" },
-                  { value: 9, suffix: "", label: "Clients" },
-                  { value: 2, suffix: "", label: "Markets" },
-                ].map((s, idx) => (
-                  <motion.div
-                    key={s.label}
-                    whileHover={{ scale: 1.08, y: -4 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    <div
-                      style={{
-                        fontFamily: DISPLAY,
-                        fontSize: "2.5rem",
-                        lineHeight: 1,
-                        color: WHITE,
-                        marginBottom: 4,
-                      }}
-                    >
+              {/* Stats */}
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }} className="flex flex-wrap gap-6 sm:gap-8 mt-10">
+                {[{ value: 60, suffix: "+", label: "Campaigns" }, { value: 9, suffix: "", label: "Clients" }, { value: 2, suffix: "", label: "Markets" }].map((s) => (
+                  <motion.div key={s.label} whileHover={{ scale: 1.08, y: -4 }} transition={{ type: "spring", stiffness: 300 }}>
+                    <div className="text-[2.5rem] leading-none text-white mb-1" style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}>
                       <Counter to={s.value} suffix={s.suffix} />
                     </div>
-                    <div style={{ fontSize: 12, color: WHITE35, fontFamily: MONO, letterSpacing: "0.2em", textTransform: "uppercase" }}>
-                      {s.label}
-                    </div>
+                    <div className="text-xs text-white/35 font-mono tracking-[0.2em] uppercase">{s.label}</div>
                   </motion.div>
                 ))}
               </motion.div>
+
+              {/* Mobile-only compact info strip — hidden on lg+ */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.3 }}
+                className="mt-8 lg:hidden"
+              >
+                <div
+                  className="rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-xl overflow-hidden relative"
+                  style={{ borderColor: "rgba(0,122,255,0.2)" }}
+                >
+                  {/* animated top line */}
+                  <motion.div
+                    animate={{ x: ["-100%", "200%"] }}
+                    transition={{ duration: 3, repeat: Infinity, repeatDelay: 4 }}
+                    className="absolute top-0 left-0 right-0 h-px"
+                    style={{ background: "linear-gradient(90deg,transparent,#007AFF,transparent)" }}
+                  />
+                  {/* Services row */}
+                  <div className="px-4 py-3 border-b border-white/[0.06]">
+                    <div className="text-[9px] text-white/30 font-mono tracking-[0.3em] uppercase mb-1">Services</div>
+                    <div className="text-xs text-white/70">Branding · Ads · Content · SMM · Video</div>
+                  </div>
+                  {/* Markets + Sectors row */}
+                  <div className="px-4 py-3 flex gap-4 flex-wrap">
+                    <div>
+                      <div className="text-[9px] text-white/30 font-mono tracking-[0.3em] uppercase mb-1.5">Markets</div>
+                      <div className="flex gap-1.5">
+                        {["KSA", "Egypt"].map((m) => (
+                          <span key={m} className="text-[11px] px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/[0.08] text-white/55">
+                            {m}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-[9px] text-white/30 font-mono tracking-[0.3em] uppercase mb-1.5">Sectors</div>
+                      <div className="flex gap-1.5 flex-wrap">
+                        {["Construction", "Medical", "F&B", "Tech"].map((s) => (
+                          <span key={s} className="text-[11px] px-2.5 py-1 rounded-full border border-[rgba(0,122,255,0.25)] text-[rgba(0,122,255,0.85)]">
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
             </div>
 
-            {/* Right — identity card */}
+            {/* Right — identity card: HIDDEN on mobile, visible on lg+ */}
             <motion.div
               initial={{ opacity: 0, x: 60 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="min-w-0 hidden lg:block"
             >
               <motion.div
                 whileHover={{ y: -6, boxShadow: "0 30px 80px rgba(0,122,255,0.2)" }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                style={{ ...glassCard, borderColor: BLUE_BORDER }}
+                className={glass}
+                style={{ borderColor: "rgba(0,122,255,0.25)" }}
               >
-                {/* Multiple shimmer lines */}
                 <motion.div
                   animate={{ x: ["-100%", "200%"] }}
                   transition={{ duration: 3, repeat: Infinity, repeatDelay: 4 }}
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: 1,
-                    background: `linear-gradient(90deg,transparent,${BLUE},transparent)`,
-                    opacity: 0.6,
-                  }}
+                  className="absolute top-0 left-0 right-0 h-px opacity-60"
+                  style={{ background: "linear-gradient(90deg,transparent,#007AFF,transparent)" }}
                 />
                 <motion.div
                   animate={{ x: ["-100%", "200%"] }}
                   transition={{ duration: 3, repeat: Infinity, repeatDelay: 4, delay: 1.5 }}
-                  style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    height: 1,
-                    background: `linear-gradient(90deg,transparent,rgba(0,122,255,0.5),transparent)`,
-                    opacity: 0.4,
-                  }}
+                  className="absolute bottom-0 left-0 right-0 h-px opacity-40"
+                  style={{ background: "linear-gradient(90deg,transparent,rgba(0,122,255,0.5),transparent)" }}
                 />
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 12,
-                    right: 16,
-                    fontFamily: DISPLAY,
-                    fontSize: "7rem",
-                    color: "rgba(255,255,255,0.025)",
-                    lineHeight: 1,
-                    userSelect: "none",
-                  }}
-                >
-                  OUR
-                </div>
-                <div
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    background: `radial-gradient(ellipse at 75% 25%,${BLUE_DIM} 0%,transparent 55%)`,
-                    pointerEvents: "none",
-                  }}
-                />
-                <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", gap: 24 }}>
+                <div className="absolute top-3 right-4 leading-none select-none text-white/[0.025]" style={{ fontFamily: "'Bebas Neue', Impact, sans-serif", fontSize: "7rem" }}>OUR</div>
+                <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 75% 25%,rgba(0,122,255,0.12) 0%,transparent 55%)" }} />
+                <div className="relative z-10 flex flex-col gap-6">
                   {[
                     { label: "Type", value: "Digital Marketing Agency" },
                     { label: "Founded", value: "KSA & Egypt" },
                     { label: "Services", value: "Branding · Ads · Content · SMM · Video" },
                   ].map(({ label, value }) => (
                     <div key={label}>
-                      <div
-                        style={{
-                          fontSize: 10,
-                          color: WHITE35,
-                          fontFamily: MONO,
-                          letterSpacing: "0.25em",
-                          textTransform: "uppercase",
-                          marginBottom: 6,
-                        }}
-                      >
-                        {label}
-                      </div>
-                      <div style={{ fontSize: 14, color: "rgba(255,255,255,0.8)" }}>{value}</div>
+                      <div className="text-[10px] text-white/35 font-mono tracking-[0.25em] uppercase mb-1.5">{label}</div>
+                      <div className="text-sm text-white/80">{value}</div>
                     </div>
                   ))}
                   <div>
-                    <div
-                      style={{
-                        fontSize: 10,
-                        color: WHITE35,
-                        fontFamily: MONO,
-                        letterSpacing: "0.25em",
-                        textTransform: "uppercase",
-                        marginBottom: 10,
-                      }}
-                    >
-                      Markets
-                    </div>
-                    <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                      {["🇸🇦 Saudi Arabia", "🇪🇬 Egypt"].map((m) => (
+                    <div className="text-[10px] text-white/35 font-mono tracking-[0.25em] uppercase mb-2.5">Markets</div>
+                    <div className="flex gap-2.5 flex-wrap">
+                      {["Saudi Arabia", "Egypt"].map((m) => (
                         <motion.span
                           key={m}
-                          whileHover={{ borderColor: BLUE, color: WHITE, scale: 1.05 }}
+                          whileHover={{ borderColor: "#007AFF", color: "white", scale: 1.05 }}
                           transition={{ type: "spring", stiffness: 400 }}
-                          style={{
-                            fontSize: 13,
-                            padding: "6px 16px",
-                            borderRadius: 10,
-                            background: WHITE04,
-                            border: `1px solid ${WHITE08}`,
-                            color: WHITE55,
-                            cursor: "default",
-                          }}
+                          className="text-sm px-4 py-1.5 rounded-[10px] bg-white/[0.04] border border-white/[0.08] text-white/55 cursor-default"
                         >
                           {m}
                         </motion.span>
@@ -783,33 +742,16 @@ export default function AboutPage() {
                     </div>
                   </div>
                   <div>
-                    <div
-                      style={{
-                        fontSize: 10,
-                        color: WHITE35,
-                        fontFamily: MONO,
-                        letterSpacing: "0.25em",
-                        textTransform: "uppercase",
-                        marginBottom: 10,
-                      }}
-                    >
-                      Sectors
-                    </div>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                    <div className="text-[10px] text-white/35 font-mono tracking-[0.25em] uppercase mb-2.5">Sectors</div>
+                    <div className="flex flex-wrap gap-2">
                       {["Construction", "Medical", "F&B", "Podcast", "E-Commerce", "Tech"].map((s, i) => (
                         <motion.span
                           key={s}
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: 0.5 + i * 0.07 }}
-                          whileHover={{ background: BLUE_DIM, borderColor: BLUE, scale: 1.07 }}
-                          style={{
-                            fontSize: 12,
-                            padding: "4px 12px",
-                            borderRadius: 20,
-                            border: `1px solid ${BLUE_BORDER}`,
-                            color: "rgba(0,122,255,0.85)",
-                          }}
+                          whileHover={{ background: "rgba(0,122,255,0.12)", borderColor: "#007AFF", scale: 1.07 }}
+                          className="text-xs px-3 py-1 rounded-full border border-[rgba(0,122,255,0.25)] text-[rgba(0,122,255,0.85)]"
                         >
                           {s}
                         </motion.span>
@@ -823,108 +765,30 @@ export default function AboutPage() {
         </motion.div>
       </section>
 
-      {/* ═══════════════════════════════════════════
-          VISION & MISSION
-      ═══════════════════════════════════════════ */}
-      <section
-        style={{
-          padding: "7rem 1.5rem",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%,-50%)",
-            width: 800,
-            height: 500,
-            background: `radial-gradient(ellipse,rgba(0,122,255,0.07) 0%,transparent 70%)`,
-            filter: "blur(100px)",
-            pointerEvents: "none",
-          }}
-        />
-        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <FadeUp style={{ textAlign: "center", marginBottom: "4rem" }}>
+      {/* ═══════════════ VISION & MISSION ═══════════════ */}
+      <section className="py-28 px-4 sm:px-6 border-t border-white/[0.06] relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(800px,100vw)] h-[500px] pointer-events-none" style={{ background: "radial-gradient(ellipse,rgba(0,122,255,0.07) 0%,transparent 70%)", filter: "blur(100px)" }} />
+        <div className="max-w-[1280px] mx-auto relative z-10">
+          <FadeUp className="text-center mb-16">
+            {/* Variant 1: letters drop from top */}
             <Eyebrow>Who We Are</Eyebrow>
-            <GradientHeadline>VISION & MISSION</GradientHeadline>
+            <TitleDropLetters text="VISION & MISSION" />
           </FadeUp>
           <AnimatedDivider />
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: "1.5rem",
-              marginTop: "3rem",
-            }}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
             {[
-              {
-                num: "02",
-                label: "Our Vision",
-                text: "To become the transformation point for ambitious brands — delivering marketing strategies built on creativity, data, and true market understanding. We chart clear growth paths through competition, create real measurable value, and walk with every client step by step toward a stronger presence that competes with the best.",
-                accent: BLUE,
-                icon: "🔭",
-              },
-              {
-                num: "03",
-                label: "Our Mission",
-                text: "We deliver practical marketing solutions that support brand building, attract customers, and achieve measurable results — through powerful content management, paid advertising, and building an impactful digital identity.",
-                accent: "#3395FF",
-                icon: "🚀",
-              },
+              { num: "02", label: "Our Vision", Icon: Telescope, accent: "#007AFF", text: "To become the transformation point for ambitious brands — delivering marketing strategies built on creativity, data, and true market understanding. We chart clear growth paths through competition, create real measurable value, and walk with every client step by step toward a stronger presence that competes with the best." },
+              { num: "03", label: "Our Mission", Icon: Rocket, accent: "#3395FF", text: "We deliver practical marketing solutions that support brand building, attract customers, and achieve measurable results — through powerful content management, paid advertising, and building an impactful digital identity." },
             ].map((item, i) => (
               <FadeUp key={item.num} delay={i * 0.15}>
-                <motion.div
-                  whileHover={{ y: -8, borderColor: item.accent + "40" }}
-                  transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                  style={{ ...glassCard, borderColor: item.accent + "20", height: "100%" }}
-                >
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 12,
-                      right: 16,
-                      fontFamily: DISPLAY,
-                      fontSize: "6rem",
-                      color: "rgba(255,255,255,0.025)",
-                      lineHeight: 1,
-                    }}
-                  >
-                    {item.num}
+                <motion.div whileHover={{ y: -8 }} transition={{ type: "spring", stiffness: 300, damping: 22 }} className={`${glass} h-full`} style={{ borderColor: `${item.accent}20` }}>
+                  <div className="absolute top-3 right-4 leading-none text-white/[0.025]" style={{ fontFamily: "'Bebas Neue', Impact, sans-serif", fontSize: "6rem" }}>{item.num}</div>
+                  <motion.div animate={{ opacity: [0.6, 1, 0.6] }} transition={{ duration: 3, repeat: Infinity }} className="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl" style={{ background: `linear-gradient(90deg,${item.accent},transparent)` }} />
+                  <div className="flex items-center gap-3 mb-4">
+                    <SpinningIcon Icon={item.Icon} color={item.accent} size={48} spinDuration={10} reverse={i % 2 !== 0} />
+                    <div className="text-[10px] font-mono tracking-[0.3em] uppercase" style={{ color: item.accent }}>{item.label}</div>
                   </div>
-                  {/* accent top bar */}
-                  <motion.div
-                    animate={{ opacity: [0.6, 1, 0.6] }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      height: 2,
-                      background: `linear-gradient(90deg,${item.accent},transparent)`,
-                      borderRadius: "20px 20px 0 0",
-                    }}
-                  />
-                  <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-                    <SpinningIcon icon={item.icon} color={item.accent} size={48} spinDuration={10} reverse={i % 2 !== 0} />
-                    <div
-                      style={{
-                        fontSize: 10,
-                        color: item.accent,
-                        fontFamily: MONO,
-                        letterSpacing: "0.3em",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      {item.label}
-                    </div>
-                  </div>
-                  <p style={{ fontSize: 15, color: WHITE55, lineHeight: 1.85, margin: 0 }}>{item.text}</p>
+                  <p className="text-sm text-white/55 leading-[1.85] m-0">{item.text}</p>
                 </motion.div>
               </FadeUp>
             ))}
@@ -932,88 +796,37 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════
-          VALUES
-      ═══════════════════════════════════════════ */}
-      <section
-        style={{
-          padding: "7rem 1.5rem",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-          overflow: "hidden",
-          position: "relative",
-        }}
-      >
-        {/* Ambient bg for values */}
+      {/* ═══════════════ VALUES ═══════════════ */}
+      <section className="py-28 px-4 sm:px-6 border-t border-white/[0.06] overflow-hidden relative">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%,-50%)",
-            width: 900,
-            height: 900,
-            borderRadius: "50%",
-            border: "1px dashed rgba(0,122,255,0.05)",
-            pointerEvents: "none",
-          }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(900px,100vw)] h-[min(900px,100vw)] rounded-full border border-dashed border-[rgba(0,122,255,0.05)] pointer-events-none"
         />
-
-        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <FadeUp style={{ textAlign: "center", marginBottom: "5rem" }}>
+        <div className="max-w-[1280px] mx-auto relative z-10">
+          <FadeUp className="text-center mb-20">
             <Eyebrow>What Drives Us</Eyebrow>
-            <GradientHeadline>OUR VALUES</GradientHeadline>
+            {/* Variant 2: letters rise from bottom in reverse */}
+            <TitleRiseLetters text="OUR VALUES" />
           </FadeUp>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-              gap: "1.25rem",
-            }}
-          >
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             {VALUES.map((v, i) => (
               <FadeUp key={v.word} delay={i * 0.1}>
                 <motion.div
-                  whileHover={{ y: -10, borderColor: v.color + "50", boxShadow: `0 20px 60px ${v.color}20` }}
+                  whileHover={{ y: -10, boxShadow: `0 20px 60px ${v.color}20` }}
                   transition={{ type: "spring", stiffness: 260, damping: 18 }}
-                  style={{ ...glassCard, textAlign: "center", cursor: "default" }}
+                  className={`${glass} text-center cursor-default`}
+                  style={{ borderColor: `${v.color}20` }}
                 >
-                  {/* Spinning glyph */}
-                  <RotatingGlyph
-                    glyph={v.glyph}
-                    color={v.color}
-                    size="2.8rem"
-                    duration={5 + i}
-                    delay={i * 0.5}
-                  />
-
-                  <div
-                    style={{
-                      fontFamily: DISPLAY,
-                      fontSize: "1.6rem",
-                      color: WHITE,
-                      marginBottom: 6,
-                      letterSpacing: "0.05em",
-                    }}
-                  >
+                  <RotatingIcon Icon={v.Icon} color={v.color} size={36} duration={5 + i} delay={i * 0.5} />
+                  <div className="text-white mb-1.5 tracking-[0.05em] text-[1.4rem] sm:text-[1.6rem]" style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}>
                     {v.word}
                   </div>
-                  <div style={{ fontSize: 13, color: WHITE35, fontFamily: MONO }}>{v.ar}</div>
-
-                  {/* Animated bottom glow line */}
                   <motion.div
                     animate={{ opacity: [0.3, 0.8, 0.3], scaleX: [0.5, 1, 0.5] }}
                     transition={{ duration: 3 + i, repeat: Infinity, ease: "easeInOut" }}
-                    style={{
-                      position: "absolute",
-                      bottom: 0,
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      width: "60%",
-                      height: 1,
-                      background: `linear-gradient(90deg,transparent,${v.color}60,transparent)`,
-                    }}
+                    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[60%] h-px"
+                    style={{ background: `linear-gradient(90deg,transparent,${v.color}60,transparent)` }}
                   />
                 </motion.div>
               </FadeUp>
@@ -1022,35 +835,17 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════
-          WHAT MAKES US DIFFERENT
-      ═══════════════════════════════════════════ */}
-      <section
-        style={{
-          padding: "7rem 1.5rem",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: "5rem",
-              alignItems: "center",
-            }}
-          >
-            {/* Left — text */}
+      {/* ═══════════════ WHAT MAKES US DIFFERENT ═══════════════ */}
+      <section className="py-28 px-4 sm:px-6 border-t border-white/[0.06] relative overflow-hidden">
+        <div className="max-w-[1280px] mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div>
               <FadeUp>
                 <Eyebrow>Why OUR</Eyebrow>
-                <GradientHeadline size="clamp(2.5rem,6vw,5rem)">
-                  WHAT MAKES<br />US DIFFERENT
-                </GradientHeadline>
+                {/* Variant 3: blur reveal */}
+                <TitleBlurReveal>WHAT MAKES US DIFFERENT</TitleBlurReveal>
               </FadeUp>
-              <div style={{ marginTop: 36, display: "flex", flexDirection: "column", gap: 20 }}>
+              <div className="mt-9 flex flex-col gap-5">
                 {[
                   "A young team that genuinely understands the market",
                   "We focus on results — not just impressions",
@@ -1058,152 +853,48 @@ export default function AboutPage() {
                   "Every brand gets a completely different plan",
                 ].map((point, i) => (
                   <FadeUp key={i} delay={i * 0.1}>
-                    <motion.div
-                      whileHover={{ x: 6 }}
-                      style={{ display: "flex", gap: 16, alignItems: "flex-start" }}
-                    >
+                    <motion.div whileHover={{ x: 6 }} className="flex gap-4 items-start">
                       <motion.div
                         initial={{ scale: 0, rotate: -90 }}
                         whileInView={{ scale: 1, rotate: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.3 + i * 0.1, type: "spring", stiffness: 200 }}
-                        whileHover={{ scale: 1.2, boxShadow: `0 0 16px ${BLUE}60` }}
-                        style={{
-                          width: 28,
-                          height: 28,
-                          borderRadius: "50%",
-                          border: `1px solid ${BLUE_BORDER}`,
-                          background: BLUE_DIM,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexShrink: 0,
-                          marginTop: 2,
-                          color: BLUE,
-                          fontSize: 13,
-                          fontFamily: MONO,
-                        }}
+                        whileHover={{ scale: 1.2, boxShadow: "0 0 16px rgba(0,122,255,0.6)" }}
+                        className="w-7 h-7 rounded-full border border-[rgba(0,122,255,0.25)] bg-[rgba(0,122,255,0.12)] flex items-center justify-center shrink-0 mt-0.5"
                       >
-                        ✓
+                        <Diamond size={12} color="#007AFF" strokeWidth={1.5} />
                       </motion.div>
-                      <p style={{ fontSize: 15, color: WHITE55, lineHeight: 1.7, margin: 0 }}>{point}</p>
+                      <p className="text-sm sm:text-base text-white/55 leading-[1.7] m-0">{point}</p>
                     </motion.div>
                   </FadeUp>
                 ))}
               </div>
             </div>
 
-            {/* Right — big number accent with orbit rings */}
+            {/* Right */}
             <FadeUp>
-              <div style={{ position: "relative" }}>
-                {/* Multi-layered orbit rings */}
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                  style={{
-                    position: "absolute",
-                    inset: -30,
-                    border: "1px dashed rgba(0,122,255,0.12)",
-                    borderRadius: "50%",
-                    pointerEvents: "none",
-                  }}
-                />
-                <motion.div
-                  animate={{ rotate: -360 }}
-                  transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
-                  style={{
-                    position: "absolute",
-                    inset: -12,
-                    border: "1px dashed rgba(0,122,255,0.2)",
-                    borderRadius: "50%",
-                    pointerEvents: "none",
-                  }}
-                />
-
-                {/* Orbiting dot on the ring */}
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-                  style={{
-                    position: "absolute",
-                    inset: -30,
-                    pointerEvents: "none",
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: -4,
-                      left: "50%",
-                      width: 8,
-                      height: 8,
-                      borderRadius: "50%",
-                      background: BLUE,
-                      boxShadow: `0 0 10px ${BLUE}`,
-                      transform: "translateX(-50%)",
-                    }}
-                  />
+              <div className="relative">
+                <motion.div animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }} className="absolute -inset-8 border border-dashed border-[rgba(0,122,255,0.12)] rounded-full pointer-events-none" />
+                <motion.div animate={{ rotate: -360 }} transition={{ duration: 22, repeat: Infinity, ease: "linear" }} className="absolute -inset-3 border border-dashed border-[rgba(0,122,255,0.2)] rounded-full pointer-events-none" />
+                <motion.div animate={{ rotate: 360 }} transition={{ duration: 6, repeat: Infinity, ease: "linear" }} className="absolute -inset-8 pointer-events-none">
+                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-[#007AFF]" style={{ boxShadow: "0 0 10px #007AFF" }} />
                 </motion.div>
-
-                <div
-                  style={{
-                    ...glassCard,
-                    textAlign: "center",
-                    padding: "3rem",
-                    borderColor: BLUE_BORDER,
-                  }}
-                >
+                <div className={`${glass} text-center p-8 sm:p-12`} style={{ borderColor: "rgba(0,122,255,0.25)" }}>
                   <motion.div
                     animate={{ filter: ["brightness(1)", "brightness(1.3)", "brightness(1)"] }}
                     transition={{ duration: 4, repeat: Infinity }}
-                    style={{
-                      fontFamily: DISPLAY,
-                      fontSize: "clamp(5rem,15vw,10rem)",
-                      lineHeight: 1,
-                      background: `linear-gradient(135deg,${WHITE} 0%,${BLUE} 100%)`,
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
-                    }}
+                    className="text-[clamp(5rem,15vw,10rem)] leading-none bg-gradient-to-br from-white to-[#007AFF] bg-clip-text text-transparent"
+                    style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}
                   >
                     <Counter to={60} suffix="+" />
                   </motion.div>
-                  <div
-                    style={{
-                      fontFamily: DISPLAY,
-                      fontSize: "1.4rem",
-                      color: WHITE55,
-                      letterSpacing: "0.1em",
-                      marginBottom: 8,
-                    }}
-                  >
-                    CLIENTS ACQUIRED
-                  </div>
-                  <div style={{ fontSize: 13, color: WHITE35 }}>
-                    In a single campaign
-                  </div>
-                  <div
-                    style={{
-                      marginTop: 24,
-                      paddingTop: 24,
-                      borderTop: "1px solid rgba(255,255,255,0.06)",
-                      display: "flex",
-                      justifyContent: "center",
-                      gap: 32,
-                    }}
-                  >
+                  <div className="text-[1.4rem] text-white/55 tracking-[0.1em] mb-2" style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}>CLIENTS ACQUIRED</div>
+                  <div className="text-xs text-white/35">In a single campaign</div>
+                  <div className="mt-6 pt-6 border-t border-white/[0.06] flex justify-center gap-8">
                     {[{ n: "1M+", label: "Impressions" }, { n: "2", label: "Markets" }].map((s) => (
-                      <motion.div
-                        key={s.label}
-                        whileHover={{ scale: 1.1 }}
-                        style={{ textAlign: "center" }}
-                      >
-                        <div style={{ fontFamily: DISPLAY, fontSize: "1.8rem", color: WHITE, lineHeight: 1 }}>
-                          {s.n}
-                        </div>
-                        <div style={{ fontSize: 11, color: WHITE35, fontFamily: MONO, marginTop: 4, letterSpacing: "0.15em", textTransform: "uppercase" }}>
-                          {s.label}
-                        </div>
+                      <motion.div key={s.label} whileHover={{ scale: 1.1 }} className="text-center">
+                        <div className="text-[1.8rem] text-white leading-none" style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}>{s.n}</div>
+                        <div className="text-[11px] text-white/35 font-mono mt-1 tracking-[0.15em] uppercase">{s.label}</div>
                       </motion.div>
                     ))}
                   </div>
@@ -1214,160 +905,32 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════
-          SERVICES
-      ═══════════════════════════════════════════ */}
-      <section
-        style={{
-          padding: "7rem 1.5rem",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-        }}
-      >
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <FadeUp style={{ textAlign: "center", marginBottom: "5rem" }}>
-            <Eyebrow>What We Do</Eyebrow>
-            <GradientHeadline>OUR SERVICES</GradientHeadline>
-          </FadeUp>
-          <div style={{ display: "flex", flexDirection: "column", gap: "1px", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 20, overflow: "hidden" }}>
-            {SERVICES.map((svc, i) => (
-              <FadeUp key={i} delay={i * 0.07}>
-                <motion.div
-                  onHoverStart={() => setHoveredService(i)}
-                  onHoverEnd={() => setHoveredService(null)}
-                  animate={{
-                    background: hoveredService === i
-                      ? "rgba(0,122,255,0.06)"
-                      : "rgba(255,255,255,0.01)",
-                  }}
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "auto 1fr auto",
-                    alignItems: "center",
-                    gap: "2rem",
-                    padding: "1.75rem 2rem",
-                    borderBottom: i < SERVICES.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
-                    cursor: "default",
-                    position: "relative",
-                    overflow: "hidden",
-                  }}
-                >
-                  {/* Hover shimmer */}
-                  {hoveredService === i && (
-                    <motion.div
-                      initial={{ x: "-100%", opacity: 0 }}
-                      animate={{ x: "200%", opacity: 0.3 }}
-                      transition={{ duration: 0.8 }}
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        background: `linear-gradient(90deg, transparent, ${BLUE}20, transparent)`,
-                        pointerEvents: "none",
-                      }}
-                    />
-                  )}
-
-                  <motion.div
-                    animate={{
-                      color: hoveredService === i ? BLUE : WHITE35,
-                      rotate: hoveredService === i ? [0, 15, -10, 0] : 0,
-                      scale: hoveredService === i ? 1.2 : 1,
-                      filter: hoveredService === i ? `drop-shadow(0 0 8px ${BLUE})` : "none",
-                    }}
-                    transition={{ duration: 0.4 }}
-                    style={{
-                      fontFamily: MONO,
-                      fontSize: "1.8rem",
-                      width: 40,
-                      textAlign: "center",
-                    }}
-                  >
-                    {svc.icon}
-                  </motion.div>
-                  <div>
-                    <motion.h3
-                      animate={{ color: hoveredService === i ? WHITE : "rgba(255,255,255,0.8)" }}
-                      style={{
-                        fontFamily: DISPLAY,
-                        fontSize: "1.4rem",
-                        letterSpacing: "0.05em",
-                        margin: "0 0 6px",
-                      }}
-                    >
-                      {svc.title}
-                    </motion.h3>
-                    <p style={{ fontSize: 14, color: WHITE35, margin: 0, maxWidth: 600, lineHeight: 1.7 }}>
-                      {svc.desc}
-                    </p>
-                  </div>
-                  <motion.div
-                    animate={{
-                      x: hoveredService === i ? 0 : -8,
-                      opacity: hoveredService === i ? 1 : 0,
-                      color: BLUE,
-                      scale: hoveredService === i ? [1, 1.3, 1] : 1,
-                    }}
-                    transition={{ duration: 0.3 }}
-                    style={{ fontSize: "1.5rem" }}
-                  >
-                    →
-                  </motion.div>
-                </motion.div>
-              </FadeUp>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════
-          OUR WORK — CLIENTS
-      ═══════════════════════════════════════════ */}
-      <section
-        style={{
-          padding: "7rem 1.5rem",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-        }}
-      >
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <FadeUp style={{ textAlign: "center", marginBottom: "3rem" }}>
+      {/* ═══════════════ CLIENTS ═══════════════ */}
+      <section className="py-28 px-4 sm:px-6 border-t border-white/[0.06]">
+        <div className="max-w-[1280px] mx-auto">
+          <FadeUp className="text-center mb-12">
             <Eyebrow>Our Work</Eyebrow>
-            <GradientHeadline>CLIENTS WE&apos;VE GROWN</GradientHeadline>
+            {/* Variant 4: glitch slide up */}
+            <TitleGlitch text="CLIENTS WE'VE GROWN" />
           </FadeUp>
 
           {/* Tab switcher */}
-          <FadeUp style={{ display: "flex", justifyContent: "center", marginBottom: "3.5rem" }}>
-            <div
-              style={{
-                display: "inline-flex",
-                gap: 4,
-                padding: 4,
-                background: WHITE04,
-                border: `1px solid ${WHITE08}`,
-                borderRadius: 14,
-              }}
-            >
+          <FadeUp className="flex justify-center mb-14">
+            <div className="inline-flex gap-1 p-1 bg-white/[0.04] border border-white/[0.08] rounded-[14px]">
               {(["ksa", "egypt"] as const).map((tab) => (
                 <motion.button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   animate={{
-                    background: activeTab === tab ? BLUE : "transparent",
-                    color: activeTab === tab ? WHITE : WHITE55,
-                    boxShadow: activeTab === tab ? `0 4px 20px ${BLUE}50` : "none",
+                    background: activeTab === tab ? "#007AFF" : "transparent",
+                    color: activeTab === tab ? "#ffffff" : "rgba(255,255,255,0.55)",
+                    boxShadow: activeTab === tab ? "0 4px 20px rgba(0,122,255,0.5)" : "none",
                   }}
-                  whileHover={{ color: WHITE, scale: 1.03 }}
+                  whileHover={{ color: "white", scale: 1.03 }}
                   transition={{ duration: 0.2 }}
-                  style={{
-                    padding: "10px 28px",
-                    borderRadius: 10,
-                    border: "none",
-                    cursor: "pointer",
-                    fontFamily: MONO,
-                    fontSize: 12,
-                    letterSpacing: "0.2em",
-                    textTransform: "uppercase",
-                  }}
+                  className="px-5 sm:px-7 py-2.5 rounded-[10px] border-none cursor-pointer font-mono text-[11px] tracking-[0.2em] uppercase"
                 >
-                  {tab === "ksa" ? "🇸🇦 Saudi Arabia" : "🇪🇬 Egypt"}
+                  {tab === "ksa" ? "Saudi Arabia" : "Egypt"}
                 </motion.button>
               ))}
             </div>
@@ -1380,11 +943,7 @@ export default function AboutPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -24 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-                gap: "1.25rem",
-              }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
             >
               {(activeTab === "ksa" ? CLIENTS_KSA : CLIENTS_EGY).map((client, i) => (
                 <motion.div
@@ -1392,61 +951,20 @@ export default function AboutPage() {
                   initial={{ opacity: 0, y: 30, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ delay: i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  whileHover={{ y: -6, borderColor: BLUE_BORDER, boxShadow: `0 20px 60px rgba(0,122,255,0.12)` }}
-                  style={{ ...glassCard }}
+                  whileHover={{ y: -6, boxShadow: "0 20px 60px rgba(0,122,255,0.12)" }}
+                  className={glass}
                 >
-                  {/* Spinning icon in client card */}
-                  <div style={{ marginBottom: 14 }}>
-                    <SpinningIcon
-                      icon={client.icon}
-                      color={BLUE}
-                      size={50}
-                      spinDuration={12 + i * 2}
-                      reverse={i % 2 !== 0}
-                    />
+                  <div className="mb-3.5">
+                    <SpinningIcon Icon={client.Icon} color="#007AFF" size={50} spinDuration={12 + i * 2} reverse={i % 2 !== 0} />
                   </div>
-                  <div
-                    style={{
-                      fontSize: 10,
-                      color: BLUE,
-                      fontFamily: MONO,
-                      letterSpacing: "0.2em",
-                      textTransform: "uppercase",
-                      marginBottom: 8,
-                    }}
-                  >
-                    {client.sector}
-                  </div>
-                  <h3
-                    style={{
-                      fontFamily: DISPLAY,
-                      fontSize: "1.4rem",
-                      color: WHITE,
-                      margin: "0 0 4px",
-                      letterSpacing: "0.04em",
-                    }}
-                  >
-                    {client.name}
-                  </h3>
-                  <div style={{ fontSize: 12, color: WHITE35, fontFamily: MONO, marginBottom: 12 }}>
-                    {client.nameAr}
-                  </div>
-                  <p style={{ fontSize: 13, color: WHITE35, lineHeight: 1.75, margin: 0 }}>{client.desc}</p>
-
-                  {/* Hover accent bar */}
+                  <div className="text-[10px] text-[#007AFF] font-mono tracking-[0.2em] uppercase mb-2">{client.sector}</div>
+                  <h3 className="text-white text-[1.4rem] m-0 mb-3 tracking-[0.04em]" style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}>{client.name}</h3>
+                  <p className="text-[13px] text-white/35 leading-[1.75] m-0">{client.desc}</p>
                   <motion.div
                     initial={{ scaleX: 0 }}
                     whileHover={{ scaleX: 1 }}
-                    style={{
-                      position: "absolute",
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      height: 2,
-                      background: `linear-gradient(90deg, ${BLUE}, transparent)`,
-                      transformOrigin: "left",
-                      borderRadius: "0 0 20px 20px",
-                    }}
+                    className="absolute bottom-0 left-0 right-0 h-0.5 origin-left rounded-b-2xl"
+                    style={{ background: "linear-gradient(90deg, #007AFF, transparent)" }}
                   />
                 </motion.div>
               ))}
@@ -1455,43 +973,19 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════
-          CAMPAIGN RESULTS
-      ═══════════════════════════════════════════ */}
-      <section
-        style={{
-          padding: "7rem 1.5rem",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-        }}
-      >
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <FadeUp style={{ textAlign: "center", marginBottom: "4rem" }}>
+      {/* ═══════════════ CAMPAIGN RESULTS ═══════════════ */}
+      <section className="py-28 px-4 sm:px-6 border-t border-white/[0.06]">
+        <div className="max-w-[1280px] mx-auto">
+          <FadeUp className="text-center mb-16">
             <Eyebrow>Proof of Work</Eyebrow>
-            <GradientHeadline>CAMPAIGN RESULTS</GradientHeadline>
-            <p style={{ color: WHITE35, fontSize: 14, marginTop: 16, maxWidth: 460, margin: "16px auto 0" }}>
-              Real before & after — one campaign that brought in 60+ clients.
-            </p>
+            {/* Variant 5: scale + expand */}
+            <TitleScaleFade>CAMPAIGN RESULTS</TitleScaleFade>
+            <p className="text-white/35 text-sm mt-4 max-w-[460px] mx-auto">Real before & after — one campaign that brought in 60+ clients.</p>
           </FadeUp>
 
-          {/* Results highlight bar */}
           <FadeUp>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-                gap: "1px",
-                background: "rgba(255,255,255,0.06)",
-                borderRadius: 20,
-                overflow: "hidden",
-                marginBottom: "2.5rem",
-              }}
-            >
-              {[
-                { value: "60+", label: "New Clients", sub: "From one campaign", icon: "🎯" },
-                { value: "1M+", label: "Impressions", sub: "Reached fast", icon: "👁️" },
-                { value: "2", label: "Markets", sub: "KSA & Egypt", icon: "🌍" },
-                { value: "5", label: "Services", sub: "Delivered together", icon: "⚡" },
-              ].map((stat, i) => (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.06] rounded-2xl overflow-hidden mb-10">
+              {CAMPAIGN_STATS.map((stat, i) => (
                 <motion.div
                   key={stat.label}
                   initial={{ opacity: 0, y: 20 }}
@@ -1499,75 +993,40 @@ export default function AboutPage() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.6 }}
                   whileHover={{ background: "rgba(0,122,255,0.06)" }}
-                  style={{
-                    padding: "2.5rem 2rem",
-                    background: WHITE04,
-                    textAlign: "center",
-                  }}
+                  className="py-8 sm:py-10 px-4 sm:px-8 bg-white/[0.04] text-center"
                 >
                   <motion.div
                     animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.1, 1] }}
                     transition={{ duration: 4 + i, repeat: Infinity, delay: i * 0.8 }}
-                    style={{ fontSize: "1.8rem", marginBottom: 10 }}
+                    className="flex justify-center mb-3 text-[#007AFF]"
                   >
-                    {stat.icon}
+                    <stat.Icon size={28} strokeWidth={1.5} />
                   </motion.div>
-                  <div
-                    style={{
-                      fontFamily: DISPLAY,
-                      fontSize: "2.8rem",
-                      lineHeight: 1,
-                      color: WHITE,
-                      marginBottom: 8,
-                    }}
-                  >
-                    {stat.value}
-                  </div>
-                  <div style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", marginBottom: 4, fontWeight: 500 }}>
-                    {stat.label}
-                  </div>
-                  <div style={{ fontSize: 11, color: WHITE35, fontFamily: MONO }}>{stat.sub}</div>
+                  <div className="text-white text-[2rem] sm:text-[2.8rem] leading-none mb-2" style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}>{stat.value}</div>
+                  <div className="text-[13px] text-white/70 mb-1 font-medium">{stat.label}</div>
+                  <div className="text-[11px] text-white/35 font-mono">{stat.sub}</div>
                 </motion.div>
               ))}
             </div>
           </FadeUp>
 
-          {/* Before / After image placeholders */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: "1.5rem",
-            }}
-          >
-            {["Before Campaign", "After Campaign", "Campaign Creative", "Results Dashboard"].map((label, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {CAMPAIGN_PLACEHOLDERS.map(({ label, Icon: PlaceholderIcon }, i) => (
               <FadeUp key={label} delay={i * 0.1}>
                 <motion.div
-                  whileHover={{ borderColor: BLUE_BORDER, y: -4, boxShadow: `0 16px 50px rgba(0,122,255,0.1)` }}
-                  style={{
-                    ...glassCard,
-                    aspectRatio: "16/10",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 12,
-                    borderStyle: "dashed",
-                  }}
+                  whileHover={{ borderColor: "rgba(0,122,255,0.25)", y: -4, boxShadow: "0 16px 50px rgba(0,122,255,0.1)" }}
+                  className={`${glass} aspect-video flex flex-col items-center justify-center gap-3`}
+                  style={{ borderStyle: "dashed" }}
                 >
                   <motion.div
                     animate={{ rotate: [0, 8, -8, 0], scale: [1, 1.08, 1] }}
                     transition={{ duration: 5 + i, repeat: Infinity }}
-                    style={{ fontSize: "2.5rem", opacity: 0.3 }}
+                    className="text-white/20"
                   >
-                    {i < 2 ? "📸" : i === 2 ? "🎨" : "📊"}
+                    <PlaceholderIcon size={40} strokeWidth={1} />
                   </motion.div>
-                  <div style={{ fontSize: 12, color: WHITE35, fontFamily: MONO, letterSpacing: "0.15em", textTransform: "uppercase" }}>
-                    {label}
-                  </div>
-                  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.2)", textAlign: "center", maxWidth: 200 }}>
-                    Drop your campaign image here
-                  </div>
+                  <div className="text-xs text-white/35 font-mono tracking-[0.15em] uppercase">{label}</div>
+                  <div className="text-[11px] text-white/20 text-center max-w-[200px]">Drop your campaign image here</div>
                 </motion.div>
               </FadeUp>
             ))}
@@ -1575,110 +1034,48 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════
-          PROCESS
-      ═══════════════════════════════════════════ */}
-      <section
-        style={{
-          padding: "7rem 1.5rem",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-        }}
-      >
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <FadeUp style={{ textAlign: "center", marginBottom: "5rem" }}>
+      {/* ═══════════════ PROCESS ═══════════════ */}
+      <section className="py-28 px-4 sm:px-6 border-t border-white/[0.06]">
+        <div className="max-w-[1280px] mx-auto">
+          <FadeUp className="text-center mb-20">
             <Eyebrow>How We Work</Eyebrow>
-            <GradientHeadline>OUR PROCESS</GradientHeadline>
+            {/* Variant 6: typewriter */}
+            <TitleTypewriter text="OUR PROCESS" />
           </FadeUp>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-              gap: "1.25rem",
-              position: "relative",
-            }}
-          >
-            {/* Connecting line between steps */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 relative">
             <motion.div
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-              style={{
-                position: "absolute",
-                top: "60px",
-                left: "10%",
-                right: "10%",
-                height: 1,
-                background: `linear-gradient(90deg, transparent, ${BLUE}40, ${BLUE}40, transparent)`,
-                transformOrigin: "left",
-                pointerEvents: "none",
-                zIndex: 0,
-              }}
+              className="absolute top-[60px] left-[10%] right-[10%] h-px origin-left pointer-events-none z-0 hidden lg:block"
+              style={{ background: "linear-gradient(90deg, transparent, rgba(0,122,255,0.4), rgba(0,122,255,0.4), transparent)" }}
             />
-
             {PROCESS.map((step, i) => (
               <FadeUp key={step.num} delay={i * 0.12}>
                 <motion.div
-                  whileHover={{ y: -8, borderColor: BLUE_BORDER, boxShadow: `0 20px 60px rgba(0,122,255,0.12)` }}
+                  whileHover={{ y: -8, boxShadow: "0 20px 60px rgba(0,122,255,0.12)" }}
                   transition={{ type: "spring", stiffness: 280, damping: 20 }}
-                  style={{ ...glassCard, textAlign: "center", height: "100%", zIndex: 1 }}
+                  className={`${glass} text-center h-full z-10 relative`}
+                  style={{ borderColor: "rgba(0,122,255,0.1)" }}
                 >
                   <motion.div
                     initial={{ scale: 0, rotate: -90 }}
                     whileInView={{ scale: 1, rotate: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.2 + i * 0.1, type: "spring", stiffness: 200 }}
-                    whileHover={{
-                      scale: 1.15,
-                      boxShadow: `0 0 20px ${BLUE}60`,
-                      background: BLUE,
-                      color: WHITE,
-                    }}
-                    style={{
-                      width: 52,
-                      height: 52,
-                      borderRadius: "50%",
-                      border: `1px solid ${BLUE_BORDER}`,
-                      background: BLUE_DIM,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      margin: "0 auto 20px",
-                      fontFamily: MONO,
-                      fontSize: 13,
-                      color: BLUE,
-                      position: "relative",
-                      zIndex: 2,
-                    }}
+                    whileHover={{ scale: 1.15, boxShadow: "0 0 20px rgba(0,122,255,0.6)", background: "#007AFF", color: "white" }}
+                    className="w-[52px] h-[52px] rounded-full border border-[rgba(0,122,255,0.25)] bg-[rgba(0,122,255,0.12)] flex items-center justify-center mx-auto mb-5 font-mono text-[13px] text-[#007AFF] relative z-10"
                   >
                     {step.num}
                   </motion.div>
-                  <h3
-                    style={{
-                      fontFamily: DISPLAY,
-                      fontSize: "1.3rem",
-                      color: WHITE,
-                      margin: "0 0 12px",
-                      letterSpacing: "0.04em",
-                    }}
-                  >
-                    {step.title}
-                  </h3>
-                  <p style={{ fontSize: 13, color: WHITE35, lineHeight: 1.75, margin: 0 }}>{step.desc}</p>
-
-                  {/* Animated accent line */}
+                  <h3 className="text-white text-[1.3rem] m-0 mb-3 tracking-[0.04em]" style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}>{step.title}</h3>
+                  <p className="text-[13px] text-white/35 leading-[1.75] m-0">{step.desc}</p>
                   <motion.div
                     animate={{ opacity: [0.3, 0.8, 0.3], scaleX: [0.4, 1, 0.4] }}
                     transition={{ duration: 3 + i * 0.5, repeat: Infinity }}
-                    style={{
-                      position: "absolute",
-                      bottom: 0,
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      width: "55%",
-                      height: 1,
-                      background: `linear-gradient(90deg,transparent,${BLUE}50,transparent)`,
-                    }}
+                    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[55%] h-px"
+                    style={{ background: "linear-gradient(90deg,transparent,rgba(0,122,255,0.5),transparent)" }}
                   />
                 </motion.div>
               </FadeUp>
@@ -1687,121 +1084,57 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════
-          CTA
-      ═══════════════════════════════════════════ */}
-      <section
-        style={{
-          padding: "7rem 1.5rem 9rem",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        {/* Big pulsing background */}
+      {/* ═══════════════ CTA ═══════════════ */}
+      <section className="py-28 pb-36 px-4 sm:px-6 border-t border-white/[0.06] relative overflow-hidden">
         <motion.div
           animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
           transition={{ duration: 8, repeat: Infinity }}
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%,-50%)",
-            width: 800,
-            height: 500,
-            background: `radial-gradient(ellipse,rgba(0,122,255,0.12) 0%,transparent 70%)`,
-            filter: "blur(80px)",
-            pointerEvents: "none",
-          }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(800px,100vw)] h-[500px] pointer-events-none"
+          style={{ background: "radial-gradient(ellipse,rgba(0,122,255,0.12) 0%,transparent 70%)", filter: "blur(80px)" }}
         />
-
-        {/* Rotating outer rings */}
-        <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 700, height: 700, pointerEvents: "none" }}>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(700px,90vw)] h-[min(700px,90vw)] pointer-events-none">
           {[600, 500, 400].map((size, i) => (
             <motion.div
               key={size}
               animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
               transition={{ duration: 20 + i * 8, repeat: Infinity, ease: "linear" }}
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                width: size,
-                height: size,
-                borderRadius: "50%",
-                border: `1px dashed rgba(0,122,255,${0.06 + i * 0.02})`,
-                transform: "translate(-50%,-50%)",
-              }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed"
+              style={{ width: `min(${size}px, 90vw)`, height: `min(${size}px, 90vw)`, borderColor: `rgba(0,122,255,${0.06 + i * 0.02})` }}
             />
           ))}
         </div>
 
-        <FadeUp style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
+        <FadeUp className="text-center relative z-10">
           <Eyebrow>Ready to grow?</Eyebrow>
-          <GradientHeadline size="clamp(3rem,8vw,7rem)">
-            YOUR VISION,<br />OUR MISSION
-          </GradientHeadline>
-          <p
-            style={{
-              fontSize: 16,
-              color: WHITE55,
-              maxWidth: 480,
-              margin: "24px auto 40px",
-              lineHeight: 1.8,
-            }}
-          >
-            Let's build something that makes your competitors nervous. One brand, one plan, real results.
+          {/* Variant: split two lines with different animations */}
+          <div className="mb-6">
+            <TitleGlitch text="YOUR VISION," delay={0} />
+            <TitleDropLetters text="OUR MISSION" delay={0.3} />
+          </div>
+          <p className="text-base text-white/55 max-w-[480px] mx-auto mt-6 mb-10 leading-[1.8]">
+            Let&apos;s build something that makes your competitors nervous. One brand, one plan, real results.
           </p>
-          <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+          <div className="flex gap-4 justify-center flex-wrap">
             <motion.a
               href="mailto:ouragency259@gmail.com"
-              whileHover={{
-                scale: 1.06,
-                boxShadow: `0 20px 60px rgba(0,122,255,0.45)`,
-              }}
+              whileHover={{ scale: 1.06, boxShadow: "0 20px 60px rgba(0,122,255,0.45)" }}
               whileTap={{ scale: 0.97 }}
-              style={{
-                padding: "16px 40px",
-                background: BLUE,
-                color: WHITE,
-                borderRadius: 12,
-                textDecoration: "none",
-                fontSize: 14,
-                fontWeight: 600,
-                letterSpacing: "0.05em",
-                display: "inline-block",
-                position: "relative",
-                overflow: "hidden",
-              }}
+              className="px-8 sm:px-10 py-4 bg-[#007AFF] text-white rounded-xl no-underline text-sm font-semibold tracking-[0.05em] inline-block relative overflow-hidden"
             >
               <motion.span
                 animate={{ x: ["-120%", "120%"] }}
                 transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 2 }}
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
-                  pointerEvents: "none",
-                }}
+                className="absolute inset-0 pointer-events-none"
+                style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)" }}
               />
-              Start a Project →
+              Start a Project
             </motion.a>
             <motion.a
               href="https://www.instagram.com/our_agency5"
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ borderColor: BLUE, color: WHITE, scale: 1.04 }}
-              style={{
-                padding: "16px 40px",
-                background: "transparent",
-                color: WHITE55,
-                border: `1px solid ${WHITE08}`,
-                borderRadius: 12,
-                textDecoration: "none",
-                fontSize: 14,
-                letterSpacing: "0.05em",
-                display: "inline-block",
-              }}
+              whileHover={{ borderColor: "#007AFF", color: "white", scale: 1.04 }}
+              className="px-8 sm:px-10 py-4 bg-transparent text-white/55 border border-white/[0.08] rounded-xl no-underline text-sm tracking-[0.05em] inline-block"
             >
               @our_agency5
             </motion.a>
