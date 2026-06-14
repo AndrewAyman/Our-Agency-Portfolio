@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useRef, useState, useMemo } from "react";
@@ -278,21 +279,8 @@ function CursorBlob() {
     <motion.div
       className="fixed top-0 left-0 w-[400px] h-[400px] rounded-full pointer-events-none z-0"
       style={{
-<<<<<<< HEAD
         background: "radial-gradient(circle,rgba(0,122,255,0.08) 0%,transparent 70%)",
         filter: "blur(60px)",
-=======
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: 400,
-        height: 400,
-        borderRadius: "50%",
-        background:
-          "radial-gradient(circle,rgba(0,122,255,0.08) 0%,transparent 70%)",
-        pointerEvents: "none",
-        zIndex: 0,
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
         x: springX,
         y: springY,
       }}
@@ -364,16 +352,8 @@ function OrbitRings({ className = "" }: { className?: string }) {
         <motion.div
           key={i}
           animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
-<<<<<<< HEAD
           transition={{ duration: 18 + i * 8, repeat: Infinity, ease: "linear" }}
           className="absolute inset-0 rounded-full"
-=======
-          transition={{
-            duration: 18 + i * 8,
-            repeat: Infinity,
-            ease: "linear",
-          }}
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
           style={{
             inset: `${i * 28}px`,
             border: `1px dashed rgba(0,122,255,${0.08 + i * 0.04})`,
@@ -441,23 +421,9 @@ function SpinningIcon({
     <div className="relative" style={{ width: size, height: size }}>
       <motion.div
         animate={{ rotate: reverse ? -360 : 360 }}
-<<<<<<< HEAD
         transition={{ duration: spinDuration, repeat: Infinity, ease: "linear" }}
         className="absolute rounded-full"
         style={{ inset: -6, border: `1px dashed ${color}60` }}
-=======
-        transition={{
-          duration: spinDuration,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-        style={{
-          position: "absolute",
-          inset: -6,
-          borderRadius: "50%",
-          border: `1px dashed ${color}60`,
-        }}
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
       />
       <motion.div
         animate={{ scale: [1, 1.15, 1], opacity: [0.5, 1, 0.5] }}
@@ -507,17 +473,8 @@ function RotatingIcon({
         ],
       }}
       transition={{ duration, repeat: Infinity, ease: "linear", delay }}
-<<<<<<< HEAD
       className="inline-flex mb-4"
       style={{ color }}
-=======
-      style={{
-        fontSize: size,
-        color,
-        display: "inline-block",
-        marginBottom: 16,
-      }}
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
     >
       <Icon size={size} strokeWidth={1.5} />
     </motion.div>
@@ -529,14 +486,7 @@ function AnimatedDivider() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
   return (
-<<<<<<< HEAD
     <div ref={ref} className="overflow-hidden h-px mx-auto max-w-[600px]">
-=======
-    <div
-      ref={ref}
-      style={{ overflow: "hidden", height: 1, margin: "0 auto", maxWidth: 600 }}
-    >
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
       <motion.div
         initial={{ scaleX: 0 }}
         animate={inView ? { scaleX: 1 } : {}}
@@ -558,70 +508,10 @@ const CLIENTS_KSA = [
 ];
 
 const CLIENTS_EGY = [
-<<<<<<< HEAD
   { name: "D Smile Clinic", sector: "Medical / Dental", desc: "Dental aesthetics clinic offering comprehensive cosmetic and preventive care with the latest technology.", Icon: Stethoscope },
   { name: "Egyptinor", sector: "Digital Finance", desc: "Digital economy & e-wallet company delivering innovative fintech solutions for a cashless society.", Icon: CreditCard },
   { name: "Dream Restaurant", sector: "F&B", desc: "Full-service restaurant delivering a complete dining experience with a focus on quality and service excellence.", Icon: UtensilsCrossed },
   { name: "Twelve Store", sector: "Fashion / E-Commerce", desc: "Fashion-forward clothing store offering contemporary pieces blending simplicity and elegance for all tastes.", Icon: ShoppingBag },
-=======
-  {
-    name: "D Smile Clinic",
-    nameAr: "دي سمايل كلينك",
-    sector: "Medical / Dental",
-    desc: "Dental aesthetics clinic offering comprehensive cosmetic and preventive care with the latest technology.",
-    icon: "🦷",
-  },
-  {
-    name: "Egyptinor",
-    nameAr: "إيجيبتينور",
-    sector: "Digital Finance",
-    desc: "Digital economy & e-wallet company delivering innovative fintech solutions for a cashless society.",
-    icon: "💳",
-  },
-  {
-    name: "Dream Restaurant",
-    nameAr: "مطعم دريم",
-    sector: "F&B",
-    desc: "Full-service restaurant delivering a complete dining experience with a focus on quality and service excellence.",
-    icon: "🍽️",
-  },
-  {
-    name: "Twelve Store",
-    nameAr: "توِيلف",
-    sector: "Fashion / E-Commerce",
-    desc: "Fashion-forward clothing store offering contemporary pieces blending simplicity and elegance for all tastes.",
-    icon: "👗",
-  },
-];
-
-/* ─── Services ─── */
-const SERVICES = [
-  {
-    icon: "✦",
-    title: "Social Media Management",
-    desc: "Full account management from content to analytics — growing engagement and refining performance continuously.",
-  },
-  {
-    icon: "◈",
-    title: "Paid Ads & Performance",
-    desc: "Multi-platform ad campaigns laser-focused on attracting serious buyers and driving measurable sales growth.",
-  },
-  {
-    icon: "◉",
-    title: "Content Creation & Copy",
-    desc: "Professional content written in your brand's voice — educational, marketing, and sales-oriented copy that converts.",
-  },
-  {
-    icon: "◐",
-    title: "Branding & Visual Identity",
-    desc: "From logo to color palette to tone — building a complete visual identity that makes your brand unforgettable.",
-  },
-  {
-    icon: "◑",
-    title: "Graphic Design & Video",
-    desc: "Compelling designs and professional video edits that reflect brand personality and serve the marketing message.",
-  },
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
 ];
 
 /* ─── Values ─── */
@@ -634,7 +524,6 @@ const VALUES = [
 
 /* ─── Process steps ─── */
 const PROCESS = [
-<<<<<<< HEAD
   { num: "01", title: "Research & Discovery", desc: "Deep-diving into your brand, audience, and competitive landscape to find the real opportunity." },
   { num: "02", title: "Planning & Strategy",  desc: "A clear, custom marketing roadmap — no copy-paste templates, every plan built for one brand only." },
   { num: "03", title: "Execution",            desc: "Content + design + ad management running in perfect sync toward one goal: measurable impact." },
@@ -658,37 +547,12 @@ const CAMPAIGN_PLACEHOLDERS = [
   { label: "After Campaign",     Icon: Camera },
   { label: "Campaign Creative",  Icon: Palette },
   { label: "Results Dashboard",  Icon: BarChart2 },
-=======
-  {
-    num: "01",
-    title: "Research & Discovery",
-    desc: "Deep-diving into your brand, audience, and competitive landscape to find the real opportunity.",
-  },
-  {
-    num: "02",
-    title: "Planning & Strategy",
-    desc: "A clear, custom marketing roadmap — no copy-paste templates, every plan built for one brand only.",
-  },
-  {
-    num: "03",
-    title: "Execution",
-    desc: "Content + design + ad management running in perfect sync toward one goal: measurable impact.",
-  },
-  {
-    num: "04",
-    title: "Optimization",
-    desc: "Continuous result analysis and performance refinement — because every percentage point matters.",
-  },
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
 ];
 
 /* ────────────────────────────────────────────────── */
 export default function AboutPage() {
   const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
@@ -700,44 +564,12 @@ export default function AboutPage() {
       <GridBackground />
       <FloatingParticles />
 
-<<<<<<< HEAD
       {/* ═══════════════ HERO ═══════════════ */}
       <section ref={heroRef} className="relative min-h-screen flex items-start lg:items-center px-4 sm:px-6 pt-28 sm:pt-32 pb-16 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none z-0">
-=======
-      {/* ═══════════════════════════════════════════
-          HERO
-      ═══════════════════════════════════════════ */}
-      <section
-        ref={heroRef}
-        style={{
-          position: "relative",
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          padding: "9rem 1.5rem 6rem",
-          overflow: "hidden",
-        }}
-      >
-        {/* ambient orbs */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            pointerEvents: "none",
-            zIndex: 0,
-          }}
-        >
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
           <motion.div
-            animate={{
-              scale: [1, 1.25, 1],
-              opacity: [0.5, 0.9, 0.5],
-              x: [0, 30, 0],
-              y: [0, -20, 0],
-            }}
+            animate={{ scale: [1, 1.25, 1], opacity: [0.5, 0.9, 0.5], x: [0, 30, 0], y: [0, -20, 0] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-<<<<<<< HEAD
             className="absolute top-[-10%] right-[-5%] w-[min(700px,90vw)] h-[min(700px,90vw)] rounded-full"
             style={{ background: "radial-gradient(circle,rgba(0,122,255,0.22) 0%,transparent 65%)", filter: "blur(80px)" }}
           />
@@ -746,47 +578,9 @@ export default function AboutPage() {
             transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 2 }}
             className="absolute bottom-[10%] left-[-8%] w-[min(500px,70vw)] h-[min(500px,70vw)] rounded-full"
             style={{ background: "radial-gradient(circle,rgba(51,149,255,0.15) 0%,transparent 65%)", filter: "blur(100px)" }}
-=======
-            style={{
-              position: "absolute",
-              top: "-10%",
-              right: "-5%",
-              width: 700,
-              height: 700,
-              borderRadius: "50%",
-              background:
-                "radial-gradient(circle,rgba(0,122,255,0.22) 0%,transparent 65%)",
-              filter: "blur(80px)",
-            }}
-          />
-          <motion.div
-            animate={{
-              scale: [1, 1.15, 1],
-              opacity: [0.3, 0.7, 0.3],
-              x: [0, -20, 0],
-            }}
-            transition={{
-              duration: 11,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 2,
-            }}
-            style={{
-              position: "absolute",
-              bottom: "10%",
-              left: "-8%",
-              width: 500,
-              height: 500,
-              borderRadius: "50%",
-              background:
-                "radial-gradient(circle,rgba(51,149,255,0.15) 0%,transparent 65%)",
-              filter: "blur(100px)",
-            }}
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
           />
           <motion.div
             animate={{ scale: [1, 1.3, 1], opacity: [0.1, 0.25, 0.1] }}
-<<<<<<< HEAD
             transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 4 }}
             className="absolute top-[40%] left-[40%] w-[min(400px,60vw)] h-[min(300px,50vw)] rounded-full"
             style={{ background: "radial-gradient(circle,rgba(0,122,255,0.12) 0%,transparent 65%)", filter: "blur(120px)" }}
@@ -794,40 +588,6 @@ export default function AboutPage() {
         </div>
 
         <div className="absolute right-[5%] top-[10%] w-[min(500px,80vw)] h-[min(500px,80vw)] pointer-events-none z-0">
-=======
-            transition={{
-              duration: 14,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 4,
-            }}
-            style={{
-              position: "absolute",
-              top: "40%",
-              left: "40%",
-              width: 400,
-              height: 300,
-              borderRadius: "50%",
-              background:
-                "radial-gradient(circle,rgba(0,122,255,0.12) 0%,transparent 65%)",
-              filter: "blur(120px)",
-            }}
-          />
-        </div>
-
-        {/* Big orbit rings in hero background */}
-        <div
-          style={{
-            position: "absolute",
-            right: "5%",
-            top: "10%",
-            width: 500,
-            height: 500,
-            pointerEvents: "none",
-            zIndex: 0,
-          }}
-        >
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
           <OrbitRings />
         </div>
 
@@ -846,21 +606,9 @@ export default function AboutPage() {
                       key={word}
                       initial={{ y: "110%", opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
-<<<<<<< HEAD
                       transition={{ duration: 0.75, delay: 0.2 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
                       whileHover={{ x: 6 }}
                       className="block cursor-default leading-[0.95] bg-gradient-to-br from-white via-[#007AFF] to-[#3395FF] bg-clip-text text-transparent transition-all duration-300"
-=======
-                      transition={{
-                        duration: 0.75,
-                        delay: 0.2 + i * 0.12,
-                        ease: [0.22, 1, 0.36, 1],
-                      }}
-                      whileHover={{
-                        filter: "brightness(1.3)",
-                        x: 6,
-                      }}
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                       style={{
                         fontFamily: "'Bebas Neue', Impact, sans-serif",
                         fontSize: "clamp(2.8rem, 12vw, 7rem)",
@@ -871,46 +619,11 @@ export default function AboutPage() {
                   ))}
                 </div>
                 <AnimatedDivider />
-<<<<<<< HEAD
                 <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="text-base text-white/55 leading-[1.85] max-w-[480px] mb-3 mt-6">
                   OUR is a digital marketing agency powered by a team of young creatives. We work with passion and real effort — believing every brand deserves a marketing plan built on deep understanding, powerful content, and authentic execution that drives results.
                 </motion.p>
                 <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }} className="text-sm font-semibold text-[#007AFF] tracking-[0.05em]">
                   We&apos;re not just service providers — we&apos;re growth partners.
-=======
-
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7 }}
-                  style={{
-                    fontSize: 16,
-                    color: WHITE55,
-                    lineHeight: 1.85,
-                    maxWidth: 480,
-                    marginBottom: 12,
-                    marginTop: 24,
-                  }}
-                >
-                  OUR is a digital marketing agency powered by a team of young
-                  creatives. We work with passion and real effort — believing
-                  every brand deserves a marketing plan built on deep
-                  understanding, powerful content, and authentic execution that
-                  drives results.
-                </motion.p>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.85 }}
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 600,
-                    color: BLUE,
-                    letterSpacing: "0.05em",
-                  }}
-                >
-                  We are not just service providers — we are growth partners.
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                 </motion.p>
               </motion.div>
 
@@ -921,21 +634,7 @@ export default function AboutPage() {
                     <div className="text-[2.5rem] leading-none text-white mb-1" style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}>
                       <Counter to={s.value} suffix={s.suffix} />
                     </div>
-<<<<<<< HEAD
                     <div className="text-xs text-white/35 font-mono tracking-[0.2em] uppercase">{s.label}</div>
-=======
-                    <div
-                      style={{
-                        fontSize: 12,
-                        color: WHITE35,
-                        fontFamily: MONO,
-                        letterSpacing: "0.2em",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      {s.label}
-                    </div>
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                   </motion.div>
                 ))}
               </motion.div>
@@ -994,22 +693,11 @@ export default function AboutPage() {
             <motion.div
               initial={{ opacity: 0, x: 60 }}
               animate={{ opacity: 1, x: 0 }}
-<<<<<<< HEAD
               transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
               className="min-w-0 hidden lg:block"
-=======
-              transition={{
-                duration: 0.9,
-                delay: 0.3,
-                ease: [0.22, 1, 0.36, 1],
-              }}
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
             >
               <motion.div
-                whileHover={{
-                  y: -6,
-                  boxShadow: "0 30px 80px rgba(0,122,255,0.2)",
-                }}
+                whileHover={{ y: -6, boxShadow: "0 30px 80px rgba(0,122,255,0.2)" }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 className={glass}
                 style={{ borderColor: "rgba(0,122,255,0.25)" }}
@@ -1022,7 +710,6 @@ export default function AboutPage() {
                 />
                 <motion.div
                   animate={{ x: ["-100%", "200%"] }}
-<<<<<<< HEAD
                   transition={{ duration: 3, repeat: Infinity, repeatDelay: 4, delay: 1.5 }}
                   className="absolute bottom-0 left-0 right-0 h-px opacity-40"
                   style={{ background: "linear-gradient(90deg,transparent,rgba(0,122,255,0.5),transparent)" }}
@@ -1030,86 +717,14 @@ export default function AboutPage() {
                 <div className="absolute top-3 right-4 leading-none select-none text-white/[0.025]" style={{ fontFamily: "'Bebas Neue', Impact, sans-serif", fontSize: "7rem" }}>OUR</div>
                 <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 75% 25%,rgba(0,122,255,0.12) 0%,transparent 55%)" }} />
                 <div className="relative z-10 flex flex-col gap-6">
-=======
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    repeatDelay: 4,
-                    delay: 1.5,
-                  }}
-                  style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    height: 1,
-                    background: `linear-gradient(90deg,transparent,rgba(0,122,255,0.5),transparent)`,
-                    opacity: 0.4,
-                  }}
-                />
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 12,
-                    right: 16,
-                    fontFamily: DISPLAY,
-                    fontSize: "7rem",
-                    color: "rgba(255,255,255,0.025)",
-                    lineHeight: 1,
-                    userSelect: "none",
-                  }}
-                >
-                  OUR
-                </div>
-                <div
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    background: `radial-gradient(ellipse at 75% 25%,${BLUE_DIM} 0%,transparent 55%)`,
-                    pointerEvents: "none",
-                  }}
-                />
-                <div
-                  style={{
-                    position: "relative",
-                    zIndex: 1,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 24,
-                  }}
-                >
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                   {[
                     { label: "Type", value: "Digital Marketing Agency" },
                     { label: "Founded", value: "KSA & Egypt" },
-                    {
-                      label: "Services",
-                      value: "Branding · Ads · Content · SMM · Video",
-                    },
+                    { label: "Services", value: "Branding · Ads · Content · SMM · Video" },
                   ].map(({ label, value }) => (
                     <div key={label}>
-<<<<<<< HEAD
                       <div className="text-[10px] text-white/35 font-mono tracking-[0.25em] uppercase mb-1.5">{label}</div>
                       <div className="text-sm text-white/80">{value}</div>
-=======
-                      <div
-                        style={{
-                          fontSize: 10,
-                          color: WHITE35,
-                          fontFamily: MONO,
-                          letterSpacing: "0.25em",
-                          textTransform: "uppercase",
-                          marginBottom: 6,
-                        }}
-                      >
-                        {label}
-                      </div>
-                      <div
-                        style={{ fontSize: 14, color: "rgba(255,255,255,0.8)" }}
-                      >
-                        {value}
-                      </div>
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                     </div>
                   ))}
                   <div>
@@ -1118,15 +733,7 @@ export default function AboutPage() {
                       {["Saudi Arabia", "Egypt"].map((m) => (
                         <motion.span
                           key={m}
-<<<<<<< HEAD
                           whileHover={{ borderColor: "#007AFF", color: "white", scale: 1.05 }}
-=======
-                          whileHover={{
-                            borderColor: BLUE,
-                            color: WHITE,
-                            scale: 1.05,
-                          }}
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                           transition={{ type: "spring", stiffness: 400 }}
                           className="text-sm px-4 py-1.5 rounded-[10px] bg-white/[0.04] border border-white/[0.08] text-white/55 cursor-default"
                         >
@@ -1136,55 +743,16 @@ export default function AboutPage() {
                     </div>
                   </div>
                   <div>
-<<<<<<< HEAD
                     <div className="text-[10px] text-white/35 font-mono tracking-[0.25em] uppercase mb-2.5">Sectors</div>
                     <div className="flex flex-wrap gap-2">
                       {["Construction", "Medical", "F&B", "Podcast", "E-Commerce", "Tech"].map((s, i) => (
-=======
-                    <div
-                      style={{
-                        fontSize: 10,
-                        color: WHITE35,
-                        fontFamily: MONO,
-                        letterSpacing: "0.25em",
-                        textTransform: "uppercase",
-                        marginBottom: 10,
-                      }}
-                    >
-                      Sectors
-                    </div>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                      {[
-                        "Construction",
-                        "Medical",
-                        "F&B",
-                        "Podcast",
-                        "E-Commerce",
-                        "Tech",
-                      ].map((s, i) => (
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                         <motion.span
                           key={s}
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: 0.5 + i * 0.07 }}
-<<<<<<< HEAD
                           whileHover={{ background: "rgba(0,122,255,0.12)", borderColor: "#007AFF", scale: 1.07 }}
                           className="text-xs px-3 py-1 rounded-full border border-[rgba(0,122,255,0.25)] text-[rgba(0,122,255,0.85)]"
-=======
-                          whileHover={{
-                            background: BLUE_DIM,
-                            borderColor: BLUE,
-                            scale: 1.07,
-                          }}
-                          style={{
-                            fontSize: 12,
-                            padding: "4px 12px",
-                            borderRadius: 20,
-                            border: `1px solid ${BLUE_BORDER}`,
-                            color: "rgba(0,122,255,0.85)",
-                          }}
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                         >
                           {s}
                         </motion.span>
@@ -1198,48 +766,12 @@ export default function AboutPage() {
         </motion.div>
       </section>
 
-<<<<<<< HEAD
       {/* ═══════════════ VISION & MISSION ═══════════════ */}
       <section className="py-28 px-4 sm:px-6 border-t border-white/[0.06] relative overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(800px,100vw)] h-[500px] pointer-events-none" style={{ background: "radial-gradient(ellipse,rgba(0,122,255,0.07) 0%,transparent 70%)", filter: "blur(100px)" }} />
         <div className="max-w-[1280px] mx-auto relative z-10">
           <FadeUp className="text-center mb-16">
             {/* Variant 1: letters drop from top */}
-=======
-      {/* ═══════════════════════════════════════════
-          VISION & MISSION
-      ═══════════════════════════════════════════ */}
-      <section
-        style={{
-          padding: "7rem 1.5rem",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%,-50%)",
-            width: 800,
-            height: 500,
-            background: `radial-gradient(ellipse,rgba(0,122,255,0.07) 0%,transparent 70%)`,
-            filter: "blur(100px)",
-            pointerEvents: "none",
-          }}
-        />
-        <div
-          style={{
-            maxWidth: 1280,
-            margin: "0 auto",
-            position: "relative",
-            zIndex: 1,
-          }}
-        >
-          <FadeUp style={{ textAlign: "center", marginBottom: "4rem" }}>
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
             <Eyebrow>Who We Are</Eyebrow>
             <TitleDropLetters text="VISION & MISSION" />
           </FadeUp>
@@ -1250,7 +782,6 @@ export default function AboutPage() {
               { num: "03", label: "Our Mission", Icon: Rocket, accent: "#3395FF", text: "We deliver practical marketing solutions that support brand building, attract customers, and achieve measurable results — through powerful content management, paid advertising, and building an impactful digital identity." },
             ].map((item, i) => (
               <FadeUp key={item.num} delay={i * 0.15}>
-<<<<<<< HEAD
                 <motion.div whileHover={{ y: -8 }} transition={{ type: "spring", stiffness: 300, damping: 22 }} className={`${glass} h-full`} style={{ borderColor: `${item.accent}20` }}>
                   <div className="absolute top-3 right-4 leading-none text-white/[0.025]" style={{ fontFamily: "'Bebas Neue', Impact, sans-serif", fontSize: "6rem" }}>{item.num}</div>
                   <motion.div animate={{ opacity: [0.6, 1, 0.6] }} transition={{ duration: 3, repeat: Infinity }} className="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl" style={{ background: `linear-gradient(90deg,${item.accent},transparent)` }} />
@@ -1259,81 +790,6 @@ export default function AboutPage() {
                     <div className="text-[10px] font-mono tracking-[0.3em] uppercase" style={{ color: item.accent }}>{item.label}</div>
                   </div>
                   <p className="text-sm text-white/55 leading-[1.85] m-0">{item.text}</p>
-=======
-                <motion.div
-                  whileHover={{ y: -8, borderColor: item.accent + "40" }}
-                  transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                  style={{
-                    ...glassCard,
-                    borderColor: item.accent + "20",
-                    height: "100%",
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 12,
-                      right: 16,
-                      fontFamily: DISPLAY,
-                      fontSize: "6rem",
-                      color: "rgba(255,255,255,0.025)",
-                      lineHeight: 1,
-                    }}
-                  >
-                    {item.num}
-                  </div>
-                  {/* accent top bar */}
-                  <motion.div
-                    animate={{ opacity: [0.6, 1, 0.6] }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      height: 2,
-                      background: `linear-gradient(90deg,${item.accent},transparent)`,
-                      borderRadius: "20px 20px 0 0",
-                    }}
-                  />
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 12,
-                      marginBottom: 16,
-                    }}
-                  >
-                    <SpinningIcon
-                      icon={item.icon}
-                      color={item.accent}
-                      size={48}
-                      spinDuration={10}
-                      reverse={i % 2 !== 0}
-                    />
-                    <div
-                      style={{
-                        fontSize: 10,
-                        color: item.accent,
-                        fontFamily: MONO,
-                        letterSpacing: "0.3em",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      {item.label}
-                    </div>
-                  </div>
-                  <p
-                    style={{
-                      fontSize: 15,
-                      color: WHITE55,
-                      lineHeight: 1.85,
-                      margin: 0,
-                    }}
-                  >
-                    {item.text}
-                  </p>
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                 </motion.div>
               </FadeUp>
             ))}
@@ -1348,21 +804,8 @@ export default function AboutPage() {
           transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(900px,100vw)] h-[min(900px,100vw)] rounded-full border border-dashed border-[rgba(0,122,255,0.05)] pointer-events-none"
         />
-<<<<<<< HEAD
         <div className="max-w-[1280px] mx-auto relative z-10">
           <FadeUp className="text-center mb-20">
-=======
-
-        <div
-          style={{
-            maxWidth: 1280,
-            margin: "0 auto",
-            position: "relative",
-            zIndex: 1,
-          }}
-        >
-          <FadeUp style={{ textAlign: "center", marginBottom: "5rem" }}>
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
             <Eyebrow>What Drives Us</Eyebrow>
             {/* Variant 2: letters rise from bottom in reverse */}
             <TitleRiseLetters text="OUR VALUES" />
@@ -1371,63 +814,20 @@ export default function AboutPage() {
             {VALUES.map((v, i) => (
               <FadeUp key={v.word} delay={i * 0.1}>
                 <motion.div
-<<<<<<< HEAD
                   whileHover={{ y: -10, boxShadow: `0 20px 60px ${v.color}20` }}
                   transition={{ type: "spring", stiffness: 260, damping: 18 }}
                   className={`${glass} text-center cursor-default`}
                   style={{ borderColor: `${v.color}20` }}
-=======
-                  whileHover={{
-                    y: -10,
-                    borderColor: v.color + "50",
-                    boxShadow: `0 20px 60px ${v.color}20`,
-                  }}
-                  transition={{ type: "spring", stiffness: 260, damping: 18 }}
-                  style={{
-                    ...glassCard,
-                    textAlign: "center",
-                    cursor: "default",
-                  }}
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                 >
                   <RotatingIcon Icon={v.Icon} color={v.color} size={36} duration={5 + i} delay={i * 0.5} />
                   <div className="text-white mb-1.5 tracking-[0.05em] text-[1.4rem] sm:text-[1.6rem]" style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}>
                     {v.word}
                   </div>
-<<<<<<< HEAD
                   <motion.div
                     animate={{ opacity: [0.3, 0.8, 0.3], scaleX: [0.5, 1, 0.5] }}
                     transition={{ duration: 3 + i, repeat: Infinity, ease: "easeInOut" }}
                     className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[60%] h-px"
                     style={{ background: `linear-gradient(90deg,transparent,${v.color}60,transparent)` }}
-=======
-                  <div
-                    style={{ fontSize: 13, color: WHITE35, fontFamily: MONO }}
-                  >
-                    {v.ar}
-                  </div>
-
-                  {/* Animated bottom glow line */}
-                  <motion.div
-                    animate={{
-                      opacity: [0.3, 0.8, 0.3],
-                      scaleX: [0.5, 1, 0.5],
-                    }}
-                    transition={{
-                      duration: 3 + i,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                    style={{
-                      position: "absolute",
-                      bottom: 0,
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      width: "60%",
-                      height: 1,
-                      background: `linear-gradient(90deg,transparent,${v.color}60,transparent)`,
-                    }}
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                   />
                 </motion.div>
               </FadeUp>
@@ -1443,27 +843,10 @@ export default function AboutPage() {
             <div>
               <FadeUp>
                 <Eyebrow>Why OUR</Eyebrow>
-<<<<<<< HEAD
                 {/* Variant 3: blur reveal */}
                 <TitleBlurReveal>WHAT MAKES US DIFFERENT</TitleBlurReveal>
               </FadeUp>
               <div className="mt-9 flex flex-col gap-5">
-=======
-                <GradientHeadline size="clamp(2.5rem,6vw,5rem)">
-                  WHAT MAKES
-                  <br />
-                  US DIFFERENT
-                </GradientHeadline>
-              </FadeUp>
-              <div
-                style={{
-                  marginTop: 36,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 20,
-                }}
-              >
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                 {[
                   "A young team that genuinely understands the market",
                   "We focus on results — not just impressions",
@@ -1471,69 +854,18 @@ export default function AboutPage() {
                   "Every brand gets a completely different plan",
                 ].map((point, i) => (
                   <FadeUp key={i} delay={i * 0.1}>
-<<<<<<< HEAD
                     <motion.div whileHover={{ x: 6 }} className="flex gap-4 items-start">
-=======
-                    <motion.div
-                      whileHover={{ x: 6 }}
-                      style={{
-                        display: "flex",
-                        gap: 16,
-                        alignItems: "flex-start",
-                      }}
-                    >
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                       <motion.div
                         initial={{ scale: 0, rotate: -90 }}
                         whileInView={{ scale: 1, rotate: 0 }}
                         viewport={{ once: true }}
-<<<<<<< HEAD
                         transition={{ delay: 0.3 + i * 0.1, type: "spring", stiffness: 200 }}
                         whileHover={{ scale: 1.2, boxShadow: "0 0 16px rgba(0,122,255,0.6)" }}
                         className="w-7 h-7 rounded-full border border-[rgba(0,122,255,0.25)] bg-[rgba(0,122,255,0.12)] flex items-center justify-center shrink-0 mt-0.5"
-=======
-                        transition={{
-                          delay: 0.3 + i * 0.1,
-                          type: "spring",
-                          stiffness: 200,
-                        }}
-                        whileHover={{
-                          scale: 1.2,
-                          boxShadow: `0 0 16px ${BLUE}60`,
-                        }}
-                        style={{
-                          width: 28,
-                          height: 28,
-                          borderRadius: "50%",
-                          border: `1px solid ${BLUE_BORDER}`,
-                          background: BLUE_DIM,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexShrink: 0,
-                          marginTop: 2,
-                          color: BLUE,
-                          fontSize: 13,
-                          fontFamily: MONO,
-                        }}
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                       >
                         <Diamond size={12} color="#007AFF" strokeWidth={1.5} />
                       </motion.div>
-<<<<<<< HEAD
                       <p className="text-sm sm:text-base text-white/55 leading-[1.7] m-0">{point}</p>
-=======
-                      <p
-                        style={{
-                          fontSize: 15,
-                          color: WHITE55,
-                          lineHeight: 1.7,
-                          margin: 0,
-                        }}
-                      >
-                        {point}
-                      </p>
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                     </motion.div>
                   </FadeUp>
                 ))}
@@ -1542,87 +874,21 @@ export default function AboutPage() {
 
             {/* Right */}
             <FadeUp>
-<<<<<<< HEAD
               <div className="relative">
                 <motion.div animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }} className="absolute -inset-8 border border-dashed border-[rgba(0,122,255,0.12)] rounded-full pointer-events-none" />
                 <motion.div animate={{ rotate: -360 }} transition={{ duration: 22, repeat: Infinity, ease: "linear" }} className="absolute -inset-3 border border-dashed border-[rgba(0,122,255,0.2)] rounded-full pointer-events-none" />
                 <motion.div animate={{ rotate: 360 }} transition={{ duration: 6, repeat: Infinity, ease: "linear" }} className="absolute -inset-8 pointer-events-none">
                   <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-[#007AFF]" style={{ boxShadow: "0 0 10px #007AFF" }} />
-=======
-              <div style={{ position: "relative" }}>
-                {/* Multi-layered orbit rings */}
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{
-                    duration: 30,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                  style={{
-                    position: "absolute",
-                    inset: -30,
-                    border: "1px dashed rgba(0,122,255,0.12)",
-                    borderRadius: "50%",
-                    pointerEvents: "none",
-                  }}
-                />
-                <motion.div
-                  animate={{ rotate: -360 }}
-                  transition={{
-                    duration: 22,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                  style={{
-                    position: "absolute",
-                    inset: -12,
-                    border: "1px dashed rgba(0,122,255,0.2)",
-                    borderRadius: "50%",
-                    pointerEvents: "none",
-                  }}
-                />
-
-                {/* Orbiting dot on the ring */}
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-                  style={{
-                    position: "absolute",
-                    inset: -30,
-                    pointerEvents: "none",
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: -4,
-                      left: "50%",
-                      width: 8,
-                      height: 8,
-                      borderRadius: "50%",
-                      background: BLUE,
-                      boxShadow: `0 0 10px ${BLUE}`,
-                      transform: "translateX(-50%)",
-                    }}
-                  />
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                 </motion.div>
                 <div className={`${glass} text-center p-8 sm:p-12`} style={{ borderColor: "rgba(0,122,255,0.25)" }}>
                   <motion.div
-                    animate={{
-                      filter: [
-                        "brightness(1)",
-                        "brightness(1.3)",
-                        "brightness(1)",
-                      ],
-                    }}
+                    animate={{ filter: ["brightness(1)", "brightness(1.3)", "brightness(1)"] }}
                     transition={{ duration: 4, repeat: Infinity }}
                     className="text-[clamp(5rem,15vw,10rem)] leading-none bg-gradient-to-br from-white to-[#007AFF] bg-clip-text text-transparent"
                     style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}
                   >
                     <Counter to={60} suffix="+" />
                   </motion.div>
-<<<<<<< HEAD
                   <div className="text-[1.4rem] text-white/55 tracking-[0.1em] mb-2" style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}>CLIENTS ACQUIRED</div>
                   <div className="text-xs text-white/35">In a single campaign</div>
                   <div className="mt-6 pt-6 border-t border-white/[0.06] flex justify-center gap-8">
@@ -1630,63 +896,6 @@ export default function AboutPage() {
                       <motion.div key={s.label} whileHover={{ scale: 1.1 }} className="text-center">
                         <div className="text-[1.8rem] text-white leading-none" style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}>{s.n}</div>
                         <div className="text-[11px] text-white/35 font-mono mt-1 tracking-[0.15em] uppercase">{s.label}</div>
-=======
-                  <div
-                    style={{
-                      fontFamily: DISPLAY,
-                      fontSize: "1.4rem",
-                      color: WHITE55,
-                      letterSpacing: "0.1em",
-                      marginBottom: 8,
-                    }}
-                  >
-                    CLIENTS ACQUIRED
-                  </div>
-                  <div style={{ fontSize: 13, color: WHITE35 }}>
-                    In a single campaign
-                  </div>
-                  <div
-                    style={{
-                      marginTop: 24,
-                      paddingTop: 24,
-                      borderTop: "1px solid rgba(255,255,255,0.06)",
-                      display: "flex",
-                      justifyContent: "center",
-                      gap: 32,
-                    }}
-                  >
-                    {[
-                      { n: "1M+", label: "Impressions" },
-                      { n: "2", label: "Markets" },
-                    ].map((s) => (
-                      <motion.div
-                        key={s.label}
-                        whileHover={{ scale: 1.1 }}
-                        style={{ textAlign: "center" }}
-                      >
-                        <div
-                          style={{
-                            fontFamily: DISPLAY,
-                            fontSize: "1.8rem",
-                            color: WHITE,
-                            lineHeight: 1,
-                          }}
-                        >
-                          {s.n}
-                        </div>
-                        <div
-                          style={{
-                            fontSize: 11,
-                            color: WHITE35,
-                            fontFamily: MONO,
-                            marginTop: 4,
-                            letterSpacing: "0.15em",
-                            textTransform: "uppercase",
-                          }}
-                        >
-                          {s.label}
-                        </div>
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                       </motion.div>
                     ))}
                   </div>
@@ -1697,200 +906,26 @@ export default function AboutPage() {
         </div>
       </section>
 
-<<<<<<< HEAD
       {/* ═══════════════ CLIENTS ═══════════════ */}
       <section className="py-28 px-4 sm:px-6 border-t border-white/[0.06]">
         <div className="max-w-[1280px] mx-auto">
           <FadeUp className="text-center mb-12">
-=======
-      {/* ═══════════════════════════════════════════
-          SERVICES
-      ═══════════════════════════════════════════ */}
-      <section
-        style={{
-          padding: "7rem 1.5rem",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-        }}
-      >
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <FadeUp style={{ textAlign: "center", marginBottom: "5rem" }}>
-            <Eyebrow>What We Do</Eyebrow>
-            <GradientHeadline>OUR SERVICES</GradientHeadline>
-          </FadeUp>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "1px",
-              border: "1px solid rgba(255,255,255,0.06)",
-              borderRadius: 20,
-              overflow: "hidden",
-            }}
-          >
-            {SERVICES.map((svc, i) => (
-              <FadeUp key={i} delay={i * 0.07}>
-                <motion.div
-                  onHoverStart={() => setHoveredService(i)}
-                  onHoverEnd={() => setHoveredService(null)}
-                  animate={{
-                    background:
-                      hoveredService === i
-                        ? "rgba(0,122,255,0.06)"
-                        : "rgba(255,255,255,0.01)",
-                  }}
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "auto 1fr auto",
-                    alignItems: "center",
-                    gap: "2rem",
-                    padding: "1.75rem 2rem",
-                    borderBottom:
-                      i < SERVICES.length - 1
-                        ? "1px solid rgba(255,255,255,0.05)"
-                        : "none",
-                    cursor: "default",
-                    position: "relative",
-                    overflow: "hidden",
-                  }}
-                >
-                  {/* Hover shimmer */}
-                  {hoveredService === i && (
-                    <motion.div
-                      initial={{ x: "-100%", opacity: 0 }}
-                      animate={{ x: "200%", opacity: 0.3 }}
-                      transition={{ duration: 0.8 }}
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        background: `linear-gradient(90deg, transparent, ${BLUE}20, transparent)`,
-                        pointerEvents: "none",
-                      }}
-                    />
-                  )}
-
-                  <motion.div
-                    animate={{
-                      color: hoveredService === i ? BLUE : WHITE35,
-                      rotate: hoveredService === i ? [0, 15, -10, 0] : 0,
-                      scale: hoveredService === i ? 1.2 : 1,
-                      filter:
-                        hoveredService === i
-                          ? `drop-shadow(0 0 8px ${BLUE})`
-                          : "none",
-                    }}
-                    transition={{ duration: 0.4 }}
-                    style={{
-                      fontFamily: MONO,
-                      fontSize: "1.8rem",
-                      width: 40,
-                      textAlign: "center",
-                    }}
-                  >
-                    {svc.icon}
-                  </motion.div>
-                  <div>
-                    <motion.h3
-                      animate={{
-                        color:
-                          hoveredService === i
-                            ? WHITE
-                            : "rgba(255,255,255,0.8)",
-                      }}
-                      style={{
-                        fontFamily: DISPLAY,
-                        fontSize: "1.4rem",
-                        letterSpacing: "0.05em",
-                        margin: "0 0 6px",
-                      }}
-                    >
-                      {svc.title}
-                    </motion.h3>
-                    <p
-                      style={{
-                        fontSize: 14,
-                        color: WHITE35,
-                        margin: 0,
-                        maxWidth: 600,
-                        lineHeight: 1.7,
-                      }}
-                    >
-                      {svc.desc}
-                    </p>
-                  </div>
-                  <motion.div
-                    animate={{
-                      x: hoveredService === i ? 0 : -8,
-                      opacity: hoveredService === i ? 1 : 0,
-                      color: BLUE,
-                      scale: hoveredService === i ? [1, 1.3, 1] : 1,
-                    }}
-                    transition={{ duration: 0.3 }}
-                    style={{ fontSize: "1.5rem" }}
-                  >
-                    →
-                  </motion.div>
-                </motion.div>
-              </FadeUp>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════
-          OUR WORK — CLIENTS
-      ═══════════════════════════════════════════ */}
-      <section
-        style={{
-          padding: "7rem 1.5rem",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-        }}
-      >
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <FadeUp style={{ textAlign: "center", marginBottom: "3rem" }}>
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
             <Eyebrow>Our Work</Eyebrow>
             {/* Variant 4: glitch slide up */}
             <TitleGlitch text="CLIENTS WE'VE GROWN" />
           </FadeUp>
 
           {/* Tab switcher */}
-<<<<<<< HEAD
           <FadeUp className="flex justify-center mb-14">
             <div className="inline-flex gap-1 p-1 bg-white/[0.04] border border-white/[0.08] rounded-[14px]">
-=======
-          <FadeUp
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              marginBottom: "3.5rem",
-            }}
-          >
-            <div
-              style={{
-                display: "inline-flex",
-                gap: 4,
-                padding: 4,
-                background: WHITE04,
-                border: `1px solid ${WHITE08}`,
-                borderRadius: 14,
-              }}
-            >
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
               {(["ksa", "egypt"] as const).map((tab) => (
                 <motion.button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   animate={{
-<<<<<<< HEAD
                     background: activeTab === tab ? "#007AFF" : "transparent",
                     color: activeTab === tab ? "#ffffff" : "rgba(255,255,255,0.55)",
                     boxShadow: activeTab === tab ? "0 4px 20px rgba(0,122,255,0.5)" : "none",
-=======
-                    background: activeTab === tab ? BLUE : "transparent",
-                    color: activeTab === tab ? WHITE : WHITE55,
-                    boxShadow:
-                      activeTab === tab ? `0 4px 20px ${BLUE}50` : "none",
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                   }}
                   whileHover={{ color: "white", scale: 1.03 }}
                   transition={{ duration: 0.2 }}
@@ -1911,7 +946,6 @@ export default function AboutPage() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
             >
-<<<<<<< HEAD
               {(activeTab === "ksa" ? CLIENTS_KSA : CLIENTS_EGY).map((client, i) => (
                 <motion.div
                   key={client.name}
@@ -1935,98 +969,6 @@ export default function AboutPage() {
                   />
                 </motion.div>
               ))}
-=======
-              {(activeTab === "ksa" ? CLIENTS_KSA : CLIENTS_EGY).map(
-                (client, i) => (
-                  <motion.div
-                    key={client.name}
-                    initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{
-                      delay: i * 0.08,
-                      duration: 0.5,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                    whileHover={{
-                      y: -6,
-                      borderColor: BLUE_BORDER,
-                      boxShadow: `0 20px 60px rgba(0,122,255,0.12)`,
-                    }}
-                    style={{ ...glassCard }}
-                  >
-                    {/* Spinning icon in client card */}
-                    <div style={{ marginBottom: 14 }}>
-                      <SpinningIcon
-                        icon={client.icon}
-                        color={BLUE}
-                        size={50}
-                        spinDuration={12 + i * 2}
-                        reverse={i % 2 !== 0}
-                      />
-                    </div>
-                    <div
-                      style={{
-                        fontSize: 10,
-                        color: BLUE,
-                        fontFamily: MONO,
-                        letterSpacing: "0.2em",
-                        textTransform: "uppercase",
-                        marginBottom: 8,
-                      }}
-                    >
-                      {client.sector}
-                    </div>
-                    <h3
-                      style={{
-                        fontFamily: DISPLAY,
-                        fontSize: "1.4rem",
-                        color: WHITE,
-                        margin: "0 0 4px",
-                        letterSpacing: "0.04em",
-                      }}
-                    >
-                      {client.name}
-                    </h3>
-                    <div
-                      style={{
-                        fontSize: 12,
-                        color: WHITE35,
-                        fontFamily: MONO,
-                        marginBottom: 12,
-                      }}
-                    >
-                      {client.nameAr}
-                    </div>
-                    <p
-                      style={{
-                        fontSize: 13,
-                        color: WHITE35,
-                        lineHeight: 1.75,
-                        margin: 0,
-                      }}
-                    >
-                      {client.desc}
-                    </p>
-
-                    {/* Hover accent bar */}
-                    <motion.div
-                      initial={{ scaleX: 0 }}
-                      whileHover={{ scaleX: 1 }}
-                      style={{
-                        position: "absolute",
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        height: 2,
-                        background: `linear-gradient(90deg, ${BLUE}, transparent)`,
-                        transformOrigin: "left",
-                        borderRadius: "0 0 20px 20px",
-                      }}
-                    />
-                  </motion.div>
-                ),
-              )}
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
             </motion.div>
           </AnimatePresence>
         </div>
@@ -2037,69 +979,14 @@ export default function AboutPage() {
         <div className="max-w-[1280px] mx-auto">
           <FadeUp className="text-center mb-16">
             <Eyebrow>Proof of Work</Eyebrow>
-<<<<<<< HEAD
             {/* Variant 5: scale + expand */}
             <TitleScaleFade>CAMPAIGN RESULTS</TitleScaleFade>
             <p className="text-white/35 text-sm mt-4 max-w-[460px] mx-auto">Real before & after — one campaign that brought in 60+ clients.</p>
-=======
-            <GradientHeadline>CAMPAIGN RESULTS</GradientHeadline>
-            <p
-              style={{
-                color: WHITE35,
-                fontSize: 14,
-                marginTop: 16,
-                maxWidth: 460,
-                margin: "16px auto 0",
-              }}
-            >
-              Real before & after — one campaign that brought in 60+ clients.
-            </p>
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
           </FadeUp>
 
           <FadeUp>
-<<<<<<< HEAD
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.06] rounded-2xl overflow-hidden mb-10">
               {CAMPAIGN_STATS.map((stat, i) => (
-=======
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-                gap: "1px",
-                background: "rgba(255,255,255,0.06)",
-                borderRadius: 20,
-                overflow: "hidden",
-                marginBottom: "2.5rem",
-              }}
-            >
-              {[
-                {
-                  value: "60+",
-                  label: "New Clients",
-                  sub: "From one campaign",
-                  icon: "🎯",
-                },
-                {
-                  value: "1M+",
-                  label: "Impressions",
-                  sub: "Reached fast",
-                  icon: "👁️",
-                },
-                {
-                  value: "2",
-                  label: "Markets",
-                  sub: "KSA & Egypt",
-                  icon: "🌍",
-                },
-                {
-                  value: "5",
-                  label: "Services",
-                  sub: "Delivered together",
-                  icon: "⚡",
-                },
-              ].map((stat, i) => (
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                 <motion.div
                   key={stat.label}
                   initial={{ opacity: 0, y: 20 }}
@@ -2111,58 +998,19 @@ export default function AboutPage() {
                 >
                   <motion.div
                     animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.1, 1] }}
-<<<<<<< HEAD
                     transition={{ duration: 4 + i, repeat: Infinity, delay: i * 0.8 }}
                     className="flex justify-center mb-3 text-[#007AFF]"
-=======
-                    transition={{
-                      duration: 4 + i,
-                      repeat: Infinity,
-                      delay: i * 0.8,
-                    }}
-                    style={{ fontSize: "1.8rem", marginBottom: 10 }}
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                   >
                     <stat.Icon size={28} strokeWidth={1.5} />
                   </motion.div>
-<<<<<<< HEAD
                   <div className="text-white text-[2rem] sm:text-[2.8rem] leading-none mb-2" style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}>{stat.value}</div>
                   <div className="text-[13px] text-white/70 mb-1 font-medium">{stat.label}</div>
                   <div className="text-[11px] text-white/35 font-mono">{stat.sub}</div>
-=======
-                  <div
-                    style={{
-                      fontFamily: DISPLAY,
-                      fontSize: "2.8rem",
-                      lineHeight: 1,
-                      color: WHITE,
-                      marginBottom: 8,
-                    }}
-                  >
-                    {stat.value}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: 13,
-                      color: "rgba(255,255,255,0.7)",
-                      marginBottom: 4,
-                      fontWeight: 500,
-                    }}
-                  >
-                    {stat.label}
-                  </div>
-                  <div
-                    style={{ fontSize: 11, color: WHITE35, fontFamily: MONO }}
-                  >
-                    {stat.sub}
-                  </div>
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                 </motion.div>
               ))}
             </div>
           </FadeUp>
 
-<<<<<<< HEAD
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {CAMPAIGN_PLACEHOLDERS.map(({ label, Icon: PlaceholderIcon }, i) => (
               <FadeUp key={label} delay={i * 0.1}>
@@ -2170,39 +1018,6 @@ export default function AboutPage() {
                   whileHover={{ borderColor: "rgba(0,122,255,0.25)", y: -4, boxShadow: "0 16px 50px rgba(0,122,255,0.1)" }}
                   className={`${glass} aspect-video flex flex-col items-center justify-center gap-3`}
                   style={{ borderStyle: "dashed" }}
-=======
-          {/* Before / After image placeholders */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: "1.5rem",
-            }}
-          >
-            {[
-              "Before Campaign",
-              "After Campaign",
-              "Campaign Creative",
-              "Results Dashboard",
-            ].map((label, i) => (
-              <FadeUp key={label} delay={i * 0.1}>
-                <motion.div
-                  whileHover={{
-                    borderColor: BLUE_BORDER,
-                    y: -4,
-                    boxShadow: `0 16px 50px rgba(0,122,255,0.1)`,
-                  }}
-                  style={{
-                    ...glassCard,
-                    aspectRatio: "16/10",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 12,
-                    borderStyle: "dashed",
-                  }}
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                 >
                   <motion.div
                     animate={{ rotate: [0, 8, -8, 0], scale: [1, 1.08, 1] }}
@@ -2211,32 +1026,8 @@ export default function AboutPage() {
                   >
                     <PlaceholderIcon size={40} strokeWidth={1} />
                   </motion.div>
-<<<<<<< HEAD
                   <div className="text-xs text-white/35 font-mono tracking-[0.15em] uppercase">{label}</div>
                   <div className="text-[11px] text-white/20 text-center max-w-[200px]">Drop your campaign image here</div>
-=======
-                  <div
-                    style={{
-                      fontSize: 12,
-                      color: WHITE35,
-                      fontFamily: MONO,
-                      letterSpacing: "0.15em",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    {label}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: 11,
-                      color: "rgba(255,255,255,0.2)",
-                      textAlign: "center",
-                      maxWidth: 200,
-                    }}
-                  >
-                    Drop your campaign image here
-                  </div>
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                 </motion.div>
               </FadeUp>
             ))}
@@ -2257,57 +1048,22 @@ export default function AboutPage() {
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
               viewport={{ once: true }}
-<<<<<<< HEAD
               transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
               className="absolute top-[60px] left-[10%] right-[10%] h-px origin-left pointer-events-none z-0 hidden lg:block"
               style={{ background: "linear-gradient(90deg, transparent, rgba(0,122,255,0.4), rgba(0,122,255,0.4), transparent)" }}
-=======
-              transition={{
-                duration: 1.5,
-                ease: [0.22, 1, 0.36, 1],
-                delay: 0.3,
-              }}
-              style={{
-                position: "absolute",
-                top: "60px",
-                left: "10%",
-                right: "10%",
-                height: 1,
-                background: `linear-gradient(90deg, transparent, ${BLUE}40, ${BLUE}40, transparent)`,
-                transformOrigin: "left",
-                pointerEvents: "none",
-                zIndex: 0,
-              }}
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
             />
             {PROCESS.map((step, i) => (
               <FadeUp key={step.num} delay={i * 0.12}>
                 <motion.div
-<<<<<<< HEAD
                   whileHover={{ y: -8, boxShadow: "0 20px 60px rgba(0,122,255,0.12)" }}
                   transition={{ type: "spring", stiffness: 280, damping: 20 }}
                   className={`${glass} text-center h-full z-10 relative`}
                   style={{ borderColor: "rgba(0,122,255,0.1)" }}
-=======
-                  whileHover={{
-                    y: -8,
-                    borderColor: BLUE_BORDER,
-                    boxShadow: `0 20px 60px rgba(0,122,255,0.12)`,
-                  }}
-                  transition={{ type: "spring", stiffness: 280, damping: 20 }}
-                  style={{
-                    ...glassCard,
-                    textAlign: "center",
-                    height: "100%",
-                    zIndex: 1,
-                  }}
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                 >
                   <motion.div
                     initial={{ scale: 0, rotate: -90 }}
                     whileInView={{ scale: 1, rotate: 0 }}
                     viewport={{ once: true }}
-<<<<<<< HEAD
                     transition={{ delay: 0.2 + i * 0.1, type: "spring", stiffness: 200 }}
                     whileHover={{ scale: 1.15, boxShadow: "0 0 20px rgba(0,122,255,0.6)", background: "#007AFF", color: "white" }}
                     className="w-[52px] h-[52px] rounded-full border border-[rgba(0,122,255,0.25)] bg-[rgba(0,122,255,0.12)] flex items-center justify-center mx-auto mb-5 font-mono text-[13px] text-[#007AFF] relative z-10"
@@ -2316,66 +1072,8 @@ export default function AboutPage() {
                   </motion.div>
                   <h3 className="text-white text-[1.3rem] m-0 mb-3 tracking-[0.04em]" style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}>{step.title}</h3>
                   <p className="text-[13px] text-white/35 leading-[1.75] m-0">{step.desc}</p>
-=======
-                    transition={{
-                      delay: 0.2 + i * 0.1,
-                      type: "spring",
-                      stiffness: 200,
-                    }}
-                    whileHover={{
-                      scale: 1.15,
-                      boxShadow: `0 0 20px ${BLUE}60`,
-                      background: BLUE,
-                      color: WHITE,
-                    }}
-                    style={{
-                      width: 52,
-                      height: 52,
-                      borderRadius: "50%",
-                      border: `1px solid ${BLUE_BORDER}`,
-                      background: BLUE_DIM,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      margin: "0 auto 20px",
-                      fontFamily: MONO,
-                      fontSize: 13,
-                      color: BLUE,
-                      position: "relative",
-                      zIndex: 2,
-                    }}
-                  >
-                    {step.num}
-                  </motion.div>
-                  <h3
-                    style={{
-                      fontFamily: DISPLAY,
-                      fontSize: "1.3rem",
-                      color: WHITE,
-                      margin: "0 0 12px",
-                      letterSpacing: "0.04em",
-                    }}
-                  >
-                    {step.title}
-                  </h3>
-                  <p
-                    style={{
-                      fontSize: 13,
-                      color: WHITE35,
-                      lineHeight: 1.75,
-                      margin: 0,
-                    }}
-                  >
-                    {step.desc}
-                  </p>
-
-                  {/* Animated accent line */}
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
                   <motion.div
-                    animate={{
-                      opacity: [0.3, 0.8, 0.3],
-                      scaleX: [0.4, 1, 0.4],
-                    }}
+                    animate={{ opacity: [0.3, 0.8, 0.3], scaleX: [0.4, 1, 0.4] }}
                     transition={{ duration: 3 + i * 0.5, repeat: Infinity }}
                     className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[55%] h-px"
                     style={{ background: "linear-gradient(90deg,transparent,rgba(0,122,255,0.5),transparent)" }}
@@ -2395,53 +1093,18 @@ export default function AboutPage() {
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(800px,100vw)] h-[500px] pointer-events-none"
           style={{ background: "radial-gradient(ellipse,rgba(0,122,255,0.12) 0%,transparent 70%)", filter: "blur(80px)" }}
         />
-<<<<<<< HEAD
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(700px,90vw)] h-[min(700px,90vw)] pointer-events-none">
-=======
-
-        {/* Rotating outer rings */}
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%,-50%)",
-            width: 700,
-            height: 700,
-            pointerEvents: "none",
-          }}
-        >
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
           {[600, 500, 400].map((size, i) => (
             <motion.div
               key={size}
               animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
-<<<<<<< HEAD
               transition={{ duration: 20 + i * 8, repeat: Infinity, ease: "linear" }}
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed"
               style={{ width: `min(${size}px, 90vw)`, height: `min(${size}px, 90vw)`, borderColor: `rgba(0,122,255,${0.06 + i * 0.02})` }}
-=======
-              transition={{
-                duration: 20 + i * 8,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                width: size,
-                height: size,
-                borderRadius: "50%",
-                border: `1px dashed rgba(0,122,255,${0.06 + i * 0.02})`,
-                transform: "translate(-50%,-50%)",
-              }}
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
             />
           ))}
         </div>
 
-<<<<<<< HEAD
         <FadeUp className="text-center relative z-10">
           <Eyebrow>Ready to grow?</Eyebrow>
           {/* Variant: split two lines with different animations */}
@@ -2453,37 +1116,6 @@ export default function AboutPage() {
             Let&apos;s build something that makes your competitors nervous. One brand, one plan, real results.
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
-=======
-        <FadeUp
-          style={{ textAlign: "center", position: "relative", zIndex: 1 }}
-        >
-          <Eyebrow>Ready to grow?</Eyebrow>
-          <GradientHeadline size="clamp(3rem,8vw,7rem)">
-            YOUR VISION,
-            <br />
-            OUR MISSION
-          </GradientHeadline>
-          <p
-            style={{
-              fontSize: 16,
-              color: WHITE55,
-              maxWidth: 480,
-              margin: "24px auto 40px",
-              lineHeight: 1.8,
-            }}
-          >
-            Lets build something that makes your competitors nervous. One brand,
-            one plan, real results.
-          </p>
-          <div
-            style={{
-              display: "flex",
-              gap: 16,
-              justifyContent: "center",
-              flexWrap: "wrap",
-            }}
-          >
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
             <motion.a
               href="mailto:ouragency259@gmail.com"
               whileHover={{ scale: 1.06, boxShadow: "0 20px 60px rgba(0,122,255,0.45)" }}
@@ -2493,18 +1125,8 @@ export default function AboutPage() {
               <motion.span
                 animate={{ x: ["-120%", "120%"] }}
                 transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 2 }}
-<<<<<<< HEAD
                 className="absolute inset-0 pointer-events-none"
                 style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)" }}
-=======
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background:
-                    "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
-                  pointerEvents: "none",
-                }}
->>>>>>> d7fc539f9e8498295ea4c8f0b07f2c8a3310504f
               />
               Start a Project
             </motion.a>
