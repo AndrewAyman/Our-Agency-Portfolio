@@ -25,7 +25,7 @@ function MagneticBlob() {
   const my = useMotionValue(0);
   const sx = useSpring(mx, { stiffness: 40, damping: 20 });
   const sy = useSpring(my, { stiffness: 40, damping: 20 });
-  
+
   const x = useTransform(sx, (v) => v - 250);
   const y = useTransform(sy, (v) => v - 250);
 
@@ -43,7 +43,8 @@ function MagneticBlob() {
     <motion.div
       className="fixed top-0 left-0 w-[500px] h-[500px] rounded-full pointer-events-none z-0"
       style={{
-        background: "radial-gradient(circle, rgba(0,122,255,0.07) 0%, transparent 70%)",
+        background:
+          "radial-gradient(circle, rgba(0,122,255,0.07) 0%, transparent 70%)",
         filter: "blur(40px)",
         x: isClient ? x : 0,
         y: isClient ? y : 0,
@@ -142,21 +143,28 @@ function ParticleField() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 w-full h-full pointer-events-none z-0"
+    />
+  );
 }
 
 /* ── FLOATING ORBS ── */
 function FloatingOrbs() {
   const [isClient, setIsClient] = useState(false);
-  const orbsRef = useRef<Array<{
-    id: number;
-    size: number;
-    left: number;
-    top: number;
-    duration: number;
-    delay: number;
-    opacity: number;
-  }>>([]);
+  const orbsRef = useRef<
+    Array<{
+      id: number;
+      size: number;
+      left: number;
+      top: number;
+      duration: number;
+      delay: number;
+      opacity: number;
+    }>
+  >([]);
 
   useEffect(() => {
     orbsRef.current = Array.from({ length: 6 }, (_, i) => ({
@@ -216,7 +224,7 @@ function WordCycler() {
   }, []);
 
   return (
-    <motion.span 
+    <motion.span
       layout
       className="inline-flex relative overflow-hidden align-middle h-[1.3em] px-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
     >
@@ -228,7 +236,10 @@ function WordCycler() {
           exit={{ y: "-80%", opacity: 0 }}
           transition={{ duration: 0.4, ease: EASE }}
           className="inline-block text-[#007AFF] font-bold whitespace-nowrap"
-          style={{ textShadow: "0 0 40px rgba(0,122,255,0.6)", lineHeight: "1.2" }}
+          style={{
+            textShadow: "0 0 40px rgba(0,122,255,0.6)",
+            lineHeight: "1.2",
+          }}
         >
           {CYCLING_WORDS[index]}
         </motion.span>
@@ -260,9 +271,10 @@ function ScrollIndicator() {
 
 /* ── SIDE RIBBONS ── */
 function SideRibbon({ side }: { side: "left" | "right" }) {
-  const words = side === "left" 
-    ? ["CREATIVE", "INNOVATION", "DESIGN", "STRATEGY"]
-    : ["GROWTH", "RESULTS", "IMPACT", "LEADERSHIP"];
+  const words =
+    side === "left"
+      ? ["CREATIVE", "INNOVATION", "DESIGN", "STRATEGY"]
+      : ["GROWTH", "RESULTS", "IMPACT", "LEADERSHIP"];
 
   return (
     <motion.div
@@ -282,7 +294,7 @@ function SideRibbon({ side }: { side: "left" | "right" }) {
           transition={{ duration: 6, delay: i * 0.9, repeat: Infinity }}
           className="text-[9.5px] tracking-[0.42em] text-white/60 font-mono font-light whitespace-nowrap"
           style={{
-            filter: "blur(0.5px)"
+            filter: "blur(0.5px)",
           }}
         >
           {word}
@@ -371,24 +383,37 @@ function HeroContent() {
 
       <motion.div
         animate={{ scaleX: [0, 1, 1, 0], opacity: [0, 0.6, 0.6, 0] }}
-        transition={{ duration: 5, repeat: Infinity, repeatDelay: 2, ease: "easeInOut" }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+          repeatDelay: 2,
+          ease: "easeInOut",
+        }}
         className="absolute top-0 left-0 right-0 h-[1px] origin-left pointer-events-none z-[1]"
-        style={{ background: "linear-gradient(90deg, transparent, #007AFF, transparent)" }}
+        style={{
+          background:
+            "linear-gradient(90deg, transparent, #007AFF, transparent)",
+        }}
       />
 
       <SideRibbon side="left" />
       <SideRibbon side="right" />
 
       <div className="relative z-10 flex flex-col items-center justify-center text-center max-w-[950px] mx-auto w-full">
-        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.15 }}
           className="inline-flex items-center gap-2.5 mb-6 px-6 py-2.5 rounded-full backdrop-blur-sm bg-[#007AFF]/10 border border-[#007AFF]/30 select-none"
         >
-          <motion.div animate={{ rotate: 360 }} transition={{ duration: 3, repeat: Infinity, ease: "linear" }}>
-            <Zap size={13} className="text-[#007AFF] fill-[#007AFF] font-bold" />
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+          >
+            <Zap
+              size={13}
+              className="text-[#007AFF] fill-[#007AFF] font-bold"
+            />
           </motion.div>
           <span className="text-[11px] font-mono text-white/90 tracking-[0.28em] uppercase font-semibold">
             KSA & EGYPT'S CREATIVE PARTNER
@@ -409,11 +434,22 @@ function HeroContent() {
               key={line.text}
               initial={{ y: "110%", opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.85, delay: 0.25 + i * 0.12, ease: EASE }}
+              transition={{
+                duration: 0.85,
+                delay: 0.25 + i * 0.12,
+                ease: EASE,
+              }}
               className={`block font-['Bebas_Neue',Impact,sans-serif] leading-[0.92] tracking-[-0.01em] text-[clamp(4rem,12vw,10rem)] ${
                 line.isBlue ? "text-[#007AFF]" : "text-[#EFF4FF]"
               }`}
-              style={line.isBlue ? { textShadow: "0 0 60px rgba(0,122,255,0.5), 0 0 120px rgba(0,122,255,0.2)" } : {}}
+              style={
+                line.isBlue
+                  ? {
+                      textShadow:
+                        "0 0 60px rgba(0,122,255,0.5), 0 0 120px rgba(0,122,255,0.2)",
+                    }
+                  : {}
+              }
             >
               {line.text}
             </motion.div>
@@ -426,7 +462,8 @@ function HeroContent() {
           transition={{ duration: 0.7, delay: 0.6 }}
           className="text-white/40 max-w-[700px] mx-auto mb-10 leading-relaxed font-mono text-[clamp(0.85rem,2vw,1rem)]"
         >
-          A young, results-obsessed agency turning brands into market leaders through <WordCycler /> — across Saudi Arabia & Egypt.
+          A young, results-obsessed agency turning brands into market leaders
+          through <WordCycler /> — across Saudi Arabia & Egypt.
         </motion.p>
 
         <motion.div
@@ -453,7 +490,11 @@ function HeroContent() {
 
           <Link href="/services">
             <motion.button
-              whileHover={{ scale: 1.04, backgroundColor: "rgba(255,255,255,0.08)", borderColor: "rgba(0,122,255,0.4)" }}
+              whileHover={{
+                scale: 1.04,
+                backgroundColor: "rgba(255,255,255,0.08)",
+                borderColor: "rgba(0,122,255,0.4)",
+              }}
               whileTap={{ scale: 0.96 }}
               className="px-8 py-4 rounded-xl text-white/70 text-sm font-medium cursor-pointer backdrop-blur-sm transition-all bg-white/5 border border-white/15"
             >
@@ -464,7 +505,12 @@ function HeroContent() {
 
         <div className="flex flex-wrap gap-3 justify-center mt-14 mb-4">
           <StatPill targetNumber={60} suffix="+" label="Clients" delay={1.1} />
-          <StatPill targetNumber={10000000} suffix="+" label="Views Generated" delay={1.2} />
+          <StatPill
+            targetNumber={10000000}
+            suffix="+"
+            label="Views Generated"
+            delay={1.2}
+          />
           <StatPill targetNumber={2} label="Markets" delay={1.3} />
           <StatPill targetNumber={5} suffix="★" label="Services" delay={1.4} />
         </div>
@@ -482,20 +528,20 @@ function CapabilitiesSection() {
       num: "01",
       title: "CRAFTING IDENTITIES",
       tag: "BRANDING",
-      desc: "We build visual identities that stick. Far beyond mere logos, we create holistic design systems that echo your story and establish authority within your market segment."
+      desc: "We build visual identities that stick. Far beyond mere logos, we create holistic design systems that echo your story and establish authority within your market segment.",
     },
     {
       num: "02",
       title: "PERFORMANCE ADS",
       tag: "GROWTH",
-      desc: "Data-backed and psychology-driven performance campaigns. We don't chase vanity metrics or simple impressions; we relentlessly focus on ROI and breaking conversion limits."
+      desc: "Data-backed and psychology-driven performance campaigns. We don't chase vanity metrics or simple impressions; we relentlessly focus on ROI and breaking conversion limits.",
     },
     {
       num: "03",
       title: "ATTENTION-GRABBING CONTENT",
       tag: "VIDEO & MEDIA",
-      desc: "In an era of hyper-fast scrolling, we produce genuine scroll-stoppers. Seamlessly fusing premium artistry with business strategy to translate views directly into buying intent."
-    }
+      desc: "In an era of hyper-fast scrolling, we produce genuine scroll-stoppers. Seamlessly fusing premium artistry with business strategy to translate views directly into buying intent.",
+    },
   ];
 
   return (
@@ -504,7 +550,6 @@ function CapabilitiesSection() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(0,122,255,0.03),transparent_50%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
-        
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 lg:mb-20 gap-8">
           <div>
             <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full backdrop-blur-sm bg-[#007AFF]/10 border border-[#007AFF]/20">
@@ -513,14 +558,23 @@ function CapabilitiesSection() {
                 OUR CAPABILITIES
               </span>
             </div>
-            
+
             <h2 className="font-['Bebas_Neue',Impact,sans-serif] text-[clamp(2.5rem,7vw,5.5rem)] text-white leading-[0.95] tracking-wide">
-              ENGINEERED FOR <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#007AFF] to-[#3395FF]" style={{ textShadow: "0 0 40px rgba(0,122,255,0.2)" }}>IMPACT</span>
+              ENGINEERED FOR{" "}
+              <span
+                className="text-transparent bg-clip-text bg-gradient-to-r from-[#007AFF] to-[#3395FF]"
+                style={{ textShadow: "0 0 40px rgba(0,122,255,0.2)" }}
+              >
+                IMPACT
+              </span>
             </h2>
           </div>
-          
+
           <p className="text-white/40 max-w-md font-mono text-xs md:text-sm leading-relaxed text-left">
-            We don't do pre-packaged frameworks. We break down the absolute architecture of your current business models and reconstruct customized workflows that guarantee market dominance across KSA and Egypt.
+            We don't do pre-packaged frameworks. We break down the absolute
+            architecture of your current business models and reconstruct
+            customized workflows that guarantee market dominance across KSA and
+            Egypt.
           </p>
         </div>
 
@@ -532,15 +586,15 @@ function CapabilitiesSection() {
               initial={{ opacity: 0, y: 45, scale: 0.96 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: false, margin: "-50px" }}
-              transition={{ 
-                duration: 0.75, 
-                delay: idx * 0.12, 
-                ease: [0.22, 1, 0.36, 1] 
+              transition={{
+                duration: 0.75,
+                delay: idx * 0.12,
+                ease: [0.22, 1, 0.36, 1],
               }}
-              whileHover={{ 
-                y: -10, 
+              whileHover={{
+                y: -10,
                 borderColor: "rgba(0,122,255,0.4)",
-                boxShadow: "0 20px 40px rgba(0,122,255,0.05)"
+                boxShadow: "0 20px 40px rgba(0,122,255,0.05)",
               }}
               className="group relative p-6 lg:p-8 rounded-2xl bg-white/[0.01] border border-white/10 backdrop-blur-md transition-all duration-500 overflow-hidden cursor-pointer flex flex-col justify-between min-h-[300px] lg:min-h-[340px]"
             >
@@ -549,24 +603,31 @@ function CapabilitiesSection() {
               <div className="relative z-10 flex flex-col h-full justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-6 lg:mb-8">
-                    <span className="font-mono text-sm text-white/20 tracking-widest group-hover:text-[#007AFF]/50 transition-colors duration-300">{item.num}</span>
+                    <span className="font-mono text-sm text-white/20 tracking-widest group-hover:text-[#007AFF]/50 transition-colors duration-300">
+                      {item.num}
+                    </span>
                     <span className="text-[9px] font-mono px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-white/60 tracking-wider group-hover:border-[#007AFF]/30 group-hover:text-[#007AFF] transition-colors duration-300">
                       {item.tag}
                     </span>
                   </div>
-                  
+
                   <h3 className="font-['Bebas_Neue',Impact,sans-serif] text-2xl lg:text-3xl text-white tracking-wide mb-4 group-hover:text-[#007AFF] transition-colors duration-300">
                     {item.title}
                   </h3>
-                  
+
                   <p className="text-white/50 text-xs lg:text-[13px] leading-relaxed font-sans font-light tracking-wide text-left">
                     {item.desc}
                   </p>
                 </div>
 
                 <div className="mt-6 lg:mt-8 pt-4 border-t border-white/[0.04] flex items-center justify-end gap-2 opacity-40 group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="text-[10px] font-mono tracking-widest text-white/50 group-hover:text-white transition-colors">EXPLORE</span>
-                  <ArrowRight size={12} className="transform group-hover:translate-x-1 transition-transform text-[#007AFF]" />
+                  <span className="text-[10px] font-mono tracking-widest text-white/50 group-hover:text-white transition-colors">
+                    EXPLORE
+                  </span>
+                  <ArrowRight
+                    size={12}
+                    className="transform group-hover:translate-x-1 transition-transform text-[#007AFF]"
+                  />
                 </div>
               </div>
             </motion.div>
@@ -585,19 +646,36 @@ interface CardWrapperProps {
   scrollYProgress: MotionValue<number>;
 }
 
-function LayeredCard({ children, index, totalCards, scrollYProgress }: CardWrapperProps) {
+function LayeredCard({
+  children,
+  index,
+  totalCards,
+  scrollYProgress,
+}: CardWrapperProps) {
   const isLast = index === totalCards - 1;
 
   const startRange = index / totalCards;
   const endRange = (index + 1) / totalCards;
 
-  const scale = useTransform(scrollYProgress, [startRange, endRange], [1, 0.86]);
-  const opacity = useTransform(scrollYProgress, [startRange, endRange - 0.05], [1, 0]);
-  const blurValue = useTransform(scrollYProgress, [startRange, endRange], [0, 12]);
+  const scale = useTransform(
+    scrollYProgress,
+    [startRange, endRange],
+    [1, 0.86],
+  );
+  const opacity = useTransform(
+    scrollYProgress,
+    [startRange, endRange - 0.05],
+    [1, 0],
+  );
+  const blurValue = useTransform(
+    scrollYProgress,
+    [startRange, endRange],
+    [0, 12],
+  );
   const filter = useTransform(blurValue, (v) => `blur(${v}px)`);
 
   return (
-    <div 
+    <div
       // السر هنا: الـ Wrapper يتحول من وضع ثابت ومقيد في الشاشات الصغيرة (md) إلى وضع مرن يسمح بظهور الكروت كاملة
       className="relative md:sticky top-0 w-full min-h-fit md:h-screen overflow-hidden md:overflow-hidden origin-center"
       style={{ zIndex: index }}
@@ -619,7 +697,7 @@ function LayeredCard({ children, index, totalCards, scrollYProgress }: CardWrapp
 /* ── MAIN EXPORT COMPONENT ── */
 export default function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
@@ -631,10 +709,8 @@ export default function HeroSection() {
   ];
 
   return (
-    <div 
-      ref={containerRef} 
-      className="relative bg-[#080C14] w-full"
-      // في الشاشات الكبيرة يمنح مساحة كافية للـ sticky scroll وفي شاشات الجوال يتكيف مرناً
+    <div
+      ref={containerRef}
       style={{ height: "auto" }}
       className="relative bg-[#080C14] w-full block md:flex md:flex-col"
     >

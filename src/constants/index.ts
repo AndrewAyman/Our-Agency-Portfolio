@@ -5,7 +5,7 @@ export const NAV_LINKS = [
   { label: "Contact", href: "/contact" },
 ];
 
-// ─── SERVICES (from PDF page 7) ───────────────────────────────────────────
+// ─── SERVICES ─────────────────────────────────────────────────────────────
 export const SERVICES = [
   {
     id: 1,
@@ -44,7 +44,7 @@ export const SERVICES = [
   },
 ];
 
-// ─── VALUES (from PDF page 5) ─────────────────────────────────────────────
+// ─── VALUES ───────────────────────────────────────────────────────────────
 export const VALUES = [
   {
     icon: "📈",
@@ -80,7 +80,7 @@ export const METRICS = [
   { value: "100%", label: "Commitment", sub: "To every brand we take on" },
 ];
 
-// ─── CLIENTS (from PDF pages 8–11) ────────────────────────────────────────
+// ─── CLIENTS ──────────────────────────────────────────────────────────────
 export const CLIENTS = [
   "Construction Companies",
   "Engineering Offices",
@@ -96,7 +96,7 @@ export const CLIENTS = [
   "Service Businesses",
 ];
 
-// ─── PORTFOLIO (from PDF pages 8–11) ──────────────────────────────────────
+// ─── PORTFOLIO ────────────────────────────────────────────────────────────
 export const PORTFOLIO = [
   {
     id: 1,
@@ -160,7 +160,7 @@ export const PORTFOLIO = [
   },
 ];
 
-// ─── WHY US (from PDF pages 6, 9, 12) ────────────────────────────────────
+// ─── WHY US ───────────────────────────────────────────────────────────────
 export const WHY_US = [
   {
     num: "01",
@@ -184,7 +184,7 @@ export const WHY_US = [
   },
 ];
 
-// ─── OUR PROCESS (from PDF page 13) ──────────────────────────────────────
+// ─── PROCESS ──────────────────────────────────────────────────────────────
 export const PROCESS = [
   {
     num: "01",
@@ -212,12 +212,13 @@ export const PROCESS = [
   },
 ];
 
-// ─── CONTACTS (from PDF page 14 — REAL DATA) ─────────────────────────────
+// ─── CONTACTS ─────────────────────────────────────────────────────────────
+// ✅ flag مضاف هنا — ده اللي كان ناقص وبيعمل الـ TypeScript error
 export const CONTACTS = {
   phones: [
-    { label: "Line 1", number: "+20 103 514 0832" },
-    { label: "Line 2", number: "+20 102 608 1399" },
-    { label: "Line 3", number: "+966 59 919 4160" },
+    { label: "Egypt — Line 1", number: "+20 103 514 0832", flag: "🇪🇬" },
+    { label: "Egypt — Line 2", number: "+20 102 608 1399", flag: "🇪🇬" },
+    { label: "KSA", number: "+966 59 919 4160", flag: "🇸🇦" },
   ],
   email: "ouragency259@gmail.com",
   socials: [
@@ -242,7 +243,7 @@ export const CONTACTS = {
   ],
 };
 
-// ─── ABOUT CONTENT (from PDF pages 2–5) ──────────────────────────────────
+// ─── ABOUT ────────────────────────────────────────────────────────────────
 export const ABOUT = {
   description:
     "OUR is a digital marketing agency powered by a team of young creatives. We work with passion and real effort — believing that every brand deserves a marketing plan built on deep market understanding, powerful content, and realistic execution that supports the goal.",
