@@ -2,9 +2,10 @@
 
 /* ── Custom theme tokens ── */
 @theme {
-  --color-brand-blue: #007AFF;
-  --color-brand-blue-light: #3395FF;
-  --color-brand-black: #0D1117;
+  --color-accent: #8d9ab0;
+  --color-accent-light: #b0bdd0;
+  --color-accent-dim: rgba(141, 154, 176, 0.12);
+  --color-brand-black: #0d1117;
 
   --font-family-display: "Bebas Neue", Impact, sans-serif;
   --font-family-body: "DM Sans", sans-serif;
@@ -12,42 +13,68 @@
 }
 
 /* ── Base ── */
-*, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
 
 body {
-  background-color: #0D1117;
+  background-color: #0d1117;
   color: #ffffff;
   overflow-x: hidden;
   font-family: "DM Sans", sans-serif;
 }
 
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #0D1117; }
-::-webkit-scrollbar-thumb { background: #007AFF; border-radius: 2px; }
+/* Scrollbar — silver */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #0d1117;
+}
+::-webkit-scrollbar-thumb {
+  background: #8d9ab0;
+  border-radius: 2px;
+}
 
 /* ── CSS Variables ── */
 :root {
   --font-display: "Bebas Neue", Impact, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
+
+  /* ── Steel Silver Palette ── */
+  --accent: #8d9ab0; /* main steel silver    */
+  --accent-light: #b0bdd0; /* lighter silver       */
+  --accent-pale: #c8d0dc; /* almost white silver  */
+  --accent-glow: rgba(141, 154, 176, 0.28);
+  --accent-dim: rgba(141, 154, 176, 0.1);
+  --accent-mid: rgba(141, 154, 176, 0.18);
 }
 
-/* ── Glass Utilities ── */
+/* ── Glass ── */
 @utility glass {
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 @utility glass-hover {
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-
   &:hover {
     background: rgba(255, 255, 255, 0.07);
-    border-color: rgba(0, 122, 255, 0.35);
-    box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 30px rgba(0,122,255,0.12), inset 0 1px 0 rgba(255,255,255,0.08);
+    border-color: rgba(141, 154, 176, 0.35);
+    box-shadow:
+      0 16px 48px rgba(0, 0, 0, 0.5),
+      0 0 30px rgba(141, 154, 176, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
     transform: translateY(-3px);
   }
 }
@@ -59,28 +86,27 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
   color: white;
-
   &:focus {
-    background: rgba(0, 122, 255, 0.06);
-    border-color: rgba(0, 122, 255, 0.5);
+    background: rgba(141, 154, 176, 0.06);
+    border-color: rgba(141, 154, 176, 0.5);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(141, 154, 176, 0.12);
   }
-
   &::placeholder {
     color: rgba(255, 255, 255, 0.3);
   }
 }
 
+/* ── Gradient text — white → silver ── */
 @utility gradient-text {
-  background: linear-gradient(135deg, #ffffff 0%, #007AFF 50%, #3395FF 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #8d9ab0 55%, #b0bdd0 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-@utility blue-gradient-text {
-  background: linear-gradient(135deg, #3395FF 0%, #007AFF 100%);
+@utility silver-gradient-text {
+  background: linear-gradient(135deg, #b0bdd0 0%, #8d9ab0 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -97,18 +123,15 @@ body {
 @utility font-display {
   font-family: "Bebas Neue", Impact, sans-serif;
 }
-
 @utility font-mono-custom {
   font-family: "JetBrains Mono", monospace;
 }
 
 @utility section-padding {
   padding: 5rem 1.5rem;
-
   @media (width >= 768px) {
     padding: 7rem 2.5rem;
   }
-
   @media (width >= 1280px) {
     padding: 8rem 4rem;
   }
@@ -116,24 +139,30 @@ body {
 
 /* ── Keyframes ── */
 @keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
-
 @keyframes float-anim {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-18px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-18px);
+  }
 }
 
 /* ── Animation utilities ── */
 @utility animate-marquee {
   animation: marquee-scroll 30s linear infinite;
 }
-
 @utility animate-marquee-reverse {
   animation: marquee-scroll 35s linear infinite reverse;
 }
-
 @utility animate-float {
   animation: float-anim 7s ease-in-out infinite;
 }

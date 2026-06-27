@@ -4,29 +4,41 @@ import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
 import Link from "next/link";
-import { Palette, PenTool, TrendingUp, Users, Video } from "lucide-react";
+import {
+  Palette,
+  PenTool,
+  TrendingUp,
+  Users,
+  Video,
+  Globe,
+} from "lucide-react";
 import { SERVICES } from "@/constants";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const LETTER_EASE = [0.19, 1, 0.22, 1] as const;
 
+// ✅ FIX: added id 6 (Website) + switched all colors to silver
 const SERVICE_META: Record<
   number,
   { icon: React.ElementType; accent: string }
 > = {
-  1: { icon: Video, accent: "#3395FF" },
-  2: { icon: Palette, accent: "#007AFF" },
-  3: { icon: PenTool, accent: "#34D399" },
-  4: { icon: TrendingUp, accent: "#F59E0B" },
-  5: { icon: Users, accent: "#A78BFA" },
+  1: { icon: Video, accent: "#8D9AB0" },
+  2: { icon: Palette, accent: "#B0BDD0" }, // Featured card
+  3: { icon: PenTool, accent: "#A0AABC" },
+  4: { icon: TrendingUp, accent: "#9AA6B8" },
+  5: { icon: Users, accent: "#B8C4D0" },
+  6: { icon: Globe, accent: "#8D9AB0" }, // ✅ NEW — Website service
 };
 
-/* ── Featured Card ── */
+const ACCENT = "#8D9AB0";
+const ACCENT_L = "#B0BDD0";
+
+/* ── Featured Card (Branding - id:2) ── */
 function FeaturedCard({ shouldAnimate }: { shouldAnimate: boolean }) {
   const service = SERVICES.find((s) => s.id === 2)!;
-  const { icon: Icon, accent } = SERVICE_META[2];
+  const { icon: Icon } = SERVICE_META[2];
   const [hovered, setHovered] = useState(false);
-  const swatches = ["#007AFF", "#3395FF", "#0A2540", "#F0F4FF"];
+  const swatches = [ACCENT, ACCENT_L, "#0A2540", "#F0F4FF"];
 
   return (
     <motion.div
@@ -35,30 +47,30 @@ function FeaturedCard({ shouldAnimate }: { shouldAnimate: boolean }) {
       transition={{ duration: 0.7, ease: EASE }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      className="relative rounded-[24px] overflow-hidden col-span-1 lg:col-span-12"
+      className="relative col-span-1 lg:col-span-12 rounded-[24px] overflow-hidden"
       style={{
         background: "rgba(255,255,255,0.03)",
         border: hovered
-          ? "1px solid rgba(0,122,255,0.35)"
+          ? `1px solid rgba(141,154,176,0.35)`
           : "1px solid rgba(255,255,255,0.08)",
         backdropFilter: "blur(20px)",
         WebkitBackdropFilter: "blur(20px)",
-        transition: "border-color 0.4s ease, box-shadow 0.4s ease",
+        transition: "border-color 0.4s, box-shadow 0.4s",
         boxShadow: hovered
-          ? "0 24px 70px rgba(0,0,0,0.5), 0 0 50px rgba(0,122,255,0.12)"
+          ? "0 24px 70px rgba(0,0,0,0.5), 0 0 50px rgba(141,154,176,0.1)"
           : "0 8px 32px rgba(0,0,0,0.3)",
       }}
     >
       <div
-        className="absolute inset-0 pointer-events-none transition-opacity duration-500"
+        className="absolute inset-0 transition-opacity duration-500 pointer-events-none"
         style={{
           opacity: hovered ? 1 : 0.5,
           background:
-            "radial-gradient(ellipse 50% 80% at 85% 50%, rgba(0,122,255,0.16) 0%, transparent 65%)",
+            "radial-gradient(ellipse 50% 80% at 85% 50%, rgba(141,154,176,0.12) 0%, transparent 65%)",
         }}
       />
 
-      <div className="relative z-[1] grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-8 p-6 sm:p-8 lg:p-14">
+      <div className="z-[1] relative gap-8 grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] p-6 sm:p-8 lg:p-14">
         {/* Left */}
         <div>
           <div className="flex items-center gap-3 mb-5">
@@ -69,20 +81,20 @@ function FeaturedCard({ shouldAnimate }: { shouldAnimate: boolean }) {
                   : { scale: 1, rotate: 0 }
               }
               transition={{ duration: 0.5 }}
-              className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center"
+              className="flex justify-center items-center rounded-2xl w-12 sm:w-14 h-12 sm:h-14"
               style={{
-                background: "rgba(0,122,255,0.1)",
-                border: "1px solid rgba(0,122,255,0.3)",
+                background: "rgba(141,154,176,0.1)",
+                border: "1px solid rgba(141,154,176,0.3)",
               }}
             >
-              <Icon size={22} color={accent} />
+              <Icon size={22} color={ACCENT_L} />
             </motion.div>
             <span
               className="font-mono uppercase"
               style={{
                 fontSize: 11,
                 letterSpacing: "0.25em",
-                color: "rgba(0,122,255,0.7)",
+                color: "rgba(141,154,176,0.7)",
               }}
             >
               Flagship Service · 01
@@ -100,7 +112,6 @@ function FeaturedCard({ shouldAnimate }: { shouldAnimate: boolean }) {
           >
             {service.title}
           </h3>
-
           <p
             style={{
               fontSize: 14,
@@ -122,13 +133,13 @@ function FeaturedCard({ shouldAnimate }: { shouldAnimate: boolean }) {
                 className="flex items-center gap-3"
               >
                 <div
-                  className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
+                  className="flex justify-center items-center rounded-full w-5 h-5 shrink-0"
                   style={{
-                    background: "rgba(0,122,255,0.12)",
-                    border: "1px solid rgba(0,122,255,0.3)",
+                    background: "rgba(141,154,176,0.12)",
+                    border: "1px solid rgba(141,154,176,0.3)",
                   }}
                 >
-                  <Check size={11} color={accent} />
+                  <Check size={11} color={ACCENT_L} />
                 </div>
                 <span style={{ fontSize: 13, color: "rgba(255,255,255,0.65)" }}>
                   {tag}
@@ -143,7 +154,7 @@ function FeaturedCard({ shouldAnimate }: { shouldAnimate: boolean }) {
               className="inline-flex items-center gap-2 font-medium"
               style={{
                 fontSize: 13,
-                color: "#3395FF",
+                color: ACCENT_L,
                 background: "none",
                 border: "none",
                 cursor: "pointer",
@@ -155,8 +166,8 @@ function FeaturedCard({ shouldAnimate }: { shouldAnimate: boolean }) {
           </Link>
         </div>
 
-        {/* Right — mockup (hidden on small mobile, shown from sm up) */}
-        <div className="hidden sm:flex items-center justify-center min-h-[200px]">
+        {/* Right — mockup */}
+        <div className="hidden sm:flex justify-center items-center min-h-[200px]">
           <motion.div
             animate={hovered ? { rotate: [0, 1, -1, 0] } : { rotate: 0 }}
             transition={{
@@ -164,7 +175,7 @@ function FeaturedCard({ shouldAnimate }: { shouldAnimate: boolean }) {
               repeat: hovered ? Infinity : 0,
               ease: "easeInOut",
             }}
-            className="relative w-full max-w-[300px] rounded-2xl p-5"
+            className="relative p-5 rounded-2xl w-full max-w-[300px]"
             style={{
               background: "rgba(255,255,255,0.03)",
               border: "1px solid rgba(255,255,255,0.08)",
@@ -172,15 +183,16 @@ function FeaturedCard({ shouldAnimate }: { shouldAnimate: boolean }) {
           >
             <div className="flex items-center gap-3 mb-5">
               <div
-                className="w-9 h-9 rounded-xl flex items-center justify-center"
-                style={{ background: "#007AFF" }}
+                className="flex justify-center items-center rounded-xl w-9 h-9"
+                style={{ background: ACCENT }}
               >
                 <span
                   style={{
                     fontFamily:
                       "var(--font-display,'Bebas Neue',Impact,sans-serif)",
-                    color: "white",
+                    color: "#0D1117",
                     fontSize: 16,
+                    fontWeight: 700,
                   }}
                 >
                   O
@@ -205,11 +217,10 @@ function FeaturedCard({ shouldAnimate }: { shouldAnimate: boolean }) {
                 />
               </div>
             </div>
-
             <div className="flex gap-2 mb-5">
               {swatches.map((c, i) => (
                 <motion.div
-                  key={c}
+                  key={i}
                   initial={{ scale: 0 }}
                   animate={shouldAnimate ? { scale: 1 } : {}}
                   transition={{
@@ -230,7 +241,6 @@ function FeaturedCard({ shouldAnimate }: { shouldAnimate: boolean }) {
                 />
               ))}
             </div>
-
             <div className="space-y-2">
               {[100, 75, 88].map((w, i) => (
                 <div
@@ -267,7 +277,8 @@ function CompactCard({
   delay: number;
 }) {
   const [hovered, setHovered] = useState(false);
-  const meta = SERVICE_META[service.id];
+  // ✅ Safe fallback if meta not found
+  const meta = SERVICE_META[service.id] ?? { icon: Globe, accent: ACCENT };
   const Icon = meta.icon;
 
   return (
@@ -278,7 +289,7 @@ function CompactCard({
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       whileHover={{ y: -6 }}
-      className="relative rounded-[20px] p-5 sm:p-7 h-full overflow-hidden"
+      className="relative p-5 sm:p-7 rounded-[20px] h-full overflow-hidden"
       style={{
         background: hovered
           ? "rgba(255,255,255,0.055)"
@@ -302,12 +313,11 @@ function CompactCard({
             exit={{ opacity: 0 }}
             className="absolute inset-0 pointer-events-none"
             style={{
-              background: `radial-gradient(ellipse at 25% 20%, ${meta.accent}22 0%, transparent 60%)`,
+              background: `radial-gradient(ellipse at 25% 20%, ${meta.accent}18 0%, transparent 60%)`,
             }}
           />
         )}
       </AnimatePresence>
-
       <AnimatePresence>
         {hovered && (
           <motion.div
@@ -315,9 +325,9 @@ function CompactCard({
             animate={{ scaleX: 1 }}
             exit={{ scaleX: 0 }}
             transition={{ duration: 0.4 }}
-            className="absolute top-0 left-0 right-0 h-px origin-left"
+            className="top-0 right-0 left-0 absolute h-px origin-left"
             style={{
-              background: `linear-gradient(90deg, transparent, ${meta.accent}99, transparent)`,
+              background: `linear-gradient(90deg, transparent, ${meta.accent}, transparent)`,
             }}
           />
         )}
@@ -325,13 +335,13 @@ function CompactCard({
 
       <motion.div
         animate={{ color: hovered ? meta.accent : "rgba(255,255,255,0.12)" }}
-        className="absolute top-5 right-5 font-mono"
+        className="top-5 right-5 absolute font-mono"
         style={{ fontSize: 11, letterSpacing: "0.15em" }}
       >
         0{index}
       </motion.div>
 
-      <div className="relative z-[1]">
+      <div className="z-[1] relative">
         <motion.div
           animate={
             hovered
@@ -347,7 +357,7 @@ function CompactCard({
                 }
           }
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          className="w-11 h-11 sm:w-12 sm:h-12 rounded-[14px] flex items-center justify-center mb-4 sm:mb-5"
+          className="flex justify-center items-center mb-4 sm:mb-5 rounded-[14px] w-11 sm:w-12 h-11 sm:h-12"
           style={{ border: "1px solid rgba(255,255,255,0.1)" }}
         >
           <motion.div
@@ -361,7 +371,7 @@ function CompactCard({
           </motion.div>
         </motion.div>
 
-        <div className="flex items-start justify-between mb-2">
+        <div className="flex justify-between items-start mb-2">
           <h3
             style={{
               fontFamily: "var(--font-display,'Bebas Neue',Impact,sans-serif)",
@@ -424,15 +434,12 @@ function CompactCard({
 export default function ServicesGrid() {
   const sectionRef = useRef(null);
   const headRef = useRef(null);
-
   const headInView = useInView(headRef, { once: true, margin: "-80px" });
-  // ✅ FIX: once:true + amount:0.05 — يشتغل على موبايل بدون reset
   const sectionInView = useInView(sectionRef, {
     once: true,
     margin: "-40px",
     amount: 0.05,
   });
-
   const [hasAnimated, setHasAnimated] = useState(false);
 
   useEffect(() => {
@@ -440,46 +447,46 @@ export default function ServicesGrid() {
       const t = setTimeout(() => setHasAnimated(true), 100);
       return () => clearTimeout(t);
     }
-    // ✅ FIX: شيلنا setHasAnimated(false) — مش هيتمسح تاني
   }, [sectionInView, hasAnimated]);
 
   const headingText = "WHAT WE DO BEST";
   const letters = Array.from(headingText);
+  // All services except featured (id:2)
   const compactServices = SERVICES.filter((s) => s.id !== 2);
 
   return (
     <section
       ref={sectionRef}
       aria-label="Services"
-      className="relative py-16 sm:py-24 px-4 sm:px-6 overflow-hidden"
+      className="relative px-4 sm:px-6 py-16 sm:py-24 overflow-hidden"
       style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
     >
       <motion.div
         animate={{ scale: [1, 1.1, 1], opacity: [0.4, 0.7, 0.4] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] sm:w-[700px] h-[400px] sm:h-[450px] pointer-events-none"
+        className="top-0 left-1/2 absolute w-[500px] sm:w-[700px] h-[400px] -translate-x-1/2 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse, rgba(0,122,255,0.08) 0%, transparent 65%)",
+            "radial-gradient(ellipse, rgba(141,154,176,0.06) 0%, transparent 65%)",
           filter: "blur(80px)",
         }}
       />
 
-      <div className="relative z-[1] max-w-[1280px] mx-auto">
+      <div className="z-[1] relative mx-auto max-w-[1280px]">
         {/* Header */}
-        <div ref={headRef} className="text-center mb-10 sm:mb-16">
+        <div ref={headRef} className="mb-10 sm:mb-16 text-center">
           <motion.span
             initial={{ opacity: 0, letterSpacing: "0.25em" }}
             animate={headInView ? { opacity: 1, letterSpacing: "0.5em" } : {}}
             transition={{ duration: 0.8, ease: EASE }}
-            className="block font-mono uppercase mb-4 sm:mb-5 font-bold"
-            style={{ fontSize: 12, color: "#007AFF" }}
+            className="block mb-4 sm:mb-5 font-mono font-bold uppercase"
+            style={{ fontSize: 12, color: ACCENT }}
           >
             Capabilities
           </motion.span>
 
           <h2
-            className="leading-none m-0 mb-4 sm:mb-5 flex justify-center flex-wrap select-none"
+            className="flex flex-wrap justify-center m-0 mb-4 sm:mb-5 leading-none select-none"
             style={{
               fontFamily: "var(--font-display,'Bebas Neue',Impact,sans-serif)",
               fontSize: "clamp(2rem,6vw,5.5rem)",
@@ -500,8 +507,7 @@ export default function ServicesGrid() {
                 style={{
                   display: "inline-block",
                   whiteSpace: char === " " ? "pre" : "normal",
-                  background:
-                    "linear-gradient(135deg, #ffffff 0%, #007AFF 60%, #3395FF 100%)",
+                  background: `linear-gradient(135deg, #ffffff 0%, ${ACCENT} 60%, ${ACCENT_L} 100%)`,
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -530,12 +536,12 @@ export default function ServicesGrid() {
         </div>
 
         {/* Featured card */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 mb-4 sm:mb-5">
+        <div className="gap-4 sm:gap-5 grid grid-cols-1 lg:grid-cols-12 mb-4 sm:mb-5">
           <FeaturedCard shouldAnimate={hasAnimated} />
         </div>
 
-        {/* 4 compact cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        {/* Compact cards — 5 services (ids 1,3,4,5,6) */}
+        <div className="gap-4 sm:gap-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {compactServices.map((s, i) => (
             <CompactCard
               key={s.id}
@@ -548,7 +554,7 @@ export default function ServicesGrid() {
         </div>
 
         {/* CTA */}
-        <div className="text-center mt-10 sm:mt-14">
+        <div className="mt-10 sm:mt-14 text-center">
           <Link href="/contact">
             <motion.button
               initial={{ opacity: 0, y: 20 }}
@@ -556,10 +562,11 @@ export default function ServicesGrid() {
               transition={{ duration: 0.6, delay: 0.6, ease: EASE }}
               whileHover={{
                 scale: 1.05,
-                boxShadow: "0 0 50px rgba(0,122,255,0.4)",
+                boxShadow: `0 0 50px rgba(141,154,176,0.3)`,
               }}
               whileTap={{ scale: 0.96 }}
-              className="relative inline-flex items-center gap-2.5 px-7 sm:px-10 py-3.5 sm:py-4 rounded-[14px] bg-[#007AFF] text-white font-semibold text-sm tracking-[0.04em] overflow-hidden cursor-pointer border-0 w-full sm:w-auto justify-center"
+              className="inline-flex relative justify-center items-center gap-2.5 px-7 sm:px-10 py-3.5 sm:py-4 border-0 rounded-[14px] w-full sm:w-auto overflow-hidden font-semibold text-[#0D1117] text-sm tracking-[0.04em] cursor-pointer"
+              style={{ background: ACCENT }}
             >
               <motion.span
                 animate={{ x: ["-120%", "120%"] }}
@@ -567,7 +574,7 @@ export default function ServicesGrid() {
                 className="absolute inset-0 pointer-events-none"
                 style={{
                   background:
-                    "linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)",
+                    "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
                 }}
               />
               Let&apos;s Discuss Your Project

@@ -158,7 +158,7 @@ export default function ContactSection() {
                     marginBottom: 18,
                   }}
                 >
-                  <Phone size={15} color="#007AFF" />
+                  <Phone size={15} color="#8D9AB0" />
                   <span style={labelStyle}>Phone</span>
                 </div>
                 {CONTACTS.phones.map((p) => (
@@ -200,14 +200,14 @@ export default function ContactSection() {
                     marginBottom: 14,
                   }}
                 >
-                  <Mail size={15} color="#007AFF" />
+                  <Mail size={15} color="#8D9AB0" />
                   <span style={labelStyle}>Email</span>
                 </div>
                 <a
                   href={`mailto:${CONTACTS.email}`}
                   style={{
                     fontSize: 14,
-                    color: "#007AFF",
+                    color: "#8D9AB0",
                     textDecoration: "none",
                   }}
                 >
@@ -286,7 +286,7 @@ export default function ContactSection() {
                 >
                   <CheckCircle
                     size={52}
-                    color="#007AFF"
+                    color="#8D9AB0"
                     style={{ margin: "0 auto 20px" }}
                   />
                   <h3
@@ -322,7 +322,7 @@ export default function ContactSection() {
                     }}
                     style={{
                       fontSize: 12,
-                      color: "#007AFF",
+                      color: "#8D9AB0",
                       background: "none",
                       border: "none",
                       cursor: "pointer",
@@ -471,7 +471,7 @@ export default function ContactSection() {
                       gap: 10,
                       padding: "14px 32px",
                       borderRadius: 14,
-                      background: "#007AFF",
+                      background: "#8D9AB0",
                       color: "white",
                       fontWeight: 500,
                       fontSize: 14,
