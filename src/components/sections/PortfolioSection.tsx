@@ -87,7 +87,7 @@ export default function PortfolioSection() {
               backgroundClip: "text",
             }}
           >
-            OUR WORK
+            OUR PORTFOLIO
           </h2>
           <p
             style={{

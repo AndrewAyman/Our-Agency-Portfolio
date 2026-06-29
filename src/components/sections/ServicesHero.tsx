@@ -37,7 +37,7 @@ export default function ServicesHero() {
           transform: "translateX(-50%)",
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(0,122,255,0.16) 0%, transparent 65%)",
+            "radial-gradient(circle, rgba(141, 154, 176,0.16) 0%, transparent 65%)",
           animation: "orbPulse 7s ease-in-out infinite",
           pointerEvents: "none",
         }}
@@ -49,7 +49,7 @@ export default function ServicesHero() {
           position: "absolute",
           inset: 0,
           backgroundImage:
-            "linear-gradient(rgba(0,122,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,122,255,0.04) 1px, transparent 1px)",
+            "linear-gradient(rgba(141, 154, 176,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(141, 154, 176,0.04) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
           maskImage: "linear-gradient(to bottom, black 0%, transparent 80%)",
           WebkitMaskImage:
@@ -65,8 +65,8 @@ export default function ServicesHero() {
           transition={{ duration: 0.5 }}
           className="inline-flex items-center gap-2 rounded-full px-4 py-2 mb-8"
           style={{
-            background: "rgba(0,122,255,0.08)",
-            border: "1px solid rgba(0,122,255,0.25)",
+            background: "rgba(141, 154, 176,0.08)",
+            border: "1px solid rgba(141, 154, 176,0.25)",
           }}
         >
           <span
@@ -125,9 +125,9 @@ export default function ServicesHero() {
               style={{
                 display: "inline-block",
                 whiteSpace: char === " " ? "pre" : "normal",
-                color: "#3395FF",
+                color: "#A8B4C5",
                 textShadow:
-                  "0 0 50px rgba(0,122,255,0.55), 0 0 100px rgba(0,122,255,0.2)",
+                  "0 0 50px rgba(141, 154, 176,0.55), 0 0 100px rgba(141, 154, 176,0.2)",
               }}
             >
               {char}
@@ -178,7 +178,7 @@ export default function ServicesHero() {
                   fontFamily:
                     "var(--font-display,'Bebas Neue',Impact,sans-serif)",
                   fontSize: "1.6rem",
-                  background: "linear-gradient(135deg,#3395FF,#007AFF)",
+                  background: "linear-gradient(135deg,#A8B4C5,#8D9AB0)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -216,7 +216,7 @@ export default function ServicesHero() {
             animate={{ y: [0, 6, 0] }}
             transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
           >
-            <ArrowDown size={16} color="rgba(0,122,255,0.6)" />
+            <ArrowDown size={16} color="rgba(141, 154, 176,0.6)" />
           </motion.div>
         </motion.div>
       </div>

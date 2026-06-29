@@ -22,7 +22,7 @@ const SERVICE_ICONS: Record<number, React.ElementType> = {
 function ServiceNumber({ num, isHovered }: { num: string; isHovered: boolean }) {
   return (
     <motion.div
-      animate={{ color: isHovered ? "#007AFF" : "rgba(255,255,255,0.12)" }}
+      animate={{ color: isHovered ? "#8D9AB0" : "rgba(255,255,255,0.12)" }}
       className="absolute top-7 right-7 font-mono text-[11px] tracking-[0.15em]"
     >
       {num}
@@ -60,8 +60,8 @@ function ServiceCard({
       className="relative rounded-[20px] p-6 sm:p-8 cursor-pointer overflow-hidden h-full transition-[background,border-color,box-shadow] duration-300 backdrop-blur-xl bg-white/[0.02] border border-white/5"
       style={{
         background: hovered ? "rgba(255,255,255,0.055)" : "rgba(255,255,255,0.03)",
-        border: hovered ? "1px solid rgba(0,122,255,0.35)" : "1px solid rgba(255,255,255,0.07)",
-        boxShadow: hovered ? "0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(0,122,255,0.1)" : "none",
+        border: hovered ? "1px solid rgba(141, 154, 176,0.35)" : "1px solid rgba(255,255,255,0.07)",
+        boxShadow: hovered ? "0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(141, 154, 176,0.1)" : "none",
         transformStyle: "preserve-3d",
         perspective: 1000
       }}
@@ -73,7 +73,7 @@ function ServiceCard({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="absolute inset-0 pointer-events-none"
-            style={{ background: "radial-gradient(ellipse at 25% 25%, rgba(0,122,255,0.1) 0%, transparent 60%)" }}
+            style={{ background: "radial-gradient(ellipse at 25% 25%, rgba(141, 154, 176,0.1) 0%, transparent 60%)" }}
           />
         )}
       </AnimatePresence>
@@ -88,7 +88,7 @@ function ServiceCard({
             transition={{ duration: 0.4 }}
             className="absolute top-0 left-0 right-0 h-px origin-left"
             style={{
-              background: "linear-gradient(90deg, transparent, rgba(0,122,255,0.8), transparent)",
+              background: "linear-gradient(90deg, transparent, rgba(141, 154, 176,0.8), transparent)",
               borderRadius: "20px 20px 0 0",
             }}
           />
@@ -101,7 +101,7 @@ function ServiceCard({
         <motion.div
           animate={
             hovered
-              ? { scale: 1.12, background: "rgba(0,122,255,0.15)", borderColor: "rgba(0,122,255,0.4)" }
+              ? { scale: 1.12, background: "rgba(141, 154, 176,0.15)", borderColor: "rgba(141, 154, 176,0.4)" }
               : { scale: 1, background: "rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.1)" }
           }
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -109,7 +109,7 @@ function ServiceCard({
           style={{ border: "1px solid rgba(255,255,255,0.1)" }}
         >
           <motion.div
-            animate={hovered ? { rotate: [0, -8, 8, 0], color: "#007AFF" } : { rotate: 0, color: "rgba(255,255,255,0.5)" }}
+            animate={hovered ? { rotate: [0, -8, 8, 0], color: "#8D9AB0" } : { rotate: 0, color: "rgba(255,255,255,0.5)" }}
             transition={{ duration: 0.5 }}
           >
             <Icon size={20} className="sm:w-[22px] sm:h-[22px]" />
@@ -124,7 +124,7 @@ function ServiceCard({
             {service.title}
           </motion.h3>
           <motion.div
-            animate={{ x: hovered ? 0 : -8, opacity: hovered ? 1 : 0, color: "#007AFF" }}
+            animate={{ x: hovered ? 0 : -8, opacity: hovered ? 1 : 0, color: "#8D9AB0" }}
             transition={{ duration: 0.25 }}
             className="mt-1 shrink-0"
           >
@@ -140,7 +140,7 @@ function ServiceCard({
           {service.tags?.map((tag: string) => (
             <motion.span
               key={tag}
-              animate={hovered ? { borderColor: "rgba(0,122,255,0.3)", color: "rgba(0,122,255,0.8)" } : {}}
+              animate={hovered ? { borderColor: "rgba(141, 154, 176,0.3)", color: "rgba(141, 154, 176,0.8)" } : {}}
               className="text-[9px] sm:text-[10px] font-mono px-2 sm:px-2.5 py-[3px] rounded-2xl text-white/35 transition-all duration-300"
               style={{ border: "1px solid rgba(255,255,255,0.09)" }}
             >
@@ -203,7 +203,7 @@ export default function ServicesSection() {
         transition={{ duration: 10, repeat: Infinity }}
         className="absolute top-0 right-0 w-[600px] h-[500px] pointer-events-none"
         style={{
-          background: "radial-gradient(circle, rgba(0,122,255,0.1) 0%, transparent 65%)",
+          background: "radial-gradient(circle, rgba(141, 154, 176,0.1) 0%, transparent 65%)",
           filter: "blur(80px)",
         }}
       />
@@ -215,7 +215,7 @@ export default function ServicesSection() {
             initial={{ opacity: 0, letterSpacing: "0.25em" }}
             animate={headInView ? { opacity: 1, letterSpacing: "0.5em" } : { opacity: 0, letterSpacing: "0.25em" }}
             transition={{ duration: 0.8, ease: EASE }}
-            className="block text-[12px] sm:text-[15px] font-mono text-[#007AFF] uppercase mb-5 font-bold"
+            className="block text-[12px] sm:text-[15px] font-mono text-[#8D9AB0] uppercase mb-5 font-bold"
           >
             What We Do
           </motion.span>
@@ -237,7 +237,7 @@ export default function ServicesSection() {
                 className="inline-block"
                 style={{ 
                   whiteSpace: char === " " ? "pre" : "normal",
-                  background: "linear-gradient(135deg, #ffffff 0%, #007AFF 60%, #3395FF 100%)",
+                  background: "linear-gradient(135deg, #ffffff 0%, #8D9AB0 60%, #A8B4C5 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -295,9 +295,9 @@ export default function ServicesSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
               transition={{ duration: 0.6, delay: 0.7, ease: EASE }}
-              whileHover={{ scale: 1.05, boxShadow: "0 0 50px rgba(0,122,255,0.4)" }}
+              whileHover={{ scale: 1.05, boxShadow: "0 0 50px rgba(141, 154, 176,0.4)" }}
               whileTap={{ scale: 0.96 }}
-              className="relative inline-flex items-center gap-2.5 px-6 sm:px-10 py-3 sm:py-4 rounded-[14px] bg-[#007AFF] text-white font-semibold text-xs sm:text-sm tracking-[0.04em] overflow-hidden cursor-pointer border-0 w-full sm:w-auto justify-center"
+              className="relative inline-flex items-center gap-2.5 px-6 sm:px-10 py-3 sm:py-4 rounded-[14px] bg-[#8D9AB0] text-white font-semibold text-xs sm:text-sm tracking-[0.04em] overflow-hidden cursor-pointer border-0 w-full sm:w-auto justify-center"
             >
               <motion.span
                 animate={{ x: ["-120%", "120%"] }}

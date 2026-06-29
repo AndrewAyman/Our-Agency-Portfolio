@@ -1,17 +1,40 @@
+"use client";
+
 import PortfolioSection from "@/components/sections/PortfolioSection";
 import CTASection from "@/components/sections/CTASection";
 import { Reveal } from "@/components/ui/Reveal";
+import { motion } from "framer-motion";
+import { 
+  Users, 
+  TrendingUp, 
+  Target, 
+  Zap,
+  Image as ImageIcon,
+  Video,
+  BarChart3,
+  Sparkles
+} from "lucide-react";
 
-export const metadata = {
-  title: "Our Work — OUR Agency",
-  description:
-    "Case studies and real results from our campaigns across KSA and Egypt.",
-};
+// Campaign stats data
+const CAMPAIGN_STATS = [
+  { value: "60+", label: "New Clients", sub: "From single campaign", Icon: Users },
+  { value: "340%", label: "ROI", sub: "Average return", Icon: TrendingUp },
+  { value: "2.4M", label: "Reach", sub: "Across KSA & Egypt", Icon: Target },
+  { value: "87%", label: "Conversion", sub: "Lead-to-client rate", Icon: Zap },
+];
+
+// Campaign placeholder data
+const CAMPAIGN_PLACEHOLDERS = [
+  { label: "Social Campaign", Icon: ImageIcon },
+  { label: "Video Content", Icon: Video },
+  { label: "Performance Data", Icon: BarChart3 },
+  { label: "Creative Assets", Icon: Sparkles },
+];
 
 export default function OurWorkPage() {
   return (
     <>
-      {/* Page Hero */}
+      {/* ═══════════════ PAGE HERO ═══════════════ */}
       <section
         className="relative overflow-hidden"
         style={{
@@ -87,7 +110,7 @@ export default function OurWorkPage() {
                 backgroundClip: "text",
               }}
             >
-              OUR WORK
+              OUR PORTFOLIO
             </h1>
           </Reveal>
 
@@ -163,10 +186,125 @@ export default function OurWorkPage() {
         </div>
       </section>
 
-      {/* Portfolio with filter */}
+      {/* ═══════════════ PORTFOLIO SECTION ═══════════════ */}
       <PortfolioSection />
 
-      {/* CTA */}
+      {/* ═══════════════ CAMPAIGN RESULTS ═══════════════ */}
+      <section className="py-28 px-4 sm:px-6 border-t border-white/[0.06]">
+        <div className="max-w-[1280px] mx-auto">
+          <Reveal className="text-center mb-16">
+            <div
+              className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full"
+              style={{
+                background: "rgba(141,154,176,0.08)",
+                border: "1px solid rgba(141,154,176,0.22)",
+              }}
+            >
+              <span
+                className="font-mono uppercase"
+                style={{
+                  fontSize: 11,
+                  letterSpacing: "0.25em",
+                  color: "rgba(141,154,176,0.7)",
+                }}
+              >
+                Proof of Work
+              </span>
+            </div>
+            <h2
+              className="m-0 mb-4 leading-none"
+              style={{
+                fontFamily: "var(--font-display,'Bebas Neue',Impact,sans-serif)",
+                fontSize: "clamp(2.8rem,6vw,4.5rem)",
+                background:
+                  "linear-gradient(135deg, #ffffff 0%, #8D9AB0 55%, #B0BDD0 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              CAMPAIGN RESULTS
+            </h2>
+            <p className="text-white/35 text-sm mt-4 max-w-[460px] mx-auto">
+              Real before &amp; after — one campaign that brought in 60+ clients.
+            </p>
+          </Reveal>
+
+          <Reveal>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.06] rounded-2xl overflow-hidden mb-10">
+              {CAMPAIGN_STATS.map((stat, i) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.6 }}
+                  whileHover={{ background: "rgba(141, 154, 176,0.06)" }}
+                  className="py-8 sm:py-10 px-4 sm:px-8 bg-white/[0.04] text-center"
+                >
+                  <motion.div
+                    animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.1, 1] }}
+                    transition={{ duration: 4 + i, repeat: Infinity, delay: i * 0.8 }}
+                    className="flex justify-center mb-3 text-[#8D9AB0]"
+                  >
+                    <stat.Icon size={28} strokeWidth={1.5} />
+                  </motion.div>
+                  <div 
+                    className="text-white text-[2rem] sm:text-[2.8rem] leading-none mb-2"
+                    style={{ fontFamily: "'Bebas Neue',Impact,sans-serif" }}
+                  >
+                    {stat.value}
+                  </div>
+                  <div className="text-[13px] text-white/70 mb-1 font-medium">
+                    {stat.label}
+                  </div>
+                  <div className="text-[11px] text-white/35 font-mono">
+                    {stat.sub}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </Reveal>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {CAMPAIGN_PLACEHOLDERS.map(({ label, Icon: PlaceholderIcon }, i) => (
+              <Reveal key={label} delay={i * 0.1}>
+                <motion.div
+                  whileHover={{ 
+                    borderColor: "rgba(141, 154, 176,0.25)", 
+                    y: -4, 
+                    boxShadow: "0 16px 50px rgba(141, 154, 176,0.1)" 
+                  }}
+                  className="aspect-video flex flex-col items-center justify-center gap-3"
+                  style={{
+                    background: "rgba(255,255,255,0.03)",
+                    border: "1px dashed rgba(255,255,255,0.08)",
+                    backdropFilter: "blur(10px)",
+                    borderRadius: "16px",
+                    padding: "2rem",
+                  }}
+                >
+                  <motion.div
+                    animate={{ rotate: [0, 8, -8, 0], scale: [1, 1.08, 1] }}
+                    transition={{ duration: 5 + i, repeat: Infinity }}
+                    className="text-white/20"
+                  >
+                    <PlaceholderIcon size={40} strokeWidth={1} />
+                  </motion.div>
+                  <div className="text-xs text-white/35 font-mono tracking-[0.15em] uppercase">
+                    {label}
+                  </div>
+                  <div className="text-[11px] text-white/20 text-center max-w-[200px]">
+                    Drop your campaign image here
+                  </div>
+                </motion.div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════ CTA SECTION ═══════════════ */}
       <CTASection />
     </>
   );

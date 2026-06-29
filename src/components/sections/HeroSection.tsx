@@ -44,7 +44,7 @@ function MagneticBlob() {
       className="top-0 left-0 z-0 fixed rounded-full w-[500px] h-[500px] pointer-events-none"
       style={{
         background:
-          "radial-gradient(circle, rgba(0,122,255,0.07) 0%, transparent 70%)",
+          "radial-gradient(circle, rgba(141, 154, 176,0.07) 0%, transparent 70%)",
         filter: "blur(40px)",
         x: isClient ? x : 0,
         y: isClient ? y : 0,
@@ -109,7 +109,7 @@ function ParticleField() {
           if (distance < 120) {
             ctx.beginPath();
             const opacity = 0.08 * (1 - distance / 120);
-            ctx.strokeStyle = `rgba(0, 122, 255, ${opacity})`;
+            ctx.strokeStyle = `rgba(141, 154, 176, ${opacity})`;
             ctx.lineWidth = 0.6;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -129,7 +129,7 @@ function ParticleField() {
         const pulseOpacity = p.opacity + Math.sin(p.pulse) * 0.1;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 122, 255, ${Math.max(0.05, pulseOpacity)})`;
+        ctx.fillStyle = `rgba(141, 154, 176, ${Math.max(0.05, pulseOpacity)})`;
         ctx.fill();
       });
 
@@ -192,7 +192,7 @@ function FloatingOrbs() {
             height: orb.size,
             left: `${orb.left}%`,
             top: `${orb.top}%`,
-            background: `radial-gradient(circle, rgba(0, 122, 255, ${orb.opacity}) 0%, transparent 70%)`,
+            background: `radial-gradient(circle, rgba(141, 154, 176, ${orb.opacity}) 0%, transparent 70%)`,
             filter: "blur(60px)",
           }}
           animate={{
@@ -237,7 +237,7 @@ function WordCycler() {
           transition={{ duration: 0.4, ease: EASE }}
           className="inline-block font-bold text-[#8D9AB0] whitespace-nowrap"
           style={{
-            textShadow: "0 0 40px rgba(0,122,255,0.6)",
+            textShadow: "0 0 40px rgba(141, 154, 176,0.6)",
             lineHeight: "1.2",
           }}
         >
@@ -374,8 +374,8 @@ function HeroContent() {
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         style={{
           backgroundImage: `
-            linear-gradient(rgba(0,122,255,0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0,122,255,0.05) 1px, transparent 1px)
+            linear-gradient(rgba(141, 154, 176,0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(141, 154, 176,0.05) 1px, transparent 1px)
           `,
           backgroundSize: "60px 60px",
         }}
@@ -427,7 +427,7 @@ function HeroContent() {
 
         <div className="mb-6 overflow-hidden">
           {[
-            { text: "YOUR VISION,", isBlue: false },
+            { text: "YOUR VISION", isBlue: false },
             { text: "OUR MISSION", isBlue: true },
           ].map((line, i) => (
             <motion.div
@@ -446,7 +446,7 @@ function HeroContent() {
                 line.isBlue
                   ? {
                       textShadow:
-                        "0 0 60px rgba(0,122,255,0.5), 0 0 120px rgba(0,122,255,0.2)",
+                        "0 0 60px rgba(141, 154, 176,0.5), 0 0 120px rgba(141, 154, 176,0.2)",
                     }
                   : {}
               }
@@ -493,7 +493,7 @@ function HeroContent() {
               whileHover={{
                 scale: 1.04,
                 backgroundColor: "rgba(255,255,255,0.08)",
-                borderColor: "rgba(0,122,255,0.4)",
+                borderColor: "rgba(141, 154, 176,0.4)",
               }}
               whileTap={{ scale: 0.96 }}
               className="bg-white/5 backdrop-blur-sm px-8 py-4 border border-white/15 rounded-xl font-medium text-white/70 text-sm transition-all cursor-pointer"
@@ -547,7 +547,7 @@ function CapabilitiesSection() {
   return (
     // تم استبدال min-h-screen بـ min-h-fit وإضافة py-16 للـ responsive الكامل لمنع قطع الكروت بالأسفل
     <div className="relative flex flex-col justify-center bg-[#0C101A] px-6 py-16 lg:py-24 border-white/5 border-t w-full min-h-fit lg:min-h-screen overflow-hidden text-white">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(0,122,255,0.03),transparent_50%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(141, 154, 176,0.03),transparent_50%)] pointer-events-none" />
 
       <div className="z-10 relative mx-auto w-full max-w-7xl">
         <div className="flex md:flex-row flex-col justify-between md:items-end gap-8 mb-16 lg:mb-20">
@@ -562,8 +562,8 @@ function CapabilitiesSection() {
             <h2 className="font-['Bebas_Neue',Impact,sans-serif] text-[clamp(2.5rem,7vw,5.5rem)] text-white leading-[0.95] tracking-wide">
               ENGINEERED FOR{" "}
               <span
-                className="bg-clip-text bg-gradient-to-r from-[#8D9AB0] to-[#3395FF] text-transparent"
-                style={{ textShadow: "0 0 40px rgba(0,122,255,0.2)" }}
+                className="bg-clip-text bg-gradient-to-r from-[#8D9AB0] to-[#A8B4C5] text-transparent"
+                style={{ textShadow: "0 0 40px rgba(141, 154, 176,0.2)" }}
               >
                 IMPACT
               </span>
@@ -593,12 +593,12 @@ function CapabilitiesSection() {
               }}
               whileHover={{
                 y: -10,
-                borderColor: "rgba(0,122,255,0.4)",
-                boxShadow: "0 20px 40px rgba(0,122,255,0.05)",
+                borderColor: "rgba(141, 154, 176,0.4)",
+                boxShadow: "0 20px 40px rgba(141, 154, 176,0.05)",
               }}
               className="group relative flex flex-col justify-between bg-white/[0.01] backdrop-blur-md p-6 lg:p-8 border border-white/10 rounded-2xl min-h-[300px] lg:min-h-[340px] overflow-hidden transition-all duration-500 cursor-pointer"
             >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,122,255,0.04),transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(141, 154, 176,0.04),transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
               <div className="z-10 relative flex flex-col justify-between h-full">
                 <div>
