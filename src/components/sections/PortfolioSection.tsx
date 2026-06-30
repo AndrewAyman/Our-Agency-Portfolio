@@ -130,7 +130,6 @@ export default function PortfolioSection() {
                   padding: "9px 22px",
                   borderRadius: 10,
                   fontSize: 13,
-                  fontWeight: 500,
                   cursor: "pointer",
                   border: "none",
                   background: filter === f ? ACCENT : "transparent",
