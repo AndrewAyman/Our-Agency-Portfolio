@@ -80,11 +80,7 @@ const SECTORS: Sector[] = [
       "/profiles/dental/images/June/6.png",
       "/profiles/dental/images/June/9.png",
     ],
-    videos: [
-      "/public/profiles/dental/videos/Mena case study.mp4",
-      "/public/profiles/dental/videos/رائحة النفس_2.mp4",
-   
-    ],
+   videos: [],
     pdf: "/profiles/dental/profile/banet alemar profile lite2.pdf",
   },
   {
