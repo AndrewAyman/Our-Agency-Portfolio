@@ -1,184 +1,863 @@
 "use client";
 
-import PortfolioSection from "@/components/sections/PortfolioSection";
-import CTASection from "@/components/sections/CTASection";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Reveal } from "@/components/ui/Reveal";
-import { motion } from "framer-motion";
-import { 
-  Users, 
-  TrendingUp, 
-  Target, 
-  Zap,
-  Image as ImageIcon,
+import CTASection from "@/components/sections/CTASection";
+import {
+  Images,
   Video,
-  BarChart3,
-  Sparkles
+  FileText,
+  ChevronRight,
+  Play,
+  Pause,
+  ArrowLeft,
+  Building2,
+  Stethoscope,
+  Film,
+  Dumbbell,
+  Palette,
+  ExternalLink,
+  SkipBack,
+  SkipForward,
+  Volume2,
+  VolumeX,
+  Maximize,
+  RotateCcw,
 } from "lucide-react";
 
-// Campaign stats data
-const CAMPAIGN_STATS = [
-  { value: "60+", label: "New Clients", sub: "From single campaign", Icon: Users },
-  { value: "340%", label: "ROI", sub: "Average return", Icon: TrendingUp },
-  { value: "2.4M", label: "Reach", sub: "Across KSA & Egypt", Icon: Target },
-  { value: "87%", label: "Conversion", sub: "Lead-to-client rate", Icon: Zap },
+/* ──────────────────────────────────────────────────────
+   SECTOR DATA
+────────────────────────────────────────────────────── */
+type Sector = {
+  id: string;
+  label: string;
+  Icon: React.ElementType;
+  accent: string;
+  desc: string;
+  images: string[];
+  videos: string[];
+  pdf: string | null;
+};
+
+const SECTORS: Sector[] = [
+  {
+    id: "dental",
+    label: "Dental & Cosmetics",
+    Icon: Stethoscope,
+    accent: "#8D9AB0",
+    desc: "Brand identity, social media, and video content for dental clinics and cosmetic practices.",
+    images: [
+      "/profiles/dental/images/post 1/1.png",
+      "/profiles/dental/images/post 1/2.png",
+      "/profiles/dental/images/post 1/3.png",
+      "/profiles/dental/images/post 1/4.png",
+      "/profiles/dental/images/post 1/5.png",
+      "/profiles/dental/images/June/heighlight/1.png",
+      "/profiles/dental/images/June/heighlight/2.png",
+      "/profiles/dental/images/June/heighlight/3.png",
+      "/profiles/dental/images/June/heighlight/4.png",
+      "/profiles/dental/images/June/heighlight/5.png",
+      "/profiles/dental/images/June/heighlight/6.png",
+      "/profiles/dental/images/June/heighlight/7.png",
+      "/profiles/dental/images/June/heighlight/8.png",
+      "/profiles/dental/images/June/post 1/1.png",
+      "/profiles/dental/images/June/post 1/2.png",
+      "/profiles/dental/images/June/post 1/3.png",
+      "/profiles/dental/images/June/post 1/4.png",
+      "/profiles/dental/images/June/post 1/5.png",
+      "/profiles/dental/images/June/post 1/6.png",
+      "/profiles/dental/images/June/post 2/11.png",
+      "/profiles/dental/images/June/post 2/22.png",
+      "/profiles/dental/images/June/post 3/1.png",
+      "/profiles/dental/images/June/post 3/2.png",
+      "/profiles/dental/images/June/post 3/3.png",
+      "/profiles/dental/images/June/post 3/4.png",
+      "/profiles/dental/images/June/post 3/5.png",
+      "/profiles/dental/images/June/post 4/1.png",
+      "/profiles/dental/images/June/post 8/1.png",
+      "/profiles/dental/images/June/post 8/2.png",
+      "/profiles/dental/images/June/6.png",
+      "/profiles/dental/images/June/9.png",
+    ],
+    videos: [
+      "/profiles/dental/videos/Dr_dina _Smile makers.mp4",
+      "/profiles/dental/videos/video2.mp4",
+    ],
+    pdf: "/profiles/dental/profile/banet alemar profile lite2.pdf",
+  },
+  {
+    id: "construction",
+    label: "Construction",
+    Icon: Building2,
+    accent: "#A8B4C5",
+    desc: "Full marketing solutions for construction companies, stone & marble contractors.",
+    images: [],
+    videos: [],
+    pdf: "/profiles/construction/profile/banet-alemar-profile.pdf",
+  },
+  {
+    id: "gym",
+    label: "Gym & Fitness",
+    Icon: Dumbbell,
+    accent: "#8D9AB0",
+    desc: "Energetic branding, reels, and performance ads for gyms and fitness studios.",
+    images: [],
+    videos: [],
+    pdf: null,
+  },
+  {
+    id: "video",
+    label: "Video Graphics",
+    Icon: Film,
+    accent: "#B0BDD0",
+    desc: "Motion graphics, animated ads, and video production for brands across KSA & Egypt.",
+    images: [],
+    videos: [],
+    pdf: null,
+  },
+  {
+    id: "media",
+    label: "Media & Branding",
+    Icon: Palette,
+    accent: "#A8B4C5",
+    desc: "Social media management, creative design, and brand identity from scratch.",
+    images: [],
+    videos: [],
+    pdf: null,
+  },
 ];
 
-// Campaign placeholder data
-const CAMPAIGN_PLACEHOLDERS = [
-  { label: "Social Campaign", Icon: ImageIcon },
-  { label: "Video Content", Icon: Video },
-  { label: "Performance Data", Icon: BarChart3 },
-  { label: "Creative Assets", Icon: Sparkles },
-];
+type Tab = "images" | "videos" | "pdf";
 
+/* ──────────────────────────────────────────────────────
+   FORMAT TIME  mm:ss
+────────────────────────────────────────────────────── */
+function fmtTime(s: number) {
+  if (!isFinite(s)) return "0:00";
+  const m = Math.floor(s / 60);
+  const ss = Math.floor(s % 60).toString().padStart(2, "0");
+  return `${m}:${ss}`;
+}
+
+/* ──────────────────────────────────────────────────────
+   CUSTOM VIDEO PLAYER
+────────────────────────────────────────────────────── */
+function VideoPlayer({ src, accent }: { src: string; accent: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const [playing, setPlaying] = useState(false);
+  const [muted, setMuted] = useState(false);
+  const [volume, setVolume] = useState(1);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [buffered, setBuffered] = useState(0);
+  const [showControls, setShowControls] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [seeking, setSeeking] = useState(false);
+  const [ended, setEnded] = useState(false);
+
+  /* ── helpers ── */
+  const resetHideTimer = useCallback(() => {
+    setShowControls(true);
+    if (hideTimer.current) clearTimeout(hideTimer.current);
+    hideTimer.current = setTimeout(() => {
+      if (playing) setShowControls(false);
+    }, 2800);
+  }, [playing]);
+
+  useEffect(() => {
+    return () => { if (hideTimer.current) clearTimeout(hideTimer.current); };
+  }, []);
+
+  /* mouse activity */
+  const handleMouseMove = useCallback(() => resetHideTimer(), [resetHideTimer]);
+
+  /* play / pause */
+  const togglePlay = useCallback(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (ended) { v.currentTime = 0; setEnded(false); }
+    playing ? v.pause() : v.play();
+    setPlaying(!playing);
+    resetHideTimer();
+  }, [playing, ended, resetHideTimer]);
+
+  /* skip */
+  const skip = useCallback((sec: number) => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.currentTime = Math.max(0, Math.min(v.duration, v.currentTime + sec));
+    resetHideTimer();
+  }, [resetHideTimer]);
+
+  /* volume */
+  const toggleMute = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = !muted;
+    setMuted(!muted);
+  };
+
+  const handleVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const v = videoRef.current;
+    if (!v) return;
+    const val = Number(e.target.value);
+    v.volume = val;
+    setVolume(val);
+    setMuted(val === 0);
+  };
+
+  /* seek */
+  const getSeekPosition = (e: React.MouseEvent | MouseEvent): number => {
+    const bar = progressRef.current;
+    if (!bar || !duration) return 0;
+    const rect = bar.getBoundingClientRect();
+    const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+    return (x / rect.width) * duration;
+  };
+
+  const handleSeekMouseDown = (e: React.MouseEvent) => {
+    setSeeking(true);
+    const t = getSeekPosition(e);
+    if (videoRef.current) videoRef.current.currentTime = t;
+    setCurrentTime(t);
+
+    const onMove = (ev: MouseEvent) => {
+      const tt = getSeekPosition(ev);
+      if (videoRef.current) videoRef.current.currentTime = tt;
+      setCurrentTime(tt);
+    };
+    const onUp = () => {
+      setSeeking(false);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+  };
+
+  /* fullscreen */
+  const toggleFullscreen = () => {
+    const el = containerRef.current;
+    if (!el) return;
+    if (!document.fullscreenElement) {
+      el.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  };
+
+  useEffect(() => {
+    const onChange = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  }, []);
+
+  /* video events */
+  const onTimeUpdate = () => {
+    const v = videoRef.current;
+    if (!v || seeking) return;
+    setCurrentTime(v.currentTime);
+    if (v.buffered.length > 0) setBuffered(v.buffered.end(v.buffered.length - 1));
+  };
+  const onDurationChange = () => { if (videoRef.current) setDuration(videoRef.current.duration); };
+  const onEnded = () => { setPlaying(false); setEnded(true); setShowControls(true); };
+  const onPlay  = () => { setPlaying(true);  setEnded(false); resetHideTimer(); };
+  const onPause = () => { setPlaying(false); setShowControls(true); };
+
+  /* keyboard */
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (!videoRef.current) return;
+      if (e.code === "Space")       { e.preventDefault(); togglePlay(); }
+      if (e.code === "ArrowRight")  { skip(5); }
+      if (e.code === "ArrowLeft")   { skip(-5); }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [togglePlay, skip]);
+
+  const progress = duration ? (currentTime / duration) * 100 : 0;
+  const bufPct   = duration ? (buffered   / duration) * 100 : 0;
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative w-full rounded-2xl overflow-hidden select-none"
+      style={{ background: "#000", aspectRatio: "16/9" }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => { if (playing) setShowControls(false); }}
+    >
+      {/* video element */}
+      <video
+        ref={videoRef}
+        src={src}
+        className="w-full h-full object-contain"
+        playsInline
+        preload="metadata"
+        onTimeUpdate={onTimeUpdate}
+        onDurationChange={onDurationChange}
+        onEnded={onEnded}
+        onPlay={onPlay}
+        onPause={onPause}
+        onClick={togglePlay}
+        style={{ cursor: showControls ? "default" : "none" }}
+      />
+
+      {/* click overlay for play/pause (center) */}
+      <div className="absolute inset-0" onClick={togglePlay} style={{ cursor: "default" }} />
+
+      {/* ── CENTER PLAY/PAUSE pulse ── */}
+      <AnimatePresence>
+        {!playing && !ended && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.7 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.18 }}
+            className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          >
+            <div
+              className="w-20 h-20 rounded-full flex items-center justify-center backdrop-blur-sm"
+              style={{ background: "rgba(0,0,0,0.45)", border: "2px solid rgba(255,255,255,0.18)" }}
+            >
+              <Play size={32} fill="white" className="text-white ml-1" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── REPLAY BUTTON ── */}
+      <AnimatePresence>
+        {ended && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.7 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 flex flex-col items-center justify-center gap-3 pointer-events-none"
+          >
+            <div
+              className="w-20 h-20 rounded-full flex items-center justify-center backdrop-blur-sm"
+              style={{ background: "rgba(0,0,0,0.5)", border: "2px solid rgba(255,255,255,0.2)" }}
+            >
+              <RotateCcw size={30} className="text-white" />
+            </div>
+            <span className="text-white/60 text-xs font-mono tracking-widest uppercase">Replay</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── CONTROLS OVERLAY ── */}
+      <AnimatePresence>
+        {showControls && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="absolute bottom-0 left-0 right-0 flex flex-col px-4 pb-3 pt-16 pointer-events-none"
+            style={{
+              background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)",
+            }}
+          >
+            {/* ── SEEK BAR ── */}
+            <div
+              ref={progressRef}
+              className="relative h-1 rounded-full mb-3 cursor-pointer group pointer-events-auto"
+              style={{ background: "rgba(255,255,255,0.18)" }}
+              onMouseDown={handleSeekMouseDown}
+            >
+              {/* buffered */}
+              <div
+                className="absolute left-0 top-0 h-full rounded-full"
+                style={{ width: `${bufPct}%`, background: "rgba(255,255,255,0.25)", transition: "width 0.3s" }}
+              />
+              {/* played */}
+              <div
+                className="absolute left-0 top-0 h-full rounded-full transition-all"
+                style={{ width: `${progress}%`, background: accent }}
+              />
+              {/* thumb */}
+              <div
+                className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                style={{ left: `${progress}%`, transform: `translateX(-50%) translateY(-50%)`, background: "white" }}
+              />
+            </div>
+
+            {/* ── BOTTOM ROW ── */}
+            <div className="flex items-center justify-between pointer-events-auto">
+              {/* left */}
+              <div className="flex items-center gap-1 sm:gap-2">
+                {/* skip back */}
+                <button
+                  onClick={() => skip(-5)}
+                  className="w-8 h-8 flex items-center justify-center rounded-lg transition-colors hover:bg-white/10 cursor-pointer"
+                  style={{ background: "none", border: "none" }}
+                  title="Back 5s"
+                >
+                  <SkipBack size={16} className="text-white/80" />
+                </button>
+
+                {/* play/pause */}
+                <button
+                  onClick={togglePlay}
+                  className="w-9 h-9 flex items-center justify-center rounded-xl transition-colors hover:bg-white/10 cursor-pointer"
+                  style={{ background: "none", border: "none" }}
+                >
+                  {playing
+                    ? <Pause size={18} className="text-white" fill="white" />
+                    : <Play  size={18} className="text-white ml-0.5" fill="white" />
+                  }
+                </button>
+
+                {/* skip forward */}
+                <button
+                  onClick={() => skip(5)}
+                  className="w-8 h-8 flex items-center justify-center rounded-lg transition-colors hover:bg-white/10 cursor-pointer"
+                  style={{ background: "none", border: "none" }}
+                  title="Forward 5s"
+                >
+                  <SkipForward size={16} className="text-white/80" />
+                </button>
+
+                {/* volume */}
+                <div className="flex items-center gap-1 ml-1">
+                  <button
+                    onClick={toggleMute}
+                    className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-white/10 cursor-pointer"
+                    style={{ background: "none", border: "none" }}
+                  >
+                    {muted || volume === 0
+                      ? <VolumeX size={14} className="text-white/70" />
+                      : <Volume2 size={14} className="text-white/70" />
+                    }
+                  </button>
+                  <input
+                    type="range" min={0} max={1} step={0.05}
+                    value={muted ? 0 : volume}
+                    onChange={handleVolume}
+                    className="hidden sm:block w-16 h-1 rounded-full appearance-none cursor-pointer"
+                    style={{ accentColor: accent }}
+                  />
+                </div>
+
+                {/* time */}
+                <span className="text-white/55 text-[11px] font-mono ml-1 hidden sm:block">
+                  {fmtTime(currentTime)} / {fmtTime(duration)}
+                </span>
+              </div>
+
+              {/* right */}
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={toggleFullscreen}
+                  className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/10 cursor-pointer"
+                  style={{ background: "none", border: "none" }}
+                  title="Fullscreen"
+                >
+                  <Maximize size={14} className="text-white/70" />
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/* ── EMPTY STATE ── */
+function EmptyState() {
+  return (
+    <div className="flex flex-col items-center justify-center py-32 gap-3 text-center">
+      <div
+        className="w-16 h-16 rounded-2xl flex items-center justify-center mb-2"
+        style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
+      >
+        <Images size={24} className="text-white/15" />
+      </div>
+      <p className="text-white/25 text-xs font-mono tracking-[0.25em] uppercase">Coming Soon</p>
+      <p className="text-white/12 text-xs max-w-[180px]">Content will appear here once uploaded</p>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════
+   FULL-SCREEN SECTOR PAGE
+══════════════════════════════════════════════════════ */
+function SectorPage({ sector, onBack }: { sector: Sector; onBack: () => void }) {
+  const [activeTab, setActiveTab] = useState<Tab>("images");
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  const TABS: { id: Tab; label: string; icon: React.ElementType; count: number | null }[] = [
+    { id: "images", label: "Photos",      icon: Images,   count: sector.images.length || null },
+    { id: "videos", label: "Videos",      icon: Video,    count: sector.videos.length || null },
+    { id: "pdf",    label: "Profile PDF", icon: FileText, count: sector.pdf ? 1 : null },
+  ];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 40 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -30 }}
+      transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+      className="fixed inset-0 z-50 flex flex-col"
+      style={{ background: "#08090e" }}
+    >
+      {/* TOPBAR */}
+      <div
+        className="flex items-center justify-between px-5 sm:px-8 py-4 shrink-0"
+        style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(8,9,14,0.95)", backdropFilter: "blur(16px)" }}
+      >
+        <motion.button
+          whileHover={{ x: -3 }}
+          onClick={onBack}
+          className="flex items-center gap-2 cursor-pointer"
+          style={{ background: "none", border: "none", padding: 0 }}
+        >
+          <div
+            className="w-8 h-8 rounded-xl flex items-center justify-center"
+            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}
+          >
+            <ArrowLeft size={14} className="text-white/60" />
+          </div>
+          <span className="text-white/40 text-xs font-mono tracking-widest hidden sm:block">OUR WORK</span>
+        </motion.button>
+
+        <div className="flex items-center gap-3">
+          <div
+            className="w-8 h-8 rounded-xl flex items-center justify-center"
+            style={{ background: `${sector.accent}15`, border: `1px solid ${sector.accent}35` }}
+          >
+            <sector.Icon size={15} style={{ color: sector.accent }} strokeWidth={1.5} />
+          </div>
+          <h2
+            className="text-white m-0 leading-none"
+            style={{ fontFamily: "'Bebas Neue', Impact, sans-serif", fontSize: "clamp(1.2rem,3vw,1.6rem)", letterSpacing: "0.05em" }}
+          >
+            {sector.label}
+          </h2>
+        </div>
+
+        <div className="w-[88px] hidden sm:block" />
+        <div className="w-8 block sm:hidden" />
+      </div>
+
+      {/* TABS */}
+      <div
+        className="flex gap-1 px-5 sm:px-8 py-3 shrink-0"
+        style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}
+      >
+        {TABS.map((tab) => {
+          const isActive = activeTab === tab.id;
+          return (
+            <motion.button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              animate={{
+                background: isActive ? `${sector.accent}16` : "transparent",
+                color: isActive ? "#ffffffdd" : "rgba(255,255,255,0.38)",
+                borderColor: isActive ? `${sector.accent}40` : "rgba(255,255,255,0.06)",
+              }}
+              transition={{ duration: 0.15 }}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono tracking-wider cursor-pointer"
+              style={{ border: "1px solid rgba(255,255,255,0.06)" }}
+            >
+              <tab.icon size={13} />
+              {tab.label}
+              {tab.count !== null && (
+                <span
+                  className="px-1.5 py-0.5 rounded-full text-[9px]"
+                  style={{
+                    background: isActive ? `${sector.accent}22` : "rgba(255,255,255,0.07)",
+                    color: isActive ? sector.accent : "rgba(255,255,255,0.3)",
+                  }}
+                >
+                  {tab.count}
+                </span>
+              )}
+            </motion.button>
+          );
+        })}
+      </div>
+
+      {/* CONTENT */}
+      <div className="flex-1 overflow-y-auto overscroll-contain px-5 sm:px-8 py-6 sm:py-8 custom-scroll">
+        <AnimatePresence mode="wait">
+
+          {/* PHOTOS */}
+          {activeTab === "images" && (
+            <motion.div
+              key="images"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22 }}
+            >
+              {sector.images.length === 0 ? <EmptyState /> : (
+                <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
+                  {sector.images.map((src, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="break-inside-avoid rounded-2xl overflow-hidden"
+                      style={{ border: "1px solid rgba(255,255,255,0.07)" }}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={src} alt={`${sector.label} ${i + 1}`} className="w-full h-auto block" />
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* VIDEOS */}
+          {activeTab === "videos" && (
+            <motion.div
+              key="videos"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22 }}
+            >
+              {sector.videos.length === 0 ? <EmptyState /> : (
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                  {sector.videos.map((src, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: i * 0.07 }}
+                    >
+                      <VideoPlayer src={src} accent={sector.accent} />
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* PDF */}
+          {activeTab === "pdf" && (
+            <motion.div
+              key="pdf"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22 }}
+            >
+              {!sector.pdf ? <EmptyState /> : (
+                <div className="flex flex-col gap-5">
+                  <div
+                    className="flex items-center justify-between px-5 py-3 rounded-2xl"
+                    style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-9 h-9 rounded-xl flex items-center justify-center"
+                        style={{ background: `${sector.accent}14`, border: `1px solid ${sector.accent}30` }}
+                      >
+                        <FileText size={16} style={{ color: sector.accent }} strokeWidth={1.5} />
+                      </div>
+                      <div>
+                        <p className="text-white/80 text-sm font-medium leading-tight">{sector.label} — Company Profile</p>
+                        <p className="text-white/30 text-xs font-mono">PDF Document</p>
+                      </div>
+                    </div>
+                    <a
+                      href={sector.pdf}
+                      download
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl text-white text-xs font-semibold tracking-wide no-underline"
+                      style={{ background: sector.accent }}
+                    >
+                      <ExternalLink size={12} />
+                      Download
+                    </a>
+                  </div>
+
+                  <div
+                    className="rounded-2xl overflow-hidden"
+                    style={{ border: "1px solid rgba(255,255,255,0.07)", minHeight: "calc(100vh - 240px)" }}
+                  >
+                    <iframe
+                      src={sector.pdf + "#toolbar=1&view=FitH"}
+                      className="w-full h-full"
+                      style={{ minHeight: "calc(100vh - 240px)", background: "#111" }}
+                      title={`${sector.label} profile`}
+                    />
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          )}
+
+        </AnimatePresence>
+      </div>
+
+      <style>{`
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: rgba(141,154,176,0.18); border-radius: 2px; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: white; cursor: pointer; }
+        input[type=range]::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; }
+      `}</style>
+    </motion.div>
+  );
+}
+
+/* ── SECTOR CARD ── */
+function SectorCard({ sector, index, onClick }: { sector: Sector; index: number; onClick: () => void }) {
+  const hasContent = sector.images.length + sector.videos.length + (sector.pdf ? 1 : 0) > 0;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 36, scale: 0.96 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.52, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ y: -5 }}
+      onClick={onClick}
+      className="group relative rounded-2xl p-6 sm:p-7 cursor-pointer overflow-hidden flex flex-col justify-between"
+      style={{
+        background: "rgba(255,255,255,0.025)",
+        border: "1px solid rgba(255,255,255,0.07)",
+        backdropFilter: "blur(12px)",
+        minHeight: 210,
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileHover={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className="absolute inset-0 pointer-events-none rounded-2xl"
+        style={{
+          background: `radial-gradient(ellipse at 25% 25%, ${sector.accent}10 0%, transparent 65%)`,
+          border: `1px solid ${sector.accent}22`,
+        }}
+      />
+      <motion.div
+        initial={{ scaleX: 0 }}
+        whileHover={{ scaleX: 1 }}
+        transition={{ duration: 0.35 }}
+        className="absolute top-0 left-0 right-0 h-px origin-left"
+        style={{ background: `linear-gradient(90deg, transparent, ${sector.accent}70, transparent)` }}
+      />
+
+      <div className="relative z-10 flex items-start justify-between mb-5">
+        <motion.div
+          whileHover={{ rotate: 5, scale: 1.08 }}
+          transition={{ type: "spring", stiffness: 320 }}
+          className="w-11 h-11 rounded-[14px] flex items-center justify-center"
+          style={{ background: `${sector.accent}12`, border: `1px solid ${sector.accent}28` }}
+        >
+          <sector.Icon size={20} style={{ color: sector.accent }} strokeWidth={1.5} />
+        </motion.div>
+
+        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <span className="text-[10px] font-mono text-white/35 tracking-widest">OPEN</span>
+          <ChevronRight size={11} className="text-white/25" />
+        </div>
+      </div>
+
+      <div className="relative z-10 flex-1">
+        <h3
+          className="text-white leading-tight mb-2 tracking-wide"
+          style={{ fontFamily: "'Bebas Neue', Impact, sans-serif", fontSize: "clamp(1.25rem,2.5vw,1.55rem)" }}
+        >
+          {sector.label}
+        </h3>
+        <p className="text-[12px] text-white/38 leading-relaxed">{sector.desc}</p>
+      </div>
+
+      <div
+        className="relative z-10 flex items-center justify-between mt-5 pt-4"
+        style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
+      >
+        <div className="flex gap-3">
+          {[
+            { icon: Images,   count: sector.images.length },
+            { icon: Video,    count: sector.videos.length },
+            { icon: FileText, count: sector.pdf ? 1 : 0 },
+          ].map(({ icon: Icon, count }, idx) => (
+            <div key={idx} className="flex items-center gap-1">
+              <Icon size={11} className="text-white/22" />
+              <span className="text-[10px] text-white/22 font-mono">{count}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-1.5">
+          <motion.div
+            animate={hasContent ? { opacity: [0.4, 1, 0.4] } : { opacity: 0.25 }}
+            transition={{ duration: 2.5, repeat: Infinity }}
+            className="w-1.5 h-1.5 rounded-full"
+            style={{ background: hasContent ? sector.accent : "rgba(255,255,255,0.2)" }}
+          />
+          <span className="text-[9px] font-mono text-white/22 tracking-[0.2em] uppercase">
+            {hasContent ? "Ready" : "Soon"}
+          </span>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════
+   MAIN PAGE
+══════════════════════════════════════════════════════ */
 export default function OurWorkPage() {
+  const [activeSector, setActiveSector] = useState<Sector | null>(null);
+
   return (
     <>
-      {/* ═══════════════ PAGE HERO ═══════════════ */}
       <section
         className="relative overflow-hidden"
         style={{
-          padding: "130px 1.5rem 60px",
-          background:
-            "radial-gradient(ellipse 80% 50% at 50% 0%, #0d1a28 0%, #0D1117 55%, #0A0A0A 100%)",
+          padding: "130px 1.5rem 70px",
+          background: "radial-gradient(ellipse 80% 50% at 50% 0%, #0d1a28 0%, #0D1117 55%, #0A0A0A 100%)",
         }}
       >
-        {/* Grid bg */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage:
-              "linear-gradient(rgba(141,154,176,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(141,154,176,0.04) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-            maskImage: "linear-gradient(to bottom, black 0%, transparent 80%)",
-            WebkitMaskImage:
-              "linear-gradient(to bottom, black 0%, transparent 80%)",
-          }}
-        />
-
-        {/* Ambient orb */}
-        <div
-          style={{
-            position: "absolute",
-            top: "-5%",
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: 550,
-            height: 550,
-            borderRadius: "50%",
-            background:
-              "radial-gradient(circle, rgba(141,154,176,0.1) 0%, transparent 65%)",
-            filter: "blur(80px)",
-            pointerEvents: "none",
-          }}
-        />
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(141,154,176,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(141,154,176,0.04) 1px, transparent 1px)", backgroundSize: "60px 60px", maskImage: "linear-gradient(to bottom, black 0%, transparent 80%)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 80%)" }} />
+        <div style={{ position: "absolute", top: "-5%", left: "50%", transform: "translateX(-50%)", width: 550, height: 550, borderRadius: "50%", background: "radial-gradient(circle, rgba(141,154,176,0.1) 0%, transparent 65%)", filter: "blur(80px)", pointerEvents: "none" }} />
 
         <div className="z-[1] relative mx-auto max-w-[1280px] text-center">
           <Reveal>
-            <div
-              className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full"
-              style={{
-                background: "rgba(141,154,176,0.08)",
-                border: "1px solid rgba(141,154,176,0.22)",
-              }}
-            >
-              <span
-                className="font-mono uppercase"
-                style={{
-                  fontSize: 11,
-                  letterSpacing: "0.25em",
-                  color: "rgba(141,154,176,0.7)",
-                }}
-              >
-                Portfolio &amp; Case Studies
-              </span>
+            <div className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full" style={{ background: "rgba(141,154,176,0.08)", border: "1px solid rgba(141,154,176,0.22)" }}>
+              <span className="font-mono uppercase" style={{ fontSize: 11, letterSpacing: "0.25em", color: "rgba(141,154,176,0.7)" }}>Portfolio &amp; Case Studies</span>
             </div>
           </Reveal>
 
           <Reveal delay={0.1}>
-            <h1
-              className="m-0 mb-5 leading-none"
-              style={{
-                fontFamily:
-                  "var(--font-display,'Bebas Neue',Impact,sans-serif)",
-                fontSize: "clamp(3.5rem,10vw,8rem)",
-                background:
-                  "linear-gradient(135deg, #ffffff 0%, #8D9AB0 55%, #B0BDD0 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              OUR PORTFOLIO
+            <h1 className="m-0 mb-5 leading-none" style={{ fontFamily: "var(--font-display,'Bebas Neue',Impact,sans-serif)", fontSize: "clamp(3.5rem,10vw,8rem)", background: "linear-gradient(135deg, #ffffff 0%, #8D9AB0 55%, #B0BDD0 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+              OUR WORK
             </h1>
           </Reveal>
 
           <Reveal delay={0.2}>
-            <p
-              style={{
-                fontSize: "clamp(0.95rem,1.6vw,1.1rem)",
-                color: "rgba(255,255,255,0.42)",
-                maxWidth: 560,
-                margin: "0 auto 48px",
-                lineHeight: 1.8,
-              }}
-            >
-              Real projects. Real results. From brand identities to performance
-              campaigns — here&apos;s what we&apos;ve built across{" "}
-              <span
-                style={{ color: "rgba(255,255,255,0.78)", fontWeight: 500 }}
-              >
-                Saudi Arabia &amp; Egypt
-              </span>
-              .
+            <p style={{ fontSize: "clamp(0.95rem,1.6vw,1.1rem)", color: "rgba(255,255,255,0.42)", maxWidth: 520, margin: "0 auto 48px", lineHeight: 1.8 }}>
+              Real projects. Real results. Across two of the Middle East&apos;s most dynamic markets.
             </p>
           </Reveal>
 
-          {/* Quick stats */}
           <Reveal delay={0.3}>
-            <div className="flex flex-wrap justify-center gap-4">
-              {[
-                { value: "1M+", label: "Impressions" },
-                { value: "6+", label: "Sectors" },
-                { value: "2", label: "Countries" },
-                { value: "100%", label: "Commitment" },
-              ].map((s, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-3 px-5 py-3 rounded-2xl"
-                  style={{
-                    background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    backdropFilter: "blur(10px)",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily:
-                        "var(--font-display,'Bebas Neue',Impact,sans-serif)",
-                      fontSize: "1.6rem",
-                      background: "linear-gradient(135deg,#B0BDD0,#8D9AB0)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
-                      lineHeight: 1,
-                    }}
-                  >
-                    {s.value}
-                  </span>
-                  <span
-                    className="font-mono uppercase"
-                    style={{
-                      fontSize: 10,
-                      color: "rgba(255,255,255,0.32)",
-                      letterSpacing: "0.15em",
-                      lineHeight: 1.3,
-                      maxWidth: 70,
-                    }}
-                  >
-                    {s.label}
-                  </span>
+            <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
+              {[{ value: "1M+", label: "Impressions" }, { value: "6+", label: "Sectors" }, { value: "2", label: "Countries" }, { value: "100%", label: "Commitment" }].map((s, i) => (
+                <div key={i} className="flex items-center gap-3 px-5 py-3 rounded-2xl" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", backdropFilter: "blur(10px)" }}>
+                  <span style={{ fontFamily: "var(--font-display,'Bebas Neue',Impact,sans-serif)", fontSize: "1.6rem", background: "linear-gradient(135deg,#B0BDD0,#8D9AB0)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", lineHeight: 1 }}>{s.value}</span>
+                  <span className="font-mono uppercase" style={{ fontSize: 10, color: "rgba(255,255,255,0.32)", letterSpacing: "0.15em", lineHeight: 1.3, maxWidth: 70 }}>{s.label}</span>
                 </div>
               ))}
             </div>
@@ -186,125 +865,34 @@ export default function OurWorkPage() {
         </div>
       </section>
 
-      {/* ═══════════════ PORTFOLIO SECTION ═══════════════ */}
-      <PortfolioSection />
-
-      {/* ═══════════════ CAMPAIGN RESULTS ═══════════════ */}
-      <section className="py-28 px-4 sm:px-6 border-t border-white/[0.06]">
+      <section className="py-20 sm:py-28 px-4 sm:px-6 border-t border-white/[0.06] bg-[#0A0C12]">
         <div className="max-w-[1280px] mx-auto">
-          <Reveal className="text-center mb-16">
-            <div
-              className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full"
-              style={{
-                background: "rgba(141,154,176,0.08)",
-                border: "1px solid rgba(141,154,176,0.22)",
-              }}
-            >
-              <span
-                className="font-mono uppercase"
-                style={{
-                  fontSize: 11,
-                  letterSpacing: "0.25em",
-                  color: "rgba(141,154,176,0.7)",
-                }}
-              >
-                Proof of Work
-              </span>
-            </div>
-            <h2
-              className="m-0 mb-4 leading-none"
-              style={{
-                fontFamily: "var(--font-display,'Bebas Neue',Impact,sans-serif)",
-                fontSize: "clamp(2.8rem,6vw,4.5rem)",
-                background:
-                  "linear-gradient(135deg, #ffffff 0%, #8D9AB0 55%, #B0BDD0 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              CAMPAIGN RESULTS
-            </h2>
-            <p className="text-white/35 text-sm mt-4 max-w-[460px] mx-auto">
-              Real before &amp; after — one campaign that brought in 60+ clients.
-            </p>
-          </Reveal>
-
-          <Reveal>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.06] rounded-2xl overflow-hidden mb-10">
-              {CAMPAIGN_STATS.map((stat, i) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1, duration: 0.6 }}
-                  whileHover={{ background: "rgba(141, 154, 176,0.06)" }}
-                  className="py-8 sm:py-10 px-4 sm:px-8 bg-white/[0.04] text-center"
-                >
-                  <motion.div
-                    animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.1, 1] }}
-                    transition={{ duration: 4 + i, repeat: Infinity, delay: i * 0.8 }}
-                    className="flex justify-center mb-3 text-[#8D9AB0]"
-                  >
-                    <stat.Icon size={28} strokeWidth={1.5} />
-                  </motion.div>
-                  <div 
-                    className="text-white text-[2rem] sm:text-[2.8rem] leading-none mb-2"
-                    style={{ fontFamily: "'Bebas Neue',Impact,sans-serif" }}
-                  >
-                    {stat.value}
-                  </div>
-                  <div className="text-[13px] text-white/70 mb-1 font-medium">
-                    {stat.label}
-                  </div>
-                  <div className="text-[11px] text-white/35 font-mono">
-                    {stat.sub}
-                  </div>
-                </motion.div>
-              ))}
+          <Reveal className="mb-12 sm:mb-16">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <div>
+                <span className="block text-[11px] font-mono tracking-[0.35em] uppercase mb-3" style={{ color: "rgba(141,154,176,0.7)" }}>Browse by Industry</span>
+                <h2 className="m-0 leading-none" style={{ fontFamily: "var(--font-display,'Bebas Neue',Impact,sans-serif)", fontSize: "clamp(2.2rem,5vw,3.8rem)", background: "linear-gradient(135deg, #ffffff 0%, #8D9AB0 60%, #B0BDD0 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                  CASE STUDIES
+                </h2>
+              </div>
+              <p className="text-white/28 text-sm max-w-xs leading-relaxed">Pick a sector to explore photos, videos, and the full client profile.</p>
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {CAMPAIGN_PLACEHOLDERS.map(({ label, Icon: PlaceholderIcon }, i) => (
-              <Reveal key={label} delay={i * 0.1}>
-                <motion.div
-                  whileHover={{ 
-                    borderColor: "rgba(141, 154, 176,0.25)", 
-                    y: -4, 
-                    boxShadow: "0 16px 50px rgba(141, 154, 176,0.1)" 
-                  }}
-                  className="aspect-video flex flex-col items-center justify-center gap-3"
-                  style={{
-                    background: "rgba(255,255,255,0.03)",
-                    border: "1px dashed rgba(255,255,255,0.08)",
-                    backdropFilter: "blur(10px)",
-                    borderRadius: "16px",
-                    padding: "2rem",
-                  }}
-                >
-                  <motion.div
-                    animate={{ rotate: [0, 8, -8, 0], scale: [1, 1.08, 1] }}
-                    transition={{ duration: 5 + i, repeat: Infinity }}
-                    className="text-white/20"
-                  >
-                    <PlaceholderIcon size={40} strokeWidth={1} />
-                  </motion.div>
-                  <div className="text-xs text-white/35 font-mono tracking-[0.15em] uppercase">
-                    {label}
-                  </div>
-                  <div className="text-[11px] text-white/20 text-center max-w-[200px]">
-                    Drop your campaign image here
-                  </div>
-                </motion.div>
-              </Reveal>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+            {SECTORS.map((sector, i) => (
+              <SectorCard key={sector.id} sector={sector} index={i} onClick={() => setActiveSector(sector)} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* ═══════════════ CTA SECTION ═══════════════ */}
+      <AnimatePresence>
+        {activeSector && (
+          <SectorPage sector={activeSector} onBack={() => setActiveSector(null)} />
+        )}
+      </AnimatePresence>
+
       <CTASection />
     </>
   );
