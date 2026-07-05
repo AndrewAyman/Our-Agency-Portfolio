@@ -81,8 +81,9 @@ const SECTORS: Sector[] = [
       "/profiles/dental/images/June/9.png",
     ],
     videos: [
-      "/profiles/dental/videos/Dr_dina _Smile makers.mp4",
-      "/profiles/dental/videos/video2.mp4",
+      "/public/profiles/dental/videos/Mena case study.mp4",
+      "/public/profiles/dental/videos/رائحة النفس_2.mp4",
+   
     ],
     pdf: "/profiles/dental/profile/banet alemar profile lite2.pdf",
   },
