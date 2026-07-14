@@ -1,3 +1,5 @@
+// src/app/our-work/page.tsx
+
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
@@ -12,11 +14,6 @@ import {
   Play,
   Pause,
   ArrowLeft,
-  Building2,
-  Stethoscope,
-  Film,
-  Dumbbell,
-  Palette,
   ExternalLink,
   SkipBack,
   SkipForward,
@@ -25,110 +22,10 @@ import {
   Maximize,
   RotateCcw,
 } from "lucide-react";
+import { SECTORS, type Sector } from "./data";
 
 /* ──────────────────────────────────────────────────────
-   SECTOR DATA
-────────────────────────────────────────────────────── */
-type Sector = {
-  id: string;
-  label: string;
-  Icon: React.ElementType;
-  accent: string;
-  desc: string;
-  images: string[];
-  videos: string[];
-  pdf: string | null;
-};
-
-const SECTORS: Sector[] = [
-  {
-    id: "dental",
-    label: "Dental & Cosmetics",
-    Icon: Stethoscope,
-    accent: "#8D9AB0",
-    desc: "Brand identity, social media, and video content for dental clinics and cosmetic practices.",
-    images: [
-      "/profiles/dental/images/post 1/1.png",
-      "/profiles/dental/images/post 1/2.png",
-      "/profiles/dental/images/post 1/3.png",
-      "/profiles/dental/images/post 1/4.png",
-      "/profiles/dental/images/post 1/5.png",
-      "/profiles/dental/images/June/heighlight/1.png",
-      "/profiles/dental/images/June/heighlight/2.png",
-      "/profiles/dental/images/June/heighlight/3.png",
-      "/profiles/dental/images/June/heighlight/4.png",
-      "/profiles/dental/images/June/heighlight/5.png",
-      "/profiles/dental/images/June/heighlight/6.png",
-      "/profiles/dental/images/June/heighlight/7.png",
-      "/profiles/dental/images/June/heighlight/8.png",
-      "/profiles/dental/images/June/post 1/1.png",
-      "/profiles/dental/images/June/post 1/2.png",
-      "/profiles/dental/images/June/post 1/3.png",
-      "/profiles/dental/images/June/post 1/4.png",
-      "/profiles/dental/images/June/post 1/5.png",
-      "/profiles/dental/images/June/post 1/6.png",
-      "/profiles/dental/images/June/post 2/11.png",
-      "/profiles/dental/images/June/post 2/22.png",
-      "/profiles/dental/images/June/post 3/1.png",
-      "/profiles/dental/images/June/post 3/2.png",
-      "/profiles/dental/images/June/post 3/3.png",
-      "/profiles/dental/images/June/post 3/4.png",
-      "/profiles/dental/images/June/post 3/5.png",
-      "/profiles/dental/images/June/post 4/1.png",
-      "/profiles/dental/images/June/post 8/1.png",
-      "/profiles/dental/images/June/post 8/2.png",
-      "/profiles/dental/images/June/6.png",
-      "/profiles/dental/images/June/9.png",
-    ],
-   videos: [],
-    pdf: "/profiles/dental/profile/banet alemar profile lite2.pdf",
-  },
-  {
-    id: "construction",
-    label: "Construction",
-    Icon: Building2,
-    accent: "#A8B4C5",
-    desc: "Full marketing solutions for construction companies, stone & marble contractors.",
-    images: [],
-    videos: [],
-    pdf: "/profiles/construction/profile/banet-alemar-profile.pdf",
-  },
-  {
-    id: "gym",
-    label: "Gym & Fitness",
-    Icon: Dumbbell,
-    accent: "#8D9AB0",
-    desc: "Energetic branding, reels, and performance ads for gyms and fitness studios.",
-    images: [],
-    videos: [],
-    pdf: null,
-  },
-  {
-    id: "video",
-    label: "Video Graphics",
-    Icon: Film,
-    accent: "#B0BDD0",
-    desc: "Motion graphics, animated ads, and video production for brands across KSA & Egypt.",
-    images: [],
-    videos: [],
-    pdf: null,
-  },
-  {
-    id: "media",
-    label: "Media & Branding",
-    Icon: Palette,
-    accent: "#A8B4C5",
-    desc: "Social media management, creative design, and brand identity from scratch.",
-    images: [],
-    videos: [],
-    pdf: null,
-  },
-];
-
-type Tab = "images" | "videos" | "pdf";
-
-/* ──────────────────────────────────────────────────────
-   FORMAT TIME  mm:ss
+   FORMAT TIME
 ────────────────────────────────────────────────────── */
 function fmtTime(s: number) {
   if (!isFinite(s)) return "0:00";
@@ -138,7 +35,32 @@ function fmtTime(s: number) {
 }
 
 /* ──────────────────────────────────────────────────────
-   CUSTOM VIDEO PLAYER
+   YOUTUBE VIDEO PLAYER
+────────────────────────────────────────────────────── */
+function YouTubeVideo({ video, accent }: { video: { title: string; youtubeUrl: string; thumbnail?: string }; accent: string }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  return (
+    <div className="relative w-full rounded-2xl overflow-hidden" style={{ aspectRatio: "16/9" }}>
+      {!isLoaded && (
+        <div className="absolute inset-0 flex items-center justify-center bg-[#0a0c12]">
+          <div className="w-12 h-12 rounded-full border-2 border-white/10 border-t-white/30 animate-spin" />
+        </div>
+      )}
+      <iframe
+        src={video.youtubeUrl}
+        title={video.title}
+        className="w-full h-full"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        onLoad={() => setIsLoaded(true)}
+      />
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────
+   LOCAL VIDEO PLAYER (اختياري لو عايز فيديوهات محلية)
 ────────────────────────────────────────────────────── */
 function VideoPlayer({ src, accent }: { src: string; accent: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -157,7 +79,6 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
   const [seeking, setSeeking] = useState(false);
   const [ended, setEnded] = useState(false);
 
-  /* ── helpers ── */
   const resetHideTimer = useCallback(() => {
     setShowControls(true);
     if (hideTimer.current) clearTimeout(hideTimer.current);
@@ -170,10 +91,8 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
     return () => { if (hideTimer.current) clearTimeout(hideTimer.current); };
   }, []);
 
-  /* mouse activity */
   const handleMouseMove = useCallback(() => resetHideTimer(), [resetHideTimer]);
 
-  /* play / pause */
   const togglePlay = useCallback(() => {
     const v = videoRef.current;
     if (!v) return;
@@ -183,7 +102,6 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
     resetHideTimer();
   }, [playing, ended, resetHideTimer]);
 
-  /* skip */
   const skip = useCallback((sec: number) => {
     const v = videoRef.current;
     if (!v) return;
@@ -191,7 +109,6 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
     resetHideTimer();
   }, [resetHideTimer]);
 
-  /* volume */
   const toggleMute = () => {
     const v = videoRef.current;
     if (!v) return;
@@ -208,7 +125,6 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
     setMuted(val === 0);
   };
 
-  /* seek */
   const getSeekPosition = (e: React.MouseEvent | MouseEvent): number => {
     const bar = progressRef.current;
     if (!bar || !duration) return 0;
@@ -237,7 +153,6 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
     window.addEventListener("mouseup", onUp);
   };
 
-  /* fullscreen */
   const toggleFullscreen = () => {
     const el = containerRef.current;
     if (!el) return;
@@ -254,7 +169,6 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
     return () => document.removeEventListener("fullscreenchange", onChange);
   }, []);
 
-  /* video events */
   const onTimeUpdate = () => {
     const v = videoRef.current;
     if (!v || seeking) return;
@@ -263,23 +177,22 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
   };
   const onDurationChange = () => { if (videoRef.current) setDuration(videoRef.current.duration); };
   const onEnded = () => { setPlaying(false); setEnded(true); setShowControls(true); };
-  const onPlay  = () => { setPlaying(true);  setEnded(false); resetHideTimer(); };
+  const onPlay = () => { setPlaying(true); setEnded(false); resetHideTimer(); };
   const onPause = () => { setPlaying(false); setShowControls(true); };
 
-  /* keyboard */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (!videoRef.current) return;
-      if (e.code === "Space")       { e.preventDefault(); togglePlay(); }
-      if (e.code === "ArrowRight")  { skip(5); }
-      if (e.code === "ArrowLeft")   { skip(-5); }
+      if (e.code === "Space") { e.preventDefault(); togglePlay(); }
+      if (e.code === "ArrowRight") { skip(5); }
+      if (e.code === "ArrowLeft") { skip(-5); }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [togglePlay, skip]);
 
   const progress = duration ? (currentTime / duration) * 100 : 0;
-  const bufPct   = duration ? (buffered   / duration) * 100 : 0;
+  const bufPct = duration ? (buffered / duration) * 100 : 0;
 
   return (
     <div
@@ -289,7 +202,6 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
       onMouseMove={handleMouseMove}
       onMouseLeave={() => { if (playing) setShowControls(false); }}
     >
-      {/* video element */}
       <video
         ref={videoRef}
         src={src}
@@ -305,10 +217,8 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
         style={{ cursor: showControls ? "default" : "none" }}
       />
 
-      {/* click overlay for play/pause (center) */}
       <div className="absolute inset-0" onClick={togglePlay} style={{ cursor: "default" }} />
 
-      {/* ── CENTER PLAY/PAUSE pulse ── */}
       <AnimatePresence>
         {!playing && !ended && (
           <motion.div
@@ -328,7 +238,6 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
         )}
       </AnimatePresence>
 
-      {/* ── REPLAY BUTTON ── */}
       <AnimatePresence>
         {ended && (
           <motion.div
@@ -348,7 +257,6 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
         )}
       </AnimatePresence>
 
-      {/* ── CONTROLS OVERLAY ── */}
       <AnimatePresence>
         {showControls && (
           <motion.div
@@ -361,35 +269,28 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
               background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)",
             }}
           >
-            {/* ── SEEK BAR ── */}
             <div
               ref={progressRef}
               className="relative h-1 rounded-full mb-3 cursor-pointer group pointer-events-auto"
               style={{ background: "rgba(255,255,255,0.18)" }}
               onMouseDown={handleSeekMouseDown}
             >
-              {/* buffered */}
               <div
                 className="absolute left-0 top-0 h-full rounded-full"
                 style={{ width: `${bufPct}%`, background: "rgba(255,255,255,0.25)", transition: "width 0.3s" }}
               />
-              {/* played */}
               <div
                 className="absolute left-0 top-0 h-full rounded-full transition-all"
                 style={{ width: `${progress}%`, background: accent }}
               />
-              {/* thumb */}
               <div
                 className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
                 style={{ left: `${progress}%`, transform: `translateX(-50%) translateY(-50%)`, background: "white" }}
               />
             </div>
 
-            {/* ── BOTTOM ROW ── */}
             <div className="flex items-center justify-between pointer-events-auto">
-              {/* left */}
               <div className="flex items-center gap-1 sm:gap-2">
-                {/* skip back */}
                 <button
                   onClick={() => skip(-5)}
                   className="w-8 h-8 flex items-center justify-center rounded-lg transition-colors hover:bg-white/10 cursor-pointer"
@@ -399,7 +300,6 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
                   <SkipBack size={16} className="text-white/80" />
                 </button>
 
-                {/* play/pause */}
                 <button
                   onClick={togglePlay}
                   className="w-9 h-9 flex items-center justify-center rounded-xl transition-colors hover:bg-white/10 cursor-pointer"
@@ -407,11 +307,10 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
                 >
                   {playing
                     ? <Pause size={18} className="text-white" fill="white" />
-                    : <Play  size={18} className="text-white ml-0.5" fill="white" />
+                    : <Play size={18} className="text-white ml-0.5" fill="white" />
                   }
                 </button>
 
-                {/* skip forward */}
                 <button
                   onClick={() => skip(5)}
                   className="w-8 h-8 flex items-center justify-center rounded-lg transition-colors hover:bg-white/10 cursor-pointer"
@@ -421,7 +320,6 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
                   <SkipForward size={16} className="text-white/80" />
                 </button>
 
-                {/* volume */}
                 <div className="flex items-center gap-1 ml-1">
                   <button
                     onClick={toggleMute}
@@ -442,13 +340,11 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
                   />
                 </div>
 
-                {/* time */}
                 <span className="text-white/55 text-[11px] font-mono ml-1 hidden sm:block">
                   {fmtTime(currentTime)} / {fmtTime(duration)}
                 </span>
               </div>
 
-              {/* right */}
               <div className="flex items-center gap-1">
                 <button
                   onClick={toggleFullscreen}
@@ -467,7 +363,9 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
   );
 }
 
-/* ── EMPTY STATE ── */
+/* ──────────────────────────────────────────────────────
+   EMPTY STATE
+────────────────────────────────────────────────────── */
 function EmptyState() {
   return (
     <div className="flex flex-col items-center justify-center py-32 gap-3 text-center">
@@ -483,239 +381,9 @@ function EmptyState() {
   );
 }
 
-/* ══════════════════════════════════════════════════════
-   FULL-SCREEN SECTOR PAGE
-══════════════════════════════════════════════════════ */
-function SectorPage({ sector, onBack }: { sector: Sector; onBack: () => void }) {
-  const [activeTab, setActiveTab] = useState<Tab>("images");
-
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = ""; };
-  }, []);
-
-  const TABS: { id: Tab; label: string; icon: React.ElementType; count: number | null }[] = [
-    { id: "images", label: "Photos",      icon: Images,   count: sector.images.length || null },
-    { id: "videos", label: "Videos",      icon: Video,    count: sector.videos.length || null },
-    { id: "pdf",    label: "Profile PDF", icon: FileText, count: sector.pdf ? 1 : null },
-  ];
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: 40 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -30 }}
-      transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed inset-0 z-50 flex flex-col"
-      style={{ background: "#08090e" }}
-    >
-      {/* TOPBAR */}
-      <div
-        className="flex items-center justify-between px-5 sm:px-8 py-4 shrink-0"
-        style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(8,9,14,0.95)", backdropFilter: "blur(16px)" }}
-      >
-        <motion.button
-          whileHover={{ x: -3 }}
-          onClick={onBack}
-          className="flex items-center gap-2 cursor-pointer"
-          style={{ background: "none", border: "none", padding: 0 }}
-        >
-          <div
-            className="w-8 h-8 rounded-xl flex items-center justify-center"
-            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}
-          >
-            <ArrowLeft size={14} className="text-white/60" />
-          </div>
-          <span className="text-white/40 text-xs font-mono tracking-widest hidden sm:block">OUR WORK</span>
-        </motion.button>
-
-        <div className="flex items-center gap-3">
-          <div
-            className="w-8 h-8 rounded-xl flex items-center justify-center"
-            style={{ background: `${sector.accent}15`, border: `1px solid ${sector.accent}35` }}
-          >
-            <sector.Icon size={15} style={{ color: sector.accent }} strokeWidth={1.5} />
-          </div>
-          <h2
-            className="text-white m-0 leading-none"
-            style={{ fontFamily: "'Bebas Neue', Impact, sans-serif", fontSize: "clamp(1.2rem,3vw,1.6rem)", letterSpacing: "0.05em" }}
-          >
-            {sector.label}
-          </h2>
-        </div>
-
-        <div className="w-[88px] hidden sm:block" />
-        <div className="w-8 block sm:hidden" />
-      </div>
-
-      {/* TABS */}
-      <div
-        className="flex gap-1 px-5 sm:px-8 py-3 shrink-0"
-        style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}
-      >
-        {TABS.map((tab) => {
-          const isActive = activeTab === tab.id;
-          return (
-            <motion.button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              animate={{
-                background: isActive ? `${sector.accent}16` : "transparent",
-                color: isActive ? "#ffffffdd" : "rgba(255,255,255,0.38)",
-                borderColor: isActive ? `${sector.accent}40` : "rgba(255,255,255,0.06)",
-              }}
-              transition={{ duration: 0.15 }}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono tracking-wider cursor-pointer"
-              style={{ border: "1px solid rgba(255,255,255,0.06)" }}
-            >
-              <tab.icon size={13} />
-              {tab.label}
-              {tab.count !== null && (
-                <span
-                  className="px-1.5 py-0.5 rounded-full text-[9px]"
-                  style={{
-                    background: isActive ? `${sector.accent}22` : "rgba(255,255,255,0.07)",
-                    color: isActive ? sector.accent : "rgba(255,255,255,0.3)",
-                  }}
-                >
-                  {tab.count}
-                </span>
-              )}
-            </motion.button>
-          );
-        })}
-      </div>
-
-      {/* CONTENT */}
-      <div className="flex-1 overflow-y-auto overscroll-contain px-5 sm:px-8 py-6 sm:py-8 custom-scroll">
-        <AnimatePresence mode="wait">
-
-          {/* PHOTOS */}
-          {activeTab === "images" && (
-            <motion.div
-              key="images"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.22 }}
-            >
-              {sector.images.length === 0 ? <EmptyState /> : (
-                <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-                  {sector.images.map((src, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: i * 0.05 }}
-                      className="break-inside-avoid rounded-2xl overflow-hidden"
-                      style={{ border: "1px solid rgba(255,255,255,0.07)" }}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={src} alt={`${sector.label} ${i + 1}`} className="w-full h-auto block" />
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-            </motion.div>
-          )}
-
-          {/* VIDEOS */}
-          {activeTab === "videos" && (
-            <motion.div
-              key="videos"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.22 }}
-            >
-              {sector.videos.length === 0 ? <EmptyState /> : (
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                  {sector.videos.map((src, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: i * 0.07 }}
-                    >
-                      <VideoPlayer src={src} accent={sector.accent} />
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-            </motion.div>
-          )}
-
-          {/* PDF */}
-          {activeTab === "pdf" && (
-            <motion.div
-              key="pdf"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.22 }}
-            >
-              {!sector.pdf ? <EmptyState /> : (
-                <div className="flex flex-col gap-5">
-                  <div
-                    className="flex items-center justify-between px-5 py-3 rounded-2xl"
-                    style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="w-9 h-9 rounded-xl flex items-center justify-center"
-                        style={{ background: `${sector.accent}14`, border: `1px solid ${sector.accent}30` }}
-                      >
-                        <FileText size={16} style={{ color: sector.accent }} strokeWidth={1.5} />
-                      </div>
-                      <div>
-                        <p className="text-white/80 text-sm font-medium leading-tight">{sector.label} — Company Profile</p>
-                        <p className="text-white/30 text-xs font-mono">PDF Document</p>
-                      </div>
-                    </div>
-                    <a
-                      href={sector.pdf}
-                      download
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 rounded-xl text-white text-xs font-semibold tracking-wide no-underline"
-                      style={{ background: sector.accent }}
-                    >
-                      <ExternalLink size={12} />
-                      Download
-                    </a>
-                  </div>
-
-                  <div
-                    className="rounded-2xl overflow-hidden"
-                    style={{ border: "1px solid rgba(255,255,255,0.07)", minHeight: "calc(100vh - 240px)" }}
-                  >
-                    <iframe
-                      src={sector.pdf + "#toolbar=1&view=FitH"}
-                      className="w-full h-full"
-                      style={{ minHeight: "calc(100vh - 240px)", background: "#111" }}
-                      title={`${sector.label} profile`}
-                    />
-                  </div>
-                </div>
-              )}
-            </motion.div>
-          )}
-
-        </AnimatePresence>
-      </div>
-
-      <style>{`
-        .custom-scroll::-webkit-scrollbar { width: 4px; }
-        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: rgba(141,154,176,0.18); border-radius: 2px; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: white; cursor: pointer; }
-        input[type=range]::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; }
-      `}</style>
-    </motion.div>
-  );
-}
-
-/* ── SECTOR CARD ── */
+/* ──────────────────────────────────────────────────────
+   SECTOR CARD
+────────────────────────────────────────────────────── */
 function SectorCard({ sector, index, onClick }: { sector: Sector; index: number; onClick: () => void }) {
   const hasContent = sector.images.length + sector.videos.length + (sector.pdf ? 1 : 0) > 0;
 
@@ -785,8 +453,8 @@ function SectorCard({ sector, index, onClick }: { sector: Sector; index: number;
       >
         <div className="flex gap-3">
           {[
-            { icon: Images,   count: sector.images.length },
-            { icon: Video,    count: sector.videos.length },
+            { icon: Images, count: sector.images.length },
+            { icon: Video, count: sector.videos.length },
             { icon: FileText, count: sector.pdf ? 1 : 0 },
           ].map(({ icon: Icon, count }, idx) => (
             <div key={idx} className="flex items-center gap-1">
@@ -812,6 +480,239 @@ function SectorCard({ sector, index, onClick }: { sector: Sector; index: number;
   );
 }
 
+/* ──────────────────────────────────────────────────────
+   SECTOR PAGE (Full Screen)
+────────────────────────────────────────────────────── */
+type Tab = "images" | "videos" | "pdf";
+
+function SectorPage({ sector, onBack }: { sector: Sector; onBack: () => void }) {
+  const [activeTab, setActiveTab] = useState<Tab>("images");
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  const TABS: { id: Tab; label: string; icon: any; count: number | null }[] = [
+    { id: "images", label: "Photos", icon: Images, count: sector.images.length || null },
+    { id: "videos", label: "Videos", icon: Video, count: sector.videos.length || null },
+    { id: "pdf", label: "Profile PDF", icon: FileText, count: sector.pdf ? 1 : null },
+  ];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 40 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -30 }}
+      transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+      className="fixed inset-0 z-50 flex flex-col"
+      style={{ background: "#08090e" }}
+    >
+      {/* Top Bar */}
+      <div
+        className="flex items-center justify-between px-5 sm:px-8 py-4 shrink-0"
+        style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(8,9,14,0.95)", backdropFilter: "blur(16px)" }}
+      >
+        <motion.button
+          whileHover={{ x: -3 }}
+          onClick={onBack}
+          className="flex items-center gap-2 cursor-pointer"
+          style={{ background: "none", border: "none", padding: 0 }}
+        >
+          <div
+            className="w-8 h-8 rounded-xl flex items-center justify-center"
+            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}
+          >
+            <ArrowLeft size={14} className="text-white/60" />
+          </div>
+          <span className="text-white/40 text-xs font-mono tracking-widest hidden sm:block">OUR WORK</span>
+        </motion.button>
+
+        <div className="flex items-center gap-3">
+          <div
+            className="w-8 h-8 rounded-xl flex items-center justify-center"
+            style={{ background: `${sector.accent}15`, border: `1px solid ${sector.accent}35` }}
+          >
+            <sector.Icon size={15} style={{ color: sector.accent }} strokeWidth={1.5} />
+          </div>
+          <h2
+            className="text-white m-0 leading-none"
+            style={{ fontFamily: "'Bebas Neue', Impact, sans-serif", fontSize: "clamp(1.2rem,3vw,1.6rem)", letterSpacing: "0.05em" }}
+          >
+            {sector.label}
+          </h2>
+        </div>
+
+        <div className="w-[88px] hidden sm:block" />
+        <div className="w-8 block sm:hidden" />
+      </div>
+
+      {/* Tabs */}
+      <div
+        className="flex gap-1 px-5 sm:px-8 py-3 shrink-0 overflow-x-auto"
+        style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}
+      >
+        {TABS.map((tab) => {
+          const isActive = activeTab === tab.id;
+          return (
+            <motion.button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              animate={{
+                background: isActive ? `${sector.accent}16` : "transparent",
+                color: isActive ? "#ffffffdd" : "rgba(255,255,255,0.38)",
+                borderColor: isActive ? `${sector.accent}40` : "rgba(255,255,255,0.06)",
+              }}
+              transition={{ duration: 0.15 }}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono tracking-wider cursor-pointer whitespace-nowrap"
+              style={{ border: "1px solid rgba(255,255,255,0.06)" }}
+            >
+              <tab.icon size={13} />
+              {tab.label}
+              {tab.count !== null && (
+                <span
+                  className="px-1.5 py-0.5 rounded-full text-[9px]"
+                  style={{
+                    background: isActive ? `${sector.accent}22` : "rgba(255,255,255,0.07)",
+                    color: isActive ? sector.accent : "rgba(255,255,255,0.3)",
+                  }}
+                >
+                  {tab.count}
+                </span>
+              )}
+            </motion.button>
+          );
+        })}
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto overscroll-contain px-5 sm:px-8 py-6 sm:py-8 custom-scroll">
+        <AnimatePresence mode="wait">
+
+          {/* Photos */}
+          {activeTab === "images" && (
+            <motion.div
+              key="images"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22 }}
+            >
+              {sector.images.length === 0 ? <EmptyState /> : (
+                <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
+                  {sector.images.map((src, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="break-inside-avoid rounded-2xl overflow-hidden"
+                      style={{ border: "1px solid rgba(255,255,255,0.07)" }}
+                    >
+                      <img src={src} alt={`${sector.label} ${i + 1}`} className="w-full h-auto block" />
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* Videos - YouTube */}
+          {activeTab === "videos" && (
+            <motion.div
+              key="videos"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22 }}
+            >
+              {sector.videos.length === 0 ? <EmptyState /> : (
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                  {sector.videos.map((video, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: i * 0.07 }}
+                    >
+                      <YouTubeVideo video={video} accent={sector.accent} />
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* PDF */}
+          {activeTab === "pdf" && (
+            <motion.div
+              key="pdf"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22 }}
+            >
+              {!sector.pdf ? <EmptyState /> : (
+                <div className="flex flex-col gap-5">
+                  <div
+                    className="flex items-center justify-between px-5 py-3 rounded-2xl flex-wrap gap-3"
+                    style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-9 h-9 rounded-xl flex items-center justify-center"
+                        style={{ background: `${sector.accent}14`, border: `1px solid ${sector.accent}30` }}
+                      >
+                        <FileText size={16} style={{ color: sector.accent }} strokeWidth={1.5} />
+                      </div>
+                      <div>
+                        <p className="text-white/80 text-sm font-medium leading-tight">{sector.label} — Company Profile</p>
+                        <p className="text-white/30 text-xs font-mono">PDF Document</p>
+                      </div>
+                    </div>
+                    <a
+                      href={sector.pdf}
+                      download
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl text-white text-xs font-semibold tracking-wide no-underline"
+                      style={{ background: sector.accent }}
+                    >
+                      <ExternalLink size={12} />
+                      Download
+                    </a>
+                  </div>
+
+                  <div
+                    className="rounded-2xl overflow-hidden"
+                    style={{ border: "1px solid rgba(255,255,255,0.07)", minHeight: "calc(100vh - 240px)" }}
+                  >
+                    <iframe
+                      src={sector.pdf + "#toolbar=1&view=FitH"}
+                      className="w-full h-full"
+                      style={{ minHeight: "calc(100vh - 240px)", background: "#111" }}
+                      title={`${sector.label} profile`}
+                    />
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          )}
+
+        </AnimatePresence>
+      </div>
+
+      <style>{`
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: rgba(141,154,176,0.18); border-radius: 2px; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: white; cursor: pointer; }
+        input[type=range]::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; }
+      `}</style>
+    </motion.div>
+  );
+}
+
 /* ══════════════════════════════════════════════════════
    MAIN PAGE
 ══════════════════════════════════════════════════════ */
@@ -820,6 +721,7 @@ export default function OurWorkPage() {
 
   return (
     <>
+      {/* Hero Section */}
       <section
         className="relative overflow-hidden"
         style={{
@@ -862,6 +764,7 @@ export default function OurWorkPage() {
         </div>
       </section>
 
+      {/* Sectors Grid */}
       <section className="py-20 sm:py-28 px-4 sm:px-6 border-t border-white/[0.06] bg-[#0A0C12]">
         <div className="max-w-[1280px] mx-auto">
           <Reveal className="mb-12 sm:mb-16">
@@ -884,6 +787,7 @@ export default function OurWorkPage() {
         </div>
       </section>
 
+      {/* Full-screen Sector Page */}
       <AnimatePresence>
         {activeSector && (
           <SectorPage sector={activeSector} onBack={() => setActiveSector(null)} />
