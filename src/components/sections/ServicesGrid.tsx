@@ -1,4 +1,10 @@
 "use client";
+// CORRECTED FILE — replace src/components/sections/ServicesGrid.tsx with this
+// CHANGES:
+// 1. Added useT() import and usage — heading now comes from t.servicesGrid.title
+// 2. ✅ FIX: Arabic heading animated as one unit (not letter-by-letter) — prevents broken Arabic chars
+// 3. Removed hardcoded "Capabilities", "WHAT WE DO BEST", "Every engagement...", etc.
+// 4. Added t.servicesGrid.flagship, t.servicesGrid.startWith, t.servicesGrid.cta, t.servicesGrid.sub
 
 import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
@@ -13,28 +19,29 @@ import {
   Globe,
 } from "lucide-react";
 import { SERVICES } from "@/constants";
+import { useT } from "@/translations/useT";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const LETTER_EASE = [0.19, 1, 0.22, 1] as const;
 
-// ✅ FIX: added id 6 (Website) + switched all colors to silver
 const SERVICE_META: Record<
   number,
   { icon: React.ElementType; accent: string }
 > = {
   1: { icon: Video, accent: "#8D9AB0" },
-  2: { icon: Palette, accent: "#B0BDD0" }, // Featured card
+  2: { icon: Palette, accent: "#B0BDD0" },
   3: { icon: PenTool, accent: "#A0AABC" },
   4: { icon: TrendingUp, accent: "#9AA6B8" },
   5: { icon: Users, accent: "#B8C4D0" },
-  6: { icon: Globe, accent: "#8D9AB0" }, // ✅ NEW — Website service
+  6: { icon: Globe, accent: "#8D9AB0" },
 };
 
 const ACCENT = "#8D9AB0";
 const ACCENT_L = "#B0BDD0";
 
-/* ── Featured Card (Branding - id:2) ── */
+/* ── Featured Card ── */
 function FeaturedCard({ shouldAnimate }: { shouldAnimate: boolean }) {
+  const { t } = useT();
   const service = SERVICES.find((s) => s.id === 2)!;
   const { icon: Icon } = SERVICE_META[2];
   const [hovered, setHovered] = useState(false);
@@ -97,7 +104,7 @@ function FeaturedCard({ shouldAnimate }: { shouldAnimate: boolean }) {
                 color: "rgba(141,154,176,0.7)",
               }}
             >
-              Flagship Service · 01
+              {t.servicesGrid.flagship}
             </span>
           </div>
 
@@ -161,12 +168,12 @@ function FeaturedCard({ shouldAnimate }: { shouldAnimate: boolean }) {
                 padding: 0,
               }}
             >
-              Start with Branding <ArrowRight size={14} />
+              {t.servicesGrid.startWith} <ArrowRight size={14} />
             </motion.button>
           </Link>
         </div>
 
-        {/* Right — mockup */}
+        {/* Right — brand mockup */}
         <div className="hidden sm:flex justify-center items-center min-h-[200px]">
           <motion.div
             animate={hovered ? { rotate: [0, 1, -1, 0] } : { rotate: 0 }}
@@ -277,7 +284,6 @@ function CompactCard({
   delay: number;
 }) {
   const [hovered, setHovered] = useState(false);
-  // ✅ Safe fallback if meta not found
   const meta = SERVICE_META[service.id] ?? { icon: Globe, accent: ACCENT };
   const Icon = meta.icon;
 
@@ -285,7 +291,11 @@ function CompactCard({
     <motion.div
       initial={{ opacity: 0, y: 60 }}
       animate={shouldAnimate ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+      transition={{
+        duration: 0.6,
+        delay,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       whileHover={{ y: -6 }}
@@ -432,6 +442,7 @@ function CompactCard({
 
 /* ════════════════════════════════════════════ */
 export default function ServicesGrid() {
+  const { t, isAr } = useT();
   const sectionRef = useRef(null);
   const headRef = useRef(null);
   const headInView = useInView(headRef, { once: true, margin: "-80px" });
@@ -444,14 +455,14 @@ export default function ServicesGrid() {
 
   useEffect(() => {
     if (sectionInView && !hasAnimated) {
-      const t = setTimeout(() => setHasAnimated(true), 100);
-      return () => clearTimeout(t);
+      const timer = setTimeout(() => setHasAnimated(true), 100);
+      return () => clearTimeout(timer);
     }
   }, [sectionInView, hasAnimated]);
 
-  const headingText = "WHAT WE DO BEST";
+  // ✅ FIX: heading comes from translations, not hardcoded
+  const headingText = t.servicesGrid.title;
   const letters = Array.from(headingText);
-  // All services except featured (id:2)
   const compactServices = SERVICES.filter((s) => s.id !== 2);
 
   return (
@@ -462,7 +473,10 @@ export default function ServicesGrid() {
       style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
     >
       <motion.div
-        animate={{ scale: [1, 1.1, 1], opacity: [0.4, 0.7, 0.4] }}
+        animate={{
+          scale: [1, 1.1, 1],
+          opacity: [0.4, 0.7, 0.4],
+        }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         className="top-0 left-1/2 absolute w-[500px] sm:w-[700px] h-[400px] -translate-x-1/2 pointer-events-none"
         style={{
@@ -473,7 +487,7 @@ export default function ServicesGrid() {
       />
 
       <div className="z-[1] relative mx-auto max-w-[1280px]">
-        {/* Header */}
+        {/* ── Header ── */}
         <div ref={headRef} className="mb-10 sm:mb-16 text-center">
           <motion.span
             initial={{ opacity: 0, letterSpacing: "0.25em" }}
@@ -482,40 +496,68 @@ export default function ServicesGrid() {
             className="block mb-4 sm:mb-5 font-mono font-bold uppercase"
             style={{ fontSize: 12, color: ACCENT }}
           >
-            Capabilities
+            {t.servicesGrid.badge}
           </motion.span>
 
+          {/*
+            ✅ KEY FIX:
+            - Arabic  → animate the whole string as ONE span (حروف العربي ما تتقسمش)
+            - English → animate letter by letter (looks great for Latin chars)
+          */}
           <h2
-            className="flex flex-wrap justify-center m-0 mb-4 sm:mb-5 leading-none select-none"
+            translate="no"
+            className="flex flex-wrap justify-center m-0 mb-4 sm:mb-5 leading-none select-none notranslate"
             style={{
               fontFamily: "var(--font-display,'Bebas Neue',Impact,sans-serif)",
               fontSize: "clamp(2rem,6vw,5.5rem)",
+              direction: isAr ? "rtl" : "ltr",
             }}
           >
-            {letters.map((char, i) => (
+            {isAr ? (
+              // Arabic: single animated block — no splitting
               <motion.span
-                key={i}
                 initial={{ opacity: 0, y: -60, filter: "blur(10px)" }}
                 animate={
                   headInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}
                 }
-                transition={{
-                  duration: 1.2,
-                  ease: LETTER_EASE,
-                  delay: i * 0.045,
-                }}
+                transition={{ duration: 1.2, ease: LETTER_EASE }}
                 style={{
                   display: "inline-block",
-                  whiteSpace: char === " " ? "pre" : "normal",
                   background: `linear-gradient(135deg, #ffffff 0%, ${ACCENT} 60%, ${ACCENT_L} 100%)`,
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
                 }}
               >
-                {char}
+                {headingText}
               </motion.span>
-            ))}
+            ) : (
+              // English: letter-by-letter (unchanged behavior)
+              letters.map((char, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, y: -60, filter: "blur(10px)" }}
+                  animate={
+                    headInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}
+                  }
+                  transition={{
+                    duration: 1.2,
+                    ease: LETTER_EASE,
+                    delay: i * 0.045,
+                  }}
+                  style={{
+                    display: "inline-block",
+                    whiteSpace: char === " " ? "pre" : "normal",
+                    background: `linear-gradient(135deg, #ffffff 0%, ${ACCENT} 60%, ${ACCENT_L} 100%)`,
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  {char}
+                </motion.span>
+              ))
+            )}
           </h2>
 
           <motion.p
@@ -530,17 +572,16 @@ export default function ServicesGrid() {
               lineHeight: 1.75,
             }}
           >
-            Every engagement starts with strategy and ends with measurable
-            results.
+            {t.servicesGrid.sub}
           </motion.p>
         </div>
 
-        {/* Featured card */}
+        {/* ── Featured ── */}
         <div className="gap-4 sm:gap-5 grid grid-cols-1 lg:grid-cols-12 mb-4 sm:mb-5">
           <FeaturedCard shouldAnimate={hasAnimated} />
         </div>
 
-        {/* Compact cards — 5 services (ids 1,3,4,5,6) */}
+        {/* ── Compact grid ── */}
         <div className="gap-4 sm:gap-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {compactServices.map((s, i) => (
             <CompactCard
@@ -553,7 +594,7 @@ export default function ServicesGrid() {
           ))}
         </div>
 
-        {/* CTA */}
+        {/* ── CTA ── */}
         <div className="mt-10 sm:mt-14 text-center">
           <Link href="/contact">
             <motion.button
@@ -570,14 +611,18 @@ export default function ServicesGrid() {
             >
               <motion.span
                 animate={{ x: ["-120%", "120%"] }}
-                transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 3 }}
+                transition={{
+                  duration: 2.5,
+                  repeat: Infinity,
+                  repeatDelay: 3,
+                }}
                 className="absolute inset-0 pointer-events-none"
                 style={{
                   background:
                     "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
                 }}
               />
-              Let&apos;s Discuss Your Project
+              {t.servicesGrid.cta}
               <ArrowRight size={14} />
             </motion.button>
           </Link>

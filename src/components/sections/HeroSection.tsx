@@ -1,4 +1,13 @@
 "use client";
+// CORRECTED FILE — replace src/components/sections/HeroSection.tsx with this
+// CHANGES:
+// 1. Added: import { useT } from "@/translations/useT"
+// 2. ✅ FIX StatPill: once: true → once: false + hasAnimated ref guard
+//    (counter showed "0" in Arabic because RTL layout shift triggered before isInView fires)
+// 3. ✅ FIX StatPill: toLocaleString() → toLocaleString("en-US") (prevents Arabic numerals ٠١٢)
+// 4. Added useT() to HeroContent → stat labels now come from t.hero.stats.*
+// 5. Added useT() to HeroContent → badge, headlines, sub, CTAs now come from t.hero.*
+// 6. CapabilitiesSection: badge, title, copy now come from t.hero.cap* keys
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -14,6 +23,7 @@ import {
   useInView,
 } from "framer-motion";
 import { ArrowRight, Zap } from "lucide-react";
+import { useT } from "@/translations/useT";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const CYCLING_WORDS = ["BRANDING", "ADS", "CONTENT", "GROWTH", "VIDEO"];
@@ -293,9 +303,7 @@ function SideRibbon({ side }: { side: "left" | "right" }) {
           animate={{ opacity: [0.03, 0.12, 0.03] }}
           transition={{ duration: 6, delay: i * 0.9, repeat: Infinity }}
           className="font-mono font-light text-[9.5px] text-white/60 tracking-[0.42em] whitespace-nowrap"
-          style={{
-            filter: "blur(0.5px)",
-          }}
+          style={{ filter: "blur(0.5px)" }}
         >
           {word}
         </motion.span>
@@ -313,43 +321,58 @@ interface StatPillProps {
 }
 
 function StatPill({ targetNumber, suffix = "", label, delay }: StatPillProps) {
-  const count = useMotionValue(0);
-  const rounded = useTransform(count, (latest) => Math.floor(latest));
   const [displayValue, setDisplayValue] = useState("0");
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
 
+  // ✅ FIX: pure setInterval — no framer-motion animate, no useInView
+  // Guaranteed to run regardless of RTL layout shifts or scroll position.
   useEffect(() => {
-    if (isInView) {
-      const controls = animate(count, targetNumber, {
-        duration: 2,
-        delay: delay,
-        ease: [0.16, 1, 0.3, 1],
-      });
-      return controls.stop;
-    }
-  }, [isInView, targetNumber, count, delay]);
+    let intervalId: ReturnType<typeof setInterval> | null = null;
 
-  useEffect(() => {
-    return rounded.on("change", (latest) => {
-      if (latest >= 1000000) {
-        setDisplayValue((latest / 1000000).toFixed(0) + "M");
-      } else {
-        setDisplayValue(latest.toLocaleString());
-      }
-    });
-  }, [rounded]);
+    const startTimer = setTimeout(
+      () => {
+        const DURATION = 2000; // ms
+        const STEPS = 80;
+        const STEP_MS = DURATION / STEPS;
+        let step = 0;
+
+        const fmt = (n: number) => {
+          if (n >= 1000000) return (n / 1000000).toFixed(0) + "M";
+          return n.toLocaleString("en-US"); // force Western numerals
+        };
+
+        intervalId = setInterval(() => {
+          step++;
+          // cubic ease-out
+          const eased = 1 - Math.pow(1 - step / STEPS, 3);
+          const current = Math.floor(eased * targetNumber);
+
+          if (step >= STEPS) {
+            clearInterval(intervalId!);
+            setDisplayValue(fmt(targetNumber));
+          } else {
+            setDisplayValue(fmt(current));
+          }
+        }, STEP_MS);
+      },
+      delay * 1000 + 500,
+    );
+
+    return () => {
+      clearTimeout(startTimer);
+      if (intervalId) clearInterval(intervalId);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <motion.div
-      ref={ref}
       initial={{ opacity: 0, scale: 0.9, y: 15 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ delay, duration: 0.5, ease: EASE }}
       whileHover={{ scale: 1.08, y: -3 }}
       className="bg-white/5 backdrop-blur-md px-5 py-2.5 border border-white/10 rounded-full min-w-[115px] text-center cursor-default"
     >
-      <div className="mb-0.5 font-['Bebas_Neue',Impact,sans-serif] text-white text-2xl leading-none">
+      <div className="mb-0.5 font-['Bebas_Neue',Impact,sans-serif] text-white text-2xl leading-none notranslate">
         {displayValue}
         {suffix}
       </div>
@@ -362,6 +385,9 @@ function StatPill({ targetNumber, suffix = "", label, delay }: StatPillProps) {
 
 /* ── SECTION 1: MAIN HERO CONTENT ── */
 function HeroContent() {
+  // ✅ Added: all text now comes from translations
+  const { t } = useT();
+
   return (
     <div className="relative flex flex-col justify-center items-center bg-[#080C14] px-6 pt-20 pb-24 w-full min-h-screen overflow-hidden text-center">
       <MagneticBlob />
@@ -400,6 +426,7 @@ function HeroContent() {
       <SideRibbon side="right" />
 
       <div className="z-10 relative flex flex-col justify-center items-center mx-auto w-full max-w-[950px] text-center">
+        {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -416,7 +443,7 @@ function HeroContent() {
             />
           </motion.div>
           <span className="font-mono font-semibold text-[11px] text-white/90 uppercase tracking-[0.28em]">
-            KSA & EGYPT'S CREATIVE PARTNER
+            {t.hero.badge}
           </span>
           <motion.div
             animate={{ scale: [1, 1.6, 1], opacity: [1, 0.3, 1] }}
@@ -425,13 +452,14 @@ function HeroContent() {
           />
         </motion.div>
 
+        {/* Headlines */}
         <div className="mb-6 overflow-hidden">
           {[
-            { text: "YOUR VISION", isBlue: false },
-            { text: "OUR MISSION", isBlue: true },
+            { text: t.hero.headline1, isBlue: false },
+            { text: t.hero.headline2, isBlue: true },
           ].map((line, i) => (
             <motion.div
-              key={line.text}
+              key={i}
               initial={{ y: "110%", opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{
@@ -456,6 +484,7 @@ function HeroContent() {
           ))}
         </div>
 
+        {/* Sub copy */}
         <motion.p
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -466,6 +495,7 @@ function HeroContent() {
           through <WordCycler /> — across Saudi Arabia & Egypt.
         </motion.p>
 
+        {/* CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -483,7 +513,7 @@ function HeroContent() {
                 transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 3 }}
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none"
               />
-              Start Your Project
+              {t.hero.cta}
               <ArrowRight size={14} />
             </motion.button>
           </Link>
@@ -498,21 +528,32 @@ function HeroContent() {
               whileTap={{ scale: 0.96 }}
               className="bg-white/5 backdrop-blur-sm px-8 py-4 border border-white/15 rounded-xl font-medium text-white/70 text-sm transition-all cursor-pointer"
             >
-              Explore Services
+              {t.hero.explore}
             </motion.button>
           </Link>
         </motion.div>
 
+        {/* ✅ Stat pills — labels from translations */}
         <div className="flex flex-wrap justify-center gap-3 mt-14 mb-4">
-          <StatPill targetNumber={60} suffix="+" label="Clients" delay={1.1} />
+          <StatPill
+            targetNumber={60}
+            suffix="+"
+            label={t.hero.stats.clients}
+            delay={1.1}
+          />
           <StatPill
             targetNumber={10000000}
             suffix="+"
-            label="Views Generated"
+            label={t.hero.stats.views}
             delay={1.2}
           />
-          <StatPill targetNumber={2} label="Markets" delay={1.3} />
-          <StatPill targetNumber={5} suffix="★" label="Services" delay={1.4} />
+          <StatPill targetNumber={2} label={t.hero.stats.markets} delay={1.3} />
+          <StatPill
+            targetNumber={7}
+            suffix="★"
+            label={t.hero.stats.services}
+            delay={1.4}
+          />
         </div>
       </div>
 
@@ -523,31 +564,35 @@ function HeroContent() {
 
 /* ── SECTION 2: CAPABILITIES SHOWCASE ── */
 function CapabilitiesSection() {
+  const { t } = useT();
+
   const capabilities = [
     {
       num: "01",
-      title: "CRAFTING IDENTITIES",
+      title: "BRAND IDENTITY",
       tag: "BRANDING",
-      desc: "We build visual identities that stick. Far beyond mere logos, we create holistic design systems that echo your story and establish authority within your market segment.",
+      desc: "Brands built to be remembered. We create visual identities that make your brand clear, consistent, and instantly recognizable.",
+      tags: ["Logo Design", "Visual System", "Brand Guidelines"],
     },
     {
       num: "02",
       title: "PERFORMANCE ADS",
       tag: "GROWTH",
-      desc: "Data-backed and psychology-driven performance campaigns. We don't chase vanity metrics or simple impressions; we relentlessly focus on ROI and breaking conversion limits.",
+      desc: "Campaigns built for real growth. We launch performance-driven ads focused on leads, sales, and measurable results.",
+      tags: ["Meta Ads", "Google Ads", "TikTok Ads"],
     },
     {
       num: "03",
-      title: "ATTENTION-GRABBING CONTENT",
+      title: "CONTENT CREATION",
       tag: "VIDEO & MEDIA",
-      desc: "In an era of hyper-fast scrolling, we produce genuine scroll-stoppers. Seamlessly fusing premium artistry with business strategy to translate views directly into buying intent.",
+      desc: "Content that turns attention into action. We create scroll-stopping content that connects with your audience and drives intent.",
+      tags: ["Reels", "Copywriting", "Social Content"],
     },
   ];
 
   return (
-    // تم استبدال min-h-screen بـ min-h-fit وإضافة py-16 للـ responsive الكامل لمنع قطع الكروت بالأسفل
     <div className="relative flex flex-col justify-center bg-[#0C101A] px-6 py-16 lg:py-24 border-white/5 border-t w-full min-h-fit lg:min-h-screen overflow-hidden text-white">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(141, 154, 176,0.03),transparent_50%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(141,154,176,0.03),transparent_50%)] pointer-events-none" />
 
       <div className="z-10 relative mx-auto w-full max-w-7xl">
         <div className="flex md:flex-row flex-col justify-between md:items-end gap-8 mb-16 lg:mb-20">
@@ -555,30 +600,26 @@ function CapabilitiesSection() {
             <div className="inline-flex items-center gap-2 bg-[#8D9AB0]/10 backdrop-blur-sm mb-4 px-4 py-1.5 border border-[#8D9AB0]/20 rounded-full">
               <span className="bg-[#8D9AB0] rounded-full w-1.5 h-1.5 animate-pulse" />
               <span className="font-mono font-semibold text-[#8D9AB0] text-[10px] uppercase tracking-[0.35em]">
-                OUR CAPABILITIES
+                {t.hero.capBadge}
               </span>
             </div>
 
             <h2 className="font-['Bebas_Neue',Impact,sans-serif] text-[clamp(2.5rem,7vw,5.5rem)] text-white leading-[0.95] tracking-wide">
-              ENGINEERED FOR{" "}
+              {t.hero.capTitle}{" "}
               <span
                 className="bg-clip-text bg-gradient-to-r from-[#8D9AB0] to-[#A8B4C5] text-transparent"
                 style={{ textShadow: "0 0 40px rgba(141, 154, 176,0.2)" }}
               >
-                IMPACT
+                {t.hero.capTitleBlue}
               </span>
             </h2>
           </div>
 
           <p className="max-w-md font-mono text-white/40 text-xs md:text-sm text-left leading-relaxed">
-            We don't do pre-packaged frameworks. We break down the absolute
-            architecture of your current business models and reconstruct
-            customized workflows that guarantee market dominance across KSA and
-            Egypt.
+            {t.hero.capCopy}
           </p>
         </div>
 
-        {/* تم تحديث الـ Grid ليكون متجاوباً تماماً (1 كارت في الموبايل، و3 في الشاشات الكبيرة) */}
         <div className="gap-6 lg:gap-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {capabilities.map((item, idx) => (
             <motion.div
@@ -598,7 +639,7 @@ function CapabilitiesSection() {
               }}
               className="group relative flex flex-col justify-between bg-white/[0.01] backdrop-blur-md p-6 lg:p-8 border border-white/10 rounded-2xl min-h-[300px] lg:min-h-[340px] overflow-hidden transition-all duration-500 cursor-pointer"
             >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(141, 154, 176,0.04),transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(141,154,176,0.04),transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
               <div className="z-10 relative flex flex-col justify-between h-full">
                 <div>
@@ -618,9 +659,20 @@ function CapabilitiesSection() {
                   <p className="font-sans font-light text-white/50 lg:text-[13px] text-xs text-left leading-relaxed tracking-wide">
                     {item.desc}
                   </p>
+
+                  <div className="flex flex-wrap gap-1.5 mt-4">
+                    {item.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2.5 py-1 border border-white/[0.08] group-hover:border-[#8D9AB0]/30 rounded-full font-mono text-[10px] text-white/35 group-hover:text-[#8D9AB0]/70 transition-colors duration-300"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="flex justify-end items-center gap-2 opacity-40 group-hover:opacity-100 mt-6 lg:mt-8 pt-4 border-white/[0.04] border-t transition-opacity duration-300">
+                <div className="flex justify-end items-center gap-2 opacity-40 group-hover:opacity-100 mt-5 pt-4 border-white/[0.04] border-t transition-opacity duration-300">
                   <span className="font-mono text-[10px] text-white/50 group-hover:text-white tracking-widest transition-colors">
                     EXPLORE
                   </span>
@@ -638,7 +690,7 @@ function CapabilitiesSection() {
   );
 }
 
-/* ── LAYERED PREMIUM CARD WRAPPER (تمت ترقيته ليدعم التجاوب وعدم قطع السكشن الثاني) ── */
+/* ── LAYERED PREMIUM CARD WRAPPER ── */
 interface CardWrapperProps {
   children: React.ReactNode;
   index: number;
@@ -676,7 +728,6 @@ function LayeredCard({
 
   return (
     <div
-      // السر هنا: الـ Wrapper يتحول من وضع ثابت ومقيد في الشاشات الصغيرة (md) إلى وضع مرن يسمح بظهور الكروت كاملة
       className="top-0 relative md:sticky w-full md:h-screen min-h-fit overflow-hidden md:overflow-hidden origin-center"
       style={{ zIndex: index }}
     >

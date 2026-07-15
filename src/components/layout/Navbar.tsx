@@ -11,6 +11,7 @@ import { NAV_LINKS } from "@/constants";
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isAr, setIsAr] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -22,6 +23,39 @@ export default function Navbar() {
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
+
+  // ── Detect language from cookie on mount ─────────────────────────
+  useEffect(() => {
+    setIsAr(document.cookie.includes("googtrans=/en/ar"));
+  }, []);
+
+  // ── Toggle: cookie + reload (avoids React DOM conflict) ──────────
+  const toggleLanguage = () => {
+    if (!isAr) {
+      // EN → AR
+      document.cookie = "googtrans=/en/ar; path=/";
+      document.cookie = `googtrans=/en/ar; domain=${location.hostname}; path=/`;
+    } else {
+      // AR → EN
+      const exp = "expires=Thu, 01 Jan 1970 00:00:00 UTC";
+      document.cookie = `googtrans=; ${exp}; path=/`;
+      document.cookie = `googtrans=; ${exp}; domain=${location.hostname}; path=/`;
+    }
+    location.reload();
+  };
+
+  const langBtnStyle: React.CSSProperties = {
+    padding: "8px 18px",
+    borderRadius: 10,
+    background: isAr ? "rgba(141,154,176,0.15)" : "rgba(255,255,255,0.05)",
+    border: "1px solid rgba(141,154,176,0.3)",
+    color: "#B0BDD0",
+    fontSize: 13,
+    fontWeight: 600,
+    cursor: "pointer",
+    fontFamily: isAr ? "'JetBrains Mono', monospace" : "'Cairo', sans-serif",
+    transition: "all 0.25s",
+  };
 
   return (
     <>
@@ -44,9 +78,7 @@ export default function Navbar() {
                 borderBottom: "1px solid rgba(255,255,255,0.07)",
                 boxShadow: "0 4px 24px rgba(0,0,0,0.4)",
               }
-            : {
-                background: "transparent",
-              }),
+            : { background: "transparent" }),
         }}
       >
         <nav
@@ -60,7 +92,7 @@ export default function Navbar() {
             justifyContent: "space-between",
           }}
         >
-          {/* ── Logo ── */}
+          {/* Logo */}
           <Link
             href="/"
             style={{
@@ -74,7 +106,6 @@ export default function Navbar() {
               whileHover={{ scale: 1.04 }}
               style={{ display: "flex", alignItems: "center", gap: 10 }}
             >
-              {/* Real logo image */}
               <div
                 style={{
                   width: 40,
@@ -83,7 +114,7 @@ export default function Navbar() {
                   overflow: "hidden",
                   border: "1px solid rgba(255,255,255,0.12)",
                   flexShrink: 0,
-                  boxShadow: "0 0 16px rgba(0,122,255,0.3)",
+                  boxShadow: "0 0 16px rgba(141,154,176,0.3)",
                 }}
               >
                 <Image
@@ -95,7 +126,6 @@ export default function Navbar() {
                   priority
                 />
               </div>
-              {/* Wordmark */}
               <div
                 style={{
                   display: "flex",
@@ -104,6 +134,7 @@ export default function Navbar() {
                 }}
               >
                 <span
+                  className="notranslate"
                   style={{
                     fontFamily:
                       "var(--font-display,'Bebas Neue',Impact,sans-serif)",
@@ -115,6 +146,7 @@ export default function Navbar() {
                   OUR<span style={{ color: "#8D9AB0" }}>.</span>AGENCY
                 </span>
                 <span
+                  className="notranslate"
                   style={{
                     fontSize: 9,
                     letterSpacing: "0.18em",
@@ -129,7 +161,7 @@ export default function Navbar() {
             </motion.div>
           </Link>
 
-          {/* ── Desktop Nav ── */}
+          {/* Desktop Nav */}
           <div
             style={{ display: "none", alignItems: "center", gap: 4 }}
             className="md-nav"
@@ -185,22 +217,34 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* ── CTA ── */}
-          <div className="md-cta" style={{ display: "none" }}>
+          {/* Desktop: Lang + CTA */}
+          <div
+            className="md-cta"
+            style={{ display: "none", alignItems: "center", gap: 10 }}
+          >
+            <motion.button
+              onClick={toggleLanguage}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              style={langBtnStyle}
+            >
+              {isAr ? "English" : "عربي"}
+            </motion.button>
+
             <Link href="/contact">
               <motion.button
                 whileHover={{
                   scale: 1.04,
-                  boxShadow: "0 0 28px rgba(0,122,255,0.5)",
+                  boxShadow: "0 0 28px rgba(141,154,176,0.4)",
                 }}
                 whileTap={{ scale: 0.97 }}
                 style={{
                   padding: "10px 22px",
                   borderRadius: 12,
                   background: "#8D9AB0",
-                  color: "white",
+                  color: "#0D1117",
                   fontSize: 13,
-                  fontWeight: 600,
+                  fontWeight: 700,
                   border: "none",
                   cursor: "pointer",
                 }}
@@ -210,29 +254,40 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* ── Mobile hamburger ── */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: 10,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              color: "rgba(255,255,255,0.7)",
-              cursor: "pointer",
-            }}
+          {/* Mobile */}
+          <div
             className="mobile-only"
+            style={{ display: "flex", alignItems: "center", gap: 8 }}
           >
-            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-          </button>
+            <motion.button
+              onClick={toggleLanguage}
+              whileTap={{ scale: 0.9 }}
+              style={{ ...langBtnStyle, padding: "6px 14px", fontSize: 12 }}
+            >
+              {isAr ? "EN" : "عربي"}
+            </motion.button>
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 10,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "rgba(255,255,255,0.05)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                color: "rgba(255,255,255,0.7)",
+                cursor: "pointer",
+              }}
+            >
+              {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
         </nav>
       </motion.header>
 
-      {/* ── Mobile Menu ── */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -278,7 +333,7 @@ export default function Navbar() {
                       transition: "all 0.2s",
                       background:
                         pathname === link.href
-                          ? "rgba(0,122,255,0.12)"
+                          ? "rgba(141,154,176,0.12)"
                           : "transparent",
                       color:
                         pathname === link.href
@@ -286,7 +341,7 @@ export default function Navbar() {
                           : "rgba(255,255,255,0.5)",
                       border:
                         pathname === link.href
-                          ? "1px solid rgba(0,122,255,0.25)"
+                          ? "1px solid rgba(141,154,176,0.25)"
                           : "1px solid transparent",
                     }}
                   >
@@ -308,9 +363,9 @@ export default function Navbar() {
                       padding: "12px",
                       borderRadius: 12,
                       background: "#8D9AB0",
-                      color: "white",
+                      color: "#0D1117",
                       fontSize: 14,
-                      fontWeight: 600,
+                      fontWeight: 700,
                       border: "none",
                       cursor: "pointer",
                     }}
@@ -324,11 +379,10 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* ── Responsive styles ── */}
       <style>{`
         @media (min-width: 768px) {
           .md-nav  { display: flex !important; }
-          .md-cta  { display: block !important; }
+          .md-cta  { display: flex !important; }
           .mobile-only { display: none !important; }
         }
       `}</style>

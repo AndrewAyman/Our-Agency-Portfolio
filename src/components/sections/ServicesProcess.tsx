@@ -94,8 +94,7 @@ export default function ServicesProcess() {
               lineHeight: 1.75,
             }}
           >
-            A clear, repeatable framework that takes your brand from insight to
-            impact.
+            A clear process that takes your brand from insight to execution.
           </motion.p>
         </div>
 

@@ -6,55 +6,56 @@ export const NAV_LINKS = [
   { label: "Contact", href: "/contact" },
 ];
 
-// ─── ACCENT COLOR (Steel Silver — replaces #007AFF everywhere) ────────────
-// Use these CSS variables instead of hardcoded colors:
-// var(--accent)       → #8D9AB0  (steel silver)
-// var(--accent-light) → #B0BDD0  (light silver)
-// var(--accent-glow)  → rgba(141,154,176,0.25)
-
-// ─── SERVICES ─────────────────────────────────────────────────────────────
+// ─── SERVICES (7 services per PDF) ────────────────────────────────────────
 export const SERVICES = [
   {
     id: 1,
     icon: "video",
     title: "Graphic Design & Video Editing",
-    desc: "Eye-catching designs and professional video editing that reflect your brand's personality and serve your marketing message — built to stop the scroll.",
+    desc: "Eye-catching designs and professional videos that reflect your brand and deliver your message clearly.",
     tags: ["Motion Graphics", "Video Editing", "Visual Design"],
   },
   {
     id: 2,
-    icon: "palette",
-    title: "Branding & Visual Identity",
-    desc: "We build your full visual identity from the ground up — logo, color palette, tone of voice, and brand guidelines — to make your brand impossible to ignore.",
-    tags: ["Logo Design", "Brand Guidelines", "Visual System"],
+    icon: "pen-tool",
+    title: "Content Creation",
+    desc: "Creative content written in your brand's voice to engage your audience and drive meaningful results.",
+    tags: ["Copywriting", "Reels Scripts", "Social Content"],
   },
   {
     id: 3,
-    icon: "pen-tool",
-    title: "Content Creation & Copywriting",
-    desc: "Professional content written in your brand's unique voice — educational, marketing, and sales-driven copy that resonates with your audience and converts.",
-    tags: ["Copywriting", "Reels Scripts", "Educational Content"],
-  },
-  {
-    id: 4,
     icon: "trending-up",
     title: "Paid Ads & Performance Marketing",
-    desc: "We manage paid ad campaigns across multiple platforms targeting serious buyers — with one goal: attract customers, generate bookings, and grow your sales.",
+    desc: "Performance-driven campaigns focused on leads, sales, bookings, and measurable results.",
     tags: ["Meta Ads", "Google Ads", "TikTok Ads"],
   },
   {
-    id: 5,
+    id: 4,
     icon: "users",
     title: "Social Media Management",
-    desc: "Full management and growth of your social media accounts — from content planning and publishing to community engagement, analytics, and continuous optimization.",
-    tags: ["Community Mgmt", "Analytics", "Content Calendar"],
+    desc: "We manage your social presence from strategy and content planning to publishing, analytics, and optimization.",
+    tags: ["Content Planning", "Community Management", "Analytics"],
+  },
+  {
+    id: 5,
+    icon: "globe",
+    title: "Web Design & Development",
+    desc: "Modern, responsive websites designed to elevate your brand and turn visitors into clients.",
+    tags: ["Responsive Design", "Web Development", "UI/UX"],
   },
   {
     id: 6,
-    icon: "globe",
-    title: "Website Design & Development",
-    desc: "We design and build fast, modern, conversion-optimized websites — from landing pages to full business sites — that reflect your brand and turn visitors into clients.",
-    tags: ["Landing Pages", "Business Sites", "UI/UX Design"],
+    icon: "file-text",
+    title: "Company Profiles",
+    desc: "Professional company profiles that showcase your services, strengths, and business value with clarity and impact.",
+    tags: ["Company Profile", "Corporate Presentation", "PDF Design"],
+  },
+  {
+    id: 7,
+    icon: "palette",
+    title: "Branding & Visual Identity",
+    desc: "We create complete visual identities that make your brand clear, consistent, and recognizable.",
+    tags: ["Logo Design", "Visual Identity", "Brand Guidelines"],
   },
 ];
 
@@ -90,17 +91,17 @@ export const VALUES = [
 export const METRICS = [
   { value: "1M+", label: "Impressions Delivered", sub: "In KSA alone" },
   { value: "3", label: "Countries Served", sub: "KSA · Egypt · and growing" },
-  { value: "6", label: "Core Services", sub: "Full-funnel capability" },
+  { value: "7", label: "Core Services", sub: "Full-funnel capability" },
   { value: "100%", label: "Commitment", sub: "To every brand we take on" },
 ];
 
-// ─── CLIENTS (generic — no real names) ────────────────────────────────────
+// ─── CLIENTS ──────────────────────────────────────────────────────────────
 export const CLIENTS = [
   "Construction Sector",
   "Engineering Firms",
   "Medical Clinics",
   "Healthcare Specialists",
-  "Restaurants & Cafés",
+  "Restaurants & Cafes",
   "Podcast Creators",
   "E-Commerce Stores",
   "Real Estate Brands",
@@ -110,14 +111,14 @@ export const CLIENTS = [
   "Service Businesses",
 ];
 
-// ─── PORTFOLIO ────────────────────────────────────────────────────────────
+// ─── PORTFOLIO (updated per PDF) ──────────────────────────────────────────
 export const PORTFOLIO = [
   {
     id: 1,
     region: "KSA",
     sector: "Construction",
     title: "Construction & Engineering — KSA",
-    desc: "Performance-driven ad campaigns for construction companies and engineering consultancies, targeting serious B2B clients — resulting in significantly increased sales inquiries.",
+    desc: "Performance campaigns and content strategies for construction and engineering companies, built to attract serious B2B clients and increase sales inquiries.",
     result: "+Sales Demand",
     tags: ["Performance Ads", "B2B Strategy", "Content"],
     color: "#8D9AB0",
@@ -127,7 +128,7 @@ export const PORTFOLIO = [
     region: "KSA",
     sector: "Branding",
     title: "Brand Visual Identity — KSA",
-    desc: "Built complete visual identity systems for Saudi brands from scratch — covering logos, visual guidelines, content tone, and full brand documentation.",
+    desc: "Complete visual identity systems for Saudi brands, including logos, guidelines, content tone, and brand documentation.",
     result: "Full Identity",
     tags: ["Branding", "Visual Guidelines", "Logo"],
     color: "#A0AABC",
@@ -136,8 +137,8 @@ export const PORTFOLIO = [
     id: 3,
     region: "KSA",
     sector: "Paid Ads",
-    title: "1000000+ Impressions Campaign — KSA",
-    desc: "Managed high-performance paid ad campaigns in the Saudi market that exceeded 1,000,000 impressions in a short period — targeting the right audience with trust-building creative.",
+    title: "Impressions Campaign — KSA +1000000",
+    desc: "High-performance paid ad campaigns in the Saudi market, reaching over 1M impressions through targeted audiences and trust-building creatives.",
     result: "1M+ Impressions",
     tags: ["Meta Ads", "Creative", "Performance"],
     color: "#B0BDD0",
@@ -147,7 +148,7 @@ export const PORTFOLIO = [
     region: "Egypt",
     sector: "Medical",
     title: "Doctors & Clinics — Egypt",
-    desc: "Managed awareness-focused social accounts for doctors and clinics, produced Before/After content and patient experience stories, and ran targeted ad campaigns that generated real bookings.",
+    desc: "Social media management, medical content, before/after visuals, patient stories, and targeted ads that generate real bookings.",
     result: "Real Leads",
     tags: ["SMM", "Ads", "Medical Content"],
     color: "#8D9AB0",
@@ -157,7 +158,7 @@ export const PORTFOLIO = [
     region: "Egypt",
     sector: "Podcast",
     title: "Podcast & Media Show — Egypt",
-    desc: "Full-service podcast production: concept design, visual identity, episode management, professional editing, Reels & Shorts, and social media growth strategy.",
+    desc: "Full-service podcast production, from concept and visual identity to episode management, editing, reels, and social media growth.",
     result: "Full Production",
     tags: ["Video Editing", "Reels", "SMM"],
     color: "#9AA6B8",
@@ -167,7 +168,7 @@ export const PORTFOLIO = [
     region: "Egypt",
     sector: "F&B",
     title: "Restaurants & Food Brands — Egypt",
-    desc: "Built compelling visual identities and produced professional food content. Managed entertainment + sales posts and ran marketing campaigns that drove up orders and revenue.",
+    desc: "Visual identity, food content, photography, social media management, and campaigns built to drive orders and sales.",
     result: "+Orders & Sales",
     tags: ["Branding", "Photography", "Content"],
     color: "#A0AABC",
@@ -198,30 +199,30 @@ export const WHY_US = [
   },
 ];
 
-// ─── PROCESS ──────────────────────────────────────────────────────────────
+// ─── PROCESS (updated per PDF) ────────────────────────────────────────────
 export const PROCESS = [
   {
     num: "01",
     title: "Research & Discovery",
-    desc: "We start by deeply understanding your brand, your audience, your competitors, and the market — so every decision we make is informed, not guessed.",
+    desc: "We start by understanding your brand, audience, competitors, and market before making any move.",
     icon: "search",
   },
   {
     num: "02",
     title: "Planning & Strategy",
-    desc: "We translate insights into a clear, actionable marketing strategy — defining goals, channels, content direction, and KPIs before a single post goes live.",
+    desc: "We turn insights into a clear strategy with goals, channels, content direction, and KPIs.",
     icon: "map",
   },
   {
     num: "03",
     title: "Execution",
-    desc: "This is where we build — content creation, design, video production, and ad campaign management. Every asset is crafted with purpose and precision.",
+    desc: "We create, design, film, edit, launch, and manage every asset with purpose.",
     icon: "zap",
   },
   {
     num: "04",
     title: "Optimization",
-    desc: "We analyze the results, learn from the data, and continuously improve performance. Growth is not a one-time event — it's an ongoing process.",
+    desc: "We analyze performance, learn from the data, and keep improving for better results.",
     icon: "bar-chart-2",
   },
 ];
@@ -256,13 +257,13 @@ export const CONTACTS = {
   ],
 };
 
-// ─── ABOUT ────────────────────────────────────────────────────────────────
+// ─── ABOUT (updated per PDF) ──────────────────────────────────────────────
 export const ABOUT = {
   description:
-    "OUR is a digital marketing agency powered by a team of young creatives. We work with passion and real effort — believing that every brand deserves a marketing plan built on deep market understanding, powerful content, and realistic execution that supports the goal.",
-  tagline: "We are not just service providers — we are growth partners.",
+    "OUR is a digital marketing agency powered by young creatives. We build marketing plans based on deep understanding, powerful content, and authentic execution that drives results.",
+  tagline: "We're not just service providers — we're growth partners.",
   vision:
-    "To become the turning point for ambitious brands. We provide marketing strategies built on creativity, data, and real market understanding — drawing a clear path to growth amidst competitors, creating real measurable value, and being the partner that walks with them step by step toward a stronger presence that competes with the biggest players.",
+    "To become the transformation point for ambitious brands by delivering strategies built on creativity, data, and true market understanding — creating clear growth paths and stronger brand presence.",
   mission:
-    "We deliver practical marketing solutions that support brand building, attract the right customers, and achieve measurable results — through powerful content management, strategic ad campaigns, and building an impactful digital identity.",
+    "We deliver practical marketing solutions that support brand building, attract customers, and achieve measurable results through content management, paid advertising, and impactful digital identity.",
 };
