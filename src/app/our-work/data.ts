@@ -120,6 +120,7 @@ export const SECTORS: Sector[] = [
       "/profiles/construction/18.png",
       "/profiles/construction/19.png",
       "/profiles/construction/20.png",
+<<<<<<< HEAD
       "/profiles/construction/21.png",
       "/profiles/construction/22.png",
       "/profiles/construction/23.png",
@@ -130,12 +131,15 @@ export const SECTORS: Sector[] = [
       "/profiles/construction/28.jpg",
       "/profiles/construction/29.jpg",
       "/profiles/construction/30.jpg",
+=======
+>>>>>>> 798130e9f25a059040382d3132ba75279a01452b
 
 
     ],
     videos: [
       {
         title: "Construction Project Showcase",
+<<<<<<< HEAD
         youtubeUrl: "https://youtube.com/embed/V1ZNek9V0wo",
       },
       
@@ -152,6 +156,10 @@ export const SECTORS: Sector[] = [
         youtubeUrl: "https://youtube.com/embed/8QSbuaJ68YY",
       },
       
+=======
+        youtubeUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      }
+>>>>>>> 798130e9f25a059040382d3132ba75279a01452b
     ],
     pdfs: [
       {
@@ -164,6 +172,7 @@ export const SECTORS: Sector[] = [
       },
     ],
   },
+<<<<<<< HEAD
   // {
   //   id: "gym",
   //   label: "Gym & Fitness",
@@ -179,6 +188,23 @@ export const SECTORS: Sector[] = [
   //   ],
   //   pdfs: [],  // ← array فاضي
   // },
+=======
+  {
+    id: "gym",
+    label: "Gym & Fitness",
+    Icon: Dumbbell,
+    accent: "#8D9AB0",
+    desc: "Energetic branding, reels, and performance ads for gyms and fitness studios.",
+    images: [],
+    videos: [
+      {
+        title: "Gym Motivation Reel",
+        youtubeUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      }
+    ],
+    pdfs: [],  // ← array فاضي
+  },
+>>>>>>> 798130e9f25a059040382d3132ba75279a01452b
   {
     id: "food",
     label: "Restaurant",
@@ -206,6 +232,7 @@ export const SECTORS: Sector[] = [
       "/profiles/Food/18.PNG",
       "/profiles/Food/19.PNG",
       "/profiles/Food/20.PNG",
+<<<<<<< HEAD
       "/profiles/Food/24.PNG",
       "/profiles/Food/25.PNG",
       "/profiles/Food/26.PNG",
@@ -214,16 +241,25 @@ export const SECTORS: Sector[] = [
       "/profiles/Food/29.jpg",
 
       
+=======
+>>>>>>> 798130e9f25a059040382d3132ba75279a01452b
     ],
     videos: [
       {
         title: "Restaurant Branding Reel",
+<<<<<<< HEAD
         youtubeUrl: "https://youtube.com/embed/jWhP0R5Pcsg",
+=======
+        youtubeUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+>>>>>>> 798130e9f25a059040382d3132ba75279a01452b
       }
     ],
     pdfs: [],  // ← array فاضي
   },
+<<<<<<< HEAD
 
+=======
+>>>>>>> 798130e9f25a059040382d3132ba75279a01452b
 {
   id: "clothes",
   label: "Fashion & Clothing",
@@ -231,6 +267,7 @@ export const SECTORS: Sector[] = [
   accent: "#E8A87C",  // لون دافئ يناسب الأزياء
   desc: "Fashion branding, social media campaigns, and visual content for clothing brands and boutiques.",
   images: [
+<<<<<<< HEAD
 
     "/profiles/clothes/1.jpg",
     "/profiles/clothes/2.jpg",
@@ -238,6 +275,12 @@ export const SECTORS: Sector[] = [
     "/profiles/clothes/4.jpg",
     "/profiles/clothes/5.jpg",
 
+=======
+    // حط مسارات صور الملابس هنا
+    // "/profiles/clothes/1.png",
+    // "/profiles/clothes/2.png",
+    // "/profiles/clothes/3.png",
+>>>>>>> 798130e9f25a059040382d3132ba75279a01452b
   ],
   videos: [
     {
@@ -284,6 +327,7 @@ export const SECTORS: Sector[] = [
      "/profiles/Software/19.png",
      "/profiles/Software/20.png",
      "/profiles/Software/21.png",
+<<<<<<< HEAD
      "/profiles/Software/22.jpg",
      "/profiles/Software/23.jpg",
      "/profiles/Software/24.jpg",
@@ -294,6 +338,8 @@ export const SECTORS: Sector[] = [
      "/profiles/Software/29.jpg",
      "/profiles/Software/30.jpg",
      "/profiles/Software/31.jpg",
+=======
+>>>>>>> 798130e9f25a059040382d3132ba75279a01452b
 
   ],
   videos: [
@@ -313,10 +359,13 @@ export const SECTORS: Sector[] = [
     title: "Elite Pay",
     youtubeUrl: "https://youtube.com/embed/JU9ChDvm_tQ",  // ← كده
   },
+<<<<<<< HEAD
     {
     title: "Elite Pay",
     youtubeUrl: "https://youtube.com/embed/fIeJ4Ir9mtA",  // ← كده
   },
+=======
+>>>>>>> 798130e9f25a059040382d3132ba75279a01452b
  
   
   ],
