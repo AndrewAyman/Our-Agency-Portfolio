@@ -21,6 +21,8 @@ import {
   VolumeX,
   Maximize,
   RotateCcw,
+  Download,
+  Globe,
 } from "lucide-react";
 import { SECTORS, type Sector } from "./data";
 
@@ -71,7 +73,7 @@ function YouTubeVideo({
 }
 
 /* ──────────────────────────────────────────────────────
-   LOCAL VIDEO PLAYER (اختياري لو عايز فيديوهات محلية)
+   LOCAL VIDEO PLAYER
 ────────────────────────────────────────────────────── */
 function VideoPlayer({ src, accent }: { src: string; accent: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -125,7 +127,7 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
       v.currentTime = Math.max(0, Math.min(v.duration, v.currentTime + sec));
       resetHideTimer();
     },
-    [resetHideTimer],
+    [resetHideTimer]
   );
 
   const toggleMute = () => {
@@ -473,7 +475,7 @@ function SectorCard({
   onClick: () => void;
 }) {
   const hasContent =
-    sector.images.length + sector.videos.length + (sector.pdf ? 1 : 0) > 0;
+    sector.images.length + sector.videos.length + sector.pdfs.length > 0;
 
   return (
     <motion.div
@@ -563,7 +565,8 @@ function SectorCard({
           {[
             { icon: Images, count: sector.images.length },
             { icon: Video, count: sector.videos.length },
-            { icon: FileText, count: sector.pdf ? 1 : 0 },
+            { icon: FileText, count: sector.pdfs.length },
+            { icon: Globe, count: sector.links?.length || 0 },
           ].map(({ icon: Icon, count }, idx) => (
             <div key={idx} className="flex items-center gap-1">
               <Icon size={11} className="text-white/22" />
@@ -597,7 +600,7 @@ function SectorCard({
 /* ──────────────────────────────────────────────────────
    SECTOR PAGE (Full Screen)
 ────────────────────────────────────────────────────── */
-type Tab = "images" | "videos" | "pdf";
+type Tab = "images" | "videos" | "pdf" | "links";
 
 function SectorPage({
   sector,
@@ -630,9 +633,15 @@ function SectorPage({
     },
     {
       id: "pdf",
-      label: "Profile PDF",
+      label: "Documents",
       icon: FileText,
-      count: sector.pdf ? 1 : null,
+      count: sector.pdfs.length || null,
+    },
+    {
+      id: "links",
+      label: "Websites",
+      icon: Globe,
+      count: sector.links?.length || null,
     },
   ];
 
@@ -820,70 +829,148 @@ function SectorPage({
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.22 }}
             >
-              {!sector.pdf ? (
+              {sector.pdfs.length === 0 ? (
                 <EmptyState />
               ) : (
-                <div className="flex flex-col gap-5">
-                  <div
-                    className="flex flex-wrap justify-between items-center gap-3 px-5 py-3 rounded-2xl"
-                    style={{
-                      background: "rgba(255,255,255,0.03)",
-                      border: "1px solid rgba(255,255,255,0.07)",
-                    }}
-                  >
-                    <div className="flex items-center gap-3">
+                <div className="flex flex-col gap-6">
+                  {sector.pdfs.map((pdf, index) => (
+                    <div key={index} className="flex flex-col gap-4">
+                      {/* PDF Header */}
                       <div
-                        className="flex justify-center items-center rounded-xl w-9 h-9"
+                        className="flex flex-wrap justify-between items-center gap-3 px-5 py-3 rounded-2xl"
                         style={{
-                          background: `${sector.accent}14`,
-                          border: `1px solid ${sector.accent}30`,
+                          background: "rgba(255,255,255,0.03)",
+                          border: "1px solid rgba(255,255,255,0.07)",
                         }}
                       >
-                        <FileText
-                          size={16}
-                          style={{ color: sector.accent }}
-                          strokeWidth={1.5}
+                        <div className="flex items-center gap-3">
+                          <div
+                            className="flex justify-center items-center rounded-xl w-9 h-9"
+                            style={{
+                              background: `${sector.accent}14`,
+                              border: `1px solid ${sector.accent}30`,
+                            }}
+                          >
+                            <FileText
+                              size={16}
+                              style={{ color: sector.accent }}
+                              strokeWidth={1.5}
+                            />
+                          </div>
+                          <div>
+                            <p className="font-medium text-white/80 text-sm leading-tight">
+                              {pdf.title}
+                            </p>
+                            <p className="font-mono text-white/30 text-xs">
+                              PDF Document • {sector.label}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <a
+                            href={pdf.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-white text-xs no-underline tracking-wide hover:opacity-80 transition"
+                            style={{ background: sector.accent }}
+                          >
+                            <ExternalLink size={12} />
+                            Open
+                          </a>
+                          <a
+                            href={pdf.url}
+                            download
+                            className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-white/70 text-xs no-underline tracking-wide hover:text-white hover:bg-white/10 transition"
+                            style={{
+                              background: "rgba(255,255,255,0.06)",
+                              border: "1px solid rgba(255,255,255,0.08)",
+                            }}
+                          >
+                            <Download size={12} />
+                            Download
+                          </a>
+                        </div>
+                      </div>
+
+                      {/* PDF Viewer */}
+                      <div
+                        className="rounded-2xl overflow-hidden"
+                        style={{
+                          border: "1px solid rgba(255,255,255,0.07)",
+                          minHeight: "500px",
+                        }}
+                      >
+                        <iframe
+                          src={pdf.url + "#toolbar=1&view=FitH"}
+                          className="w-full h-full"
+                          style={{
+                            minHeight: "500px",
+                            background: "#111",
+                            width: "100%",
+                          }}
+                          title={pdf.title}
                         />
                       </div>
-                      <div>
-                        <p className="font-medium text-white/80 text-sm leading-tight">
-                          {sector.label} — Company Profile
-                        </p>
-                        <p className="font-mono text-white/30 text-xs">
-                          PDF Document
-                        </p>
-                      </div>
                     </div>
-                    <a
-                      href={sector.pdf}
-                      download
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* Links */}
+          {activeTab === "links" && (
+            <motion.div
+              key="links"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22 }}
+            >
+              {!sector.links || sector.links.length === 0 ? (
+                <EmptyState />
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {sector.links.map((link, index) => (
+                    <motion.a
+                      key={index}
+                      href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-white text-xs no-underline tracking-wide"
-                      style={{ background: sector.accent }}
-                    >
-                      <ExternalLink size={12} />
-                      Download
-                    </a>
-                  </div>
-
-                  <div
-                    className="rounded-2xl overflow-hidden"
-                    style={{
-                      border: "1px solid rgba(255,255,255,0.07)",
-                      minHeight: "calc(100vh - 240px)",
-                    }}
-                  >
-                    <iframe
-                      src={sector.pdf + "#toolbar=1&view=FitH"}
-                      className="w-full h-full"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="group flex items-center justify-between p-5 rounded-2xl transition-all hover:scale-[1.02]"
                       style={{
-                        minHeight: "calc(100vh - 240px)",
-                        background: "#111",
+                        background: "rgba(255,255,255,0.03)",
+                        border: "1px solid rgba(255,255,255,0.07)",
                       }}
-                      title={`${sector.label} profile`}
-                    />
-                  </div>
+                    >
+                      <div className="flex items-center gap-4">
+                        <div
+                          className="flex justify-center items-center rounded-xl w-10 h-10"
+                          style={{
+                            background: `${sector.accent}14`,
+                            border: `1px solid ${sector.accent}30`,
+                          }}
+                        >
+                          <Globe size={18} style={{ color: sector.accent }} />
+                        </div>
+                        <div>
+                          <p className="font-medium text-white/90 text-sm">
+                            {link.title}
+                          </p>
+                          <p className="text-white/40 text-xs truncate max-w-[200px]">
+                            {link.url.replace(/^https?:\/\//, '')}
+                          </p>
+                        </div>
+                      </div>
+                      <ChevronRight
+                        size={18}
+                        className="text-white/20 group-hover:text-white/60 transition group-hover:translate-x-1"
+                      />
+                    </motion.a>
+                  ))}
                 </div>
               )}
             </motion.div>

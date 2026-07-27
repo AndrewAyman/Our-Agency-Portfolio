@@ -8,6 +8,10 @@ import {
   Palette,
   Utensils,
   Code2,
+  Globe,
+  Briefcase,
+  Instagram,
+  Linkedin,
 } from "lucide-react";
 
 export type Sector = {
@@ -22,9 +26,14 @@ export type Sector = {
     youtubeUrl: string;
     thumbnail?: string;
   }[];
-  pdfs: {           // ← array مش string
+  pdfs: {
     title: string;
     url: string;
+  }[];
+  links?: {
+    title: string;
+    url: string;
+    type?: "website" | "portfolio" | "case-study" | "social";
   }[];
 };
 
@@ -87,10 +96,17 @@ export const SECTORS: Sector[] = [
       },
     ],
     pdfs: [
-      {
-        title: "Company Profile",
-        url: "/profiles/dental/profile/banet alemar profile lite2.pdf",
-      },
+      // {
+      //   title: "Company Profile",
+      //   url: "/profiles/dental/profile/banet alemar profile lite2.pdf",
+      // },
+    ],
+    links: [
+      // {
+      //   title: "Dental Clinic Website",
+      //   url: "https://example-dental.com",
+      //   type: "website",
+      // },
     ],
   },
   {
@@ -120,7 +136,6 @@ export const SECTORS: Sector[] = [
       "/profiles/construction/18.png",
       "/profiles/construction/19.png",
       "/profiles/construction/20.png",
-<<<<<<< HEAD
       "/profiles/construction/21.png",
       "/profiles/construction/22.png",
       "/profiles/construction/23.png",
@@ -131,48 +146,53 @@ export const SECTORS: Sector[] = [
       "/profiles/construction/28.jpg",
       "/profiles/construction/29.jpg",
       "/profiles/construction/30.jpg",
-=======
->>>>>>> 798130e9f25a059040382d3132ba75279a01452b
-
-
     ],
     videos: [
       {
         title: "Construction Project Showcase",
-<<<<<<< HEAD
         youtubeUrl: "https://youtube.com/embed/V1ZNek9V0wo",
       },
-      
-          {
+      {
         title: "Construction Project Showcase",
         youtubeUrl: "https://youtube.com/embed/LT52R8auFtU",
       },
-            {
+      {
         title: "Construction Project Showcase",
         youtubeUrl: "https://youtube.com/embed/wvyCovwNLUc",
       },
-            {
+      {
         title: "Construction Project Showcase",
         youtubeUrl: "https://youtube.com/embed/8QSbuaJ68YY",
       },
-      
-=======
-        youtubeUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      }
->>>>>>> 798130e9f25a059040382d3132ba75279a01452b
     ],
     pdfs: [
       {
-        title: "Company Profile",
-    url: "/construction/baneta.pdf", // ✅ صحيح
+        title: "yamas Profile",
+        url: "/profiles/construction/yamas.pdf",
       },
       {
-        title: "Project Portfolio",
-        url: "/construction/yamas.pdf",
+        title: "baneta Portfolio",
+        url: "/profiles/construction/baneta.pdf",
       },
     ],
+    links: [
+      {
+        title: "sadif",
+        url: "https://www.sadif.sa/",
+        type: "website",
+      },
+      {
+        title: "Yamas ",
+        url: "https://www.yamas.com.sa/ar",
+        type: "website",
+      },
+      // {
+      //   title: "Project Portfolio Gallery",
+      //   url: "https://www.baneta-eg.com/projects",
+      //   type: "portfolio",
+      // },
+    ],
   },
-<<<<<<< HEAD
   // {
   //   id: "gym",
   //   label: "Gym & Fitness",
@@ -186,25 +206,8 @@ export const SECTORS: Sector[] = [
   //       youtubeUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
   //     }
   //   ],
-  //   pdfs: [],  // ← array فاضي
+  //   pdfs: [],
   // },
-=======
-  {
-    id: "gym",
-    label: "Gym & Fitness",
-    Icon: Dumbbell,
-    accent: "#8D9AB0",
-    desc: "Energetic branding, reels, and performance ads for gyms and fitness studios.",
-    images: [],
-    videos: [
-      {
-        title: "Gym Motivation Reel",
-        youtubeUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      }
-    ],
-    pdfs: [],  // ← array فاضي
-  },
->>>>>>> 798130e9f25a059040382d3132ba75279a01452b
   {
     id: "food",
     label: "Restaurant",
@@ -232,152 +235,165 @@ export const SECTORS: Sector[] = [
       "/profiles/Food/18.PNG",
       "/profiles/Food/19.PNG",
       "/profiles/Food/20.PNG",
-<<<<<<< HEAD
       "/profiles/Food/24.PNG",
       "/profiles/Food/25.PNG",
       "/profiles/Food/26.PNG",
       "/profiles/Food/27.jpg",
       "/profiles/Food/28.jpg",
       "/profiles/Food/29.jpg",
-
-      
-=======
->>>>>>> 798130e9f25a059040382d3132ba75279a01452b
+      "/profiles/Food/30.png",
+      "/profiles/Food/31.png",
+      "/profiles/Food/32.png",
     ],
     videos: [
       {
         title: "Restaurant Branding Reel",
-<<<<<<< HEAD
         youtubeUrl: "https://youtube.com/embed/jWhP0R5Pcsg",
-=======
-        youtubeUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
->>>>>>> 798130e9f25a059040382d3132ba75279a01452b
       }
     ],
-    pdfs: [],  // ← array فاضي
-  },
-<<<<<<< HEAD
-
-=======
->>>>>>> 798130e9f25a059040382d3132ba75279a01452b
-{
-  id: "clothes",
-  label: "Fashion & Clothing",
-  Icon: Palette,  // أو استخدم أيقونة Shirt أو ShoppingBag
-  accent: "#E8A87C",  // لون دافئ يناسب الأزياء
-  desc: "Fashion branding, social media campaigns, and visual content for clothing brands and boutiques.",
-  images: [
-<<<<<<< HEAD
-
-    "/profiles/clothes/1.jpg",
-    "/profiles/clothes/2.jpg",
-    "/profiles/clothes/3.jpg",
-    "/profiles/clothes/4.jpg",
-    "/profiles/clothes/5.jpg",
-
-=======
-    // حط مسارات صور الملابس هنا
-    // "/profiles/clothes/1.png",
-    // "/profiles/clothes/2.png",
-    // "/profiles/clothes/3.png",
->>>>>>> 798130e9f25a059040382d3132ba75279a01452b
-  ],
-  videos: [
-    {
-      title: "Fashion Brand Reel",
-      youtubeUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    },
-    {
-      title: "Clothing Collection Showcase",
-      youtubeUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    }
-  ],
-  pdfs: [
-    {
-      title: "Fashion Brand Portfolio",
-      url: "/profiles/clothes/fashion-portfolio.pdf",
-    },
-  ],
-},
-{
-  id: "ai",
-  label: "Software & AI Solutions",
-  Icon: Code2,  // ← أيقونة الكود
-  accent: "#6C63FF",  // لون أرجواني/أزرق يناسب التكنولوجيا
-  desc: "Custom software development, AI solutions, and digital transformation for businesses.",
-  images: [
-     "/profiles/Software/1.png",
-     "/profiles/Software/2.png",
-     "/profiles/Software/3.png",
-     "/profiles/Software/4.png",
-     "/profiles/Software/5.png",
-     "/profiles/Software/6.png",
-     "/profiles/Software/7.png",
-     "/profiles/Software/8.png",
-     "/profiles/Software/9.png",
-     "/profiles/Software/10.png",
-     "/profiles/Software/11.png",
-     "/profiles/Software/12.png",
-     "/profiles/Software/14.png",
-     "/profiles/Software/13.png",
-     "/profiles/Software/15.png",
-     "/profiles/Software/16.png",
-     "/profiles/Software/17.png",
-     "/profiles/Software/18.png",
-     "/profiles/Software/19.png",
-     "/profiles/Software/20.png",
-     "/profiles/Software/21.png",
-<<<<<<< HEAD
-     "/profiles/Software/22.jpg",
-     "/profiles/Software/23.jpg",
-     "/profiles/Software/24.jpg",
-     "/profiles/Software/25.jpg",
-     "/profiles/Software/26.jpg",
-     "/profiles/Software/27.jpg",
-     "/profiles/Software/28.jpg",
-     "/profiles/Software/29.jpg",
-     "/profiles/Software/30.jpg",
-     "/profiles/Software/31.jpg",
-=======
->>>>>>> 798130e9f25a059040382d3132ba75279a01452b
-
-  ],
-  videos: [
- {
-    title: "Elite Pay",
-    youtubeUrl: "https://www.youtube.com/embed/bP2chqjbQ6A",  // ← كده
+    pdfs: [
+      {
+        title: "aziza Portfolio",
+        url: "/profiles/Food/aziza identity.pdf",
+      },
+    ],
+    links: [
+      // {
+      //   title: "Restaurant Website",
+      //   url: "https://example-restaurant.com",
+      //   type: "website",
+      // },
+      // {
+      //   title: "Instagram Page",
+      //   url: "https://instagram.com/example",
+      //   type: "social",
+      // },
+    ],
   },
   {
-    title: "Elite Pay",
-    youtubeUrl: "https://youtube.com/embed/EC7nuifHgGg",  // ← كده
+    id: "clothes",
+    label: "Fashion & Clothing",
+    Icon: Palette,
+    accent: "#E8A87C",
+    desc: "Fashion branding, social media campaigns, and visual content for clothing brands and boutiques.",
+    images: [
+      "/profiles/clothes/1.jpg",
+      "/profiles/clothes/2.jpg",
+      "/profiles/clothes/3.jpg",
+      "/profiles/clothes/4.jpg",
+      "/profiles/clothes/5.jpg",
+    ],
+    videos: [
+      {
+        title: "Fashion Brand Reel",
+        youtubeUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      },
+      {
+        title: "Clothing Collection Showcase",
+        youtubeUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      }
+    ],
+    pdfs: [
+      // {
+      //   title: "Fashion Brand Portfolio",
+      //   url: "/profiles/clothes/fashion-portfolio.pdf",
+      // },
+    ],
+    links: [
+      // {
+      //   title: "Fashion Brand Website",
+      //   url: "https://example-fashion.com",
+      //   type: "website",
+      // },
+    ],
   },
   {
-    title: "Elite Pay",
-    youtubeUrl: "https://youtube.com/embed/TxaOC6xrPAQ",  // ← كده
+    id: "ai",
+    label: "Software & AI Solutions",
+    Icon: Code2,
+    accent: "#6C63FF",
+    desc: "Custom software development, AI solutions, and digital transformation for businesses.",
+    images: [
+      "/profiles/Software/1.png",
+      "/profiles/Software/2.png",
+      "/profiles/Software/3.png",
+      "/profiles/Software/4.png",
+      "/profiles/Software/5.png",
+      "/profiles/Software/6.png",
+      "/profiles/Software/7.png",
+      "/profiles/Software/8.png",
+      "/profiles/Software/9.png",
+      "/profiles/Software/10.png",
+      "/profiles/Software/11.png",
+      "/profiles/Software/12.png",
+      "/profiles/Software/14.png",
+      "/profiles/Software/13.png",
+      "/profiles/Software/15.png",
+      "/profiles/Software/16.png",
+      "/profiles/Software/17.png",
+      "/profiles/Software/18.png",
+      "/profiles/Software/19.png",
+      "/profiles/Software/20.png",
+      "/profiles/Software/21.png",
+      "/profiles/Software/22.jpg",
+      "/profiles/Software/23.jpg",
+      "/profiles/Software/24.jpg",
+      "/profiles/Software/25.jpg",
+      "/profiles/Software/26.jpg",
+      "/profiles/Software/27.jpg",
+      "/profiles/Software/28.jpg",
+      "/profiles/Software/29.jpg",
+      "/profiles/Software/30.jpg",
+      "/profiles/Software/31.jpg",
+    ],
+    videos: [
+      {
+        title: "Elite Pay",
+        youtubeUrl: "https://www.youtube.com/embed/bP2chqjbQ6A",
+      },
+      {
+        title: "Elite Pay",
+        youtubeUrl: "https://youtube.com/embed/EC7nuifHgGg",
+      },
+      {
+        title: "Elite Pay",
+        youtubeUrl: "https://youtube.com/embed/TxaOC6xrPAQ",
+      },
+      {
+        title: "Elite Pay",
+        youtubeUrl: "https://youtube.com/embed/JU9ChDvm_tQ",
+      },
+      {
+        title: "Elite Pay",
+        youtubeUrl: "https://youtube.com/embed/fIeJ4Ir9mtA",
+      },
+    ],
+    pdfs: [
+      {
+        title: "Software Portfolio",
+        url: "/profiles/Software/Egypt pp.pptx",
+      },
+      // {
+      //   title: "AI Solutions Brochure",
+      //   url: "/profiles/ai/ai-brochure.pdf",
+      // },
+    ],
+    links: [
+      {
+        title: "ahmed-portfolio",
+        url: "https://ahmed-portfolio-lake.vercel.app/",
+        type: "website",
+      },
+      // {
+      //   title: "GitHub Portfolio",
+      //   url: "https://github.com/example",
+      //   type: "portfolio",
+      // },
+      // {
+      //   title: "LinkedIn Page",
+      //   url: "https://linkedin.com/company/example",
+      //   type: "social",
+      // },
+    ],
   },
-  {
-    title: "Elite Pay",
-    youtubeUrl: "https://youtube.com/embed/JU9ChDvm_tQ",  // ← كده
-  },
-<<<<<<< HEAD
-    {
-    title: "Elite Pay",
-    youtubeUrl: "https://youtube.com/embed/fIeJ4Ir9mtA",  // ← كده
-  },
-=======
->>>>>>> 798130e9f25a059040382d3132ba75279a01452b
- 
-  
-  ],
-  pdfs: [
-    {
-      title: "Software Portfolio",
-      url: "/profiles/ai/software-portfolio.pdf",
-    },
-    {
-      title: "AI Solutions Brochure",
-      url: "/profiles/ai/ai-brochure.pdf",
-    },
-  ],
-},
 ];
