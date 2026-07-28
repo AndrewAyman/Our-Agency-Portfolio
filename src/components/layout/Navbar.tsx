@@ -6,13 +6,16 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { NAV_LINKS } from "@/constants";
+import { useLanguage } from "@/context/LanguageContext";
+import { useT } from "@/translations/useT";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [isAr, setIsAr] = useState(false);
   const pathname = usePathname();
+
+  const { isAr, toggle } = useLanguage();
+  const { t } = useT();
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 40);
@@ -24,25 +27,13 @@ export default function Navbar() {
     setMobileOpen(false);
   }, [pathname]);
 
-  // ── Detect language from cookie on mount ─────────────────────────
-  useEffect(() => {
-    setIsAr(document.cookie.includes("googtrans=/en/ar"));
-  }, []);
-
-  // ── Toggle: cookie + reload (avoids React DOM conflict) ──────────
-  const toggleLanguage = () => {
-    if (!isAr) {
-      // EN → AR
-      document.cookie = "googtrans=/en/ar; path=/";
-      document.cookie = `googtrans=/en/ar; domain=${location.hostname}; path=/`;
-    } else {
-      // AR → EN
-      const exp = "expires=Thu, 01 Jan 1970 00:00:00 UTC";
-      document.cookie = `googtrans=; ${exp}; path=/`;
-      document.cookie = `googtrans=; ${exp}; domain=${location.hostname}; path=/`;
-    }
-    location.reload();
-  };
+  const NAV_LINKS = [
+    { href: "/", label: t.nav.home },
+    { href: "/about", label: t.nav.about },
+    { href: "/services", label: t.nav.services },
+    { href: "/our-work", label: t.nav.ourWork },
+    { href: "/contact", label: t.nav.contact },
+  ];
 
   const langBtnStyle: React.CSSProperties = {
     padding: "8px 18px",
@@ -91,6 +82,7 @@ export default function Navbar() {
             alignItems: "center",
             justifyContent: "space-between",
           }}
+          dir={isAr ? "rtl" : "ltr"}
         >
           {/* Logo */}
           <Link
@@ -134,7 +126,6 @@ export default function Navbar() {
                 }}
               >
                 <span
-                  className="notranslate"
                   style={{
                     fontFamily:
                       "var(--font-display,'Bebas Neue',Impact,sans-serif)",
@@ -146,7 +137,6 @@ export default function Navbar() {
                   OUR<span style={{ color: "#8D9AB0" }}>.</span>AGENCY
                 </span>
                 <span
-                  className="notranslate"
                   style={{
                     fontSize: 9,
                     letterSpacing: "0.18em",
@@ -208,6 +198,7 @@ export default function Navbar() {
                           ? "white"
                           : "rgba(255,255,255,0.42)",
                       transition: "color 0.2s",
+                      fontFamily: isAr ? "'Cairo', sans-serif" : "inherit",
                     }}
                   >
                     {link.label}
@@ -223,12 +214,12 @@ export default function Navbar() {
             style={{ display: "none", alignItems: "center", gap: 10 }}
           >
             <motion.button
-              onClick={toggleLanguage}
+              onClick={toggle}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               style={langBtnStyle}
             >
-              {isAr ? "English" : "عربي"}
+              {t.nav.switchLang}
             </motion.button>
 
             <Link href="/contact">
@@ -247,9 +238,10 @@ export default function Navbar() {
                   fontWeight: 700,
                   border: "none",
                   cursor: "pointer",
+                  fontFamily: isAr ? "'Cairo', sans-serif" : "inherit",
                 }}
               >
-                Start a Project
+                {t.nav.cta}
               </motion.button>
             </Link>
           </div>
@@ -260,7 +252,7 @@ export default function Navbar() {
             style={{ display: "flex", alignItems: "center", gap: 8 }}
           >
             <motion.button
-              onClick={toggleLanguage}
+              onClick={toggle}
               whileTap={{ scale: 0.9 }}
               style={{ ...langBtnStyle, padding: "6px 14px", fontSize: 12 }}
             >
@@ -312,11 +304,12 @@ export default function Navbar() {
                 borderRadius: 18,
                 padding: 12,
               }}
+              dir={isAr ? "rtl" : "ltr"}
             >
               {NAV_LINKS.map((link, i) => (
                 <motion.div
                   key={link.href}
-                  initial={{ opacity: 0, x: -12 }}
+                  initial={{ opacity: 0, x: isAr ? 12 : -12 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.055 }}
                 >
@@ -331,6 +324,7 @@ export default function Navbar() {
                       fontWeight: 500,
                       textDecoration: "none",
                       transition: "all 0.2s",
+                      fontFamily: isAr ? "'Cairo', sans-serif" : "inherit",
                       background:
                         pathname === link.href
                           ? "rgba(141,154,176,0.12)"
@@ -368,9 +362,10 @@ export default function Navbar() {
                       fontWeight: 700,
                       border: "none",
                       cursor: "pointer",
+                      fontFamily: isAr ? "'Cairo', sans-serif" : "inherit",
                     }}
                   >
-                    Start a Project
+                    {t.nav.cta}
                   </button>
                 </Link>
               </div>

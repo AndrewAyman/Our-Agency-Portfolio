@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 import { TrendingUp, Eye, Zap, Shield, ArrowRight } from "lucide-react";
-import { VALUES, WHY_US } from "@/constants";
 import { StaggerContainer, StaggerItem, Reveal } from "@/components/ui/Reveal";
+import { useT } from "@/translations/useT";
 
 const ACCENT = "#8D9AB0";
 const ACCENT_L = "#B0BDD0";
@@ -13,14 +13,6 @@ const ICON_MAP: Record<string, React.ElementType> = {
   eye: Eye,
   zap: Zap,
   shield: Shield,
-};
-
-// Each value card gets a subtle silver-tinted tint on hover
-const TINTS: Record<string, string> = {
-  Growth: "rgba(141,154,176,0.10)",
-  Transparency: "rgba(176,189,208,0.08)",
-  Creativity: "rgba(200,208,220,0.07)",
-  Commitment: "rgba(141,154,176,0.12)",
 };
 
 const card = {
@@ -37,6 +29,19 @@ const card = {
 };
 
 export default function ValuesSection() {
+  const { t, isAr } = useT();
+
+  const VALUES = t.data.values as Array<{
+    icon: string;
+    title: string;
+    desc: string;
+  }>;
+  const WHY_US = t.data.whyUs as Array<{
+    num: string;
+    title: string;
+    desc: string;
+  }>;
+
   return (
     <section
       style={{
@@ -44,8 +49,8 @@ export default function ValuesSection() {
         padding: "5rem 1.5rem",
         overflow: "hidden",
       }}
+      dir={isAr ? "rtl" : "ltr"}
     >
-      {/* Ambient orb */}
       <div
         style={{
           position: "absolute",
@@ -67,7 +72,6 @@ export default function ValuesSection() {
           margin: "0 auto",
         }}
       >
-        {/* Header */}
         <Reveal style={{ textAlign: "center", marginBottom: "4rem" }}>
           <span
             style={{
@@ -80,9 +84,10 @@ export default function ValuesSection() {
               marginBottom: 12,
             }}
           >
-            Our Values
+            {t.values.badge}
           </span>
           <h2
+            translate="no"
             style={{
               fontFamily: "var(--font-display,'Bebas Neue',Impact,sans-serif)",
               fontSize: "clamp(2.5rem,6vw,5rem)",
@@ -94,11 +99,10 @@ export default function ValuesSection() {
               backgroundClip: "text",
             }}
           >
-            WHAT DRIVES US
+            {t.values.title}
           </h2>
         </Reveal>
 
-        {/* Value cards */}
         <StaggerContainer
           style={{
             display: "grid",
@@ -116,24 +120,23 @@ export default function ValuesSection() {
                   className="group"
                   style={card}
                 >
-                  {/* Hover tint */}
                   <div
                     style={{
                       position: "absolute",
                       inset: 0,
-                      background: TINTS[val.title] || "transparent",
+                      background: "rgba(141,154,176,0.1)",
                       opacity: 0,
                       transition: "opacity 0.4s",
                     }}
                     onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
                     onMouseLeave={(e) => (e.currentTarget.style.opacity = "0")}
                   />
-                  {/* Watermark number */}
                   <div
                     style={{
                       position: "absolute",
                       top: 14,
-                      right: 20,
+                      right: isAr ? undefined : 20,
+                      left: isAr ? 20 : undefined,
                       fontFamily:
                         "var(--font-display,'Bebas Neue',Impact,sans-serif)",
                       fontSize: "4rem",
@@ -146,7 +149,6 @@ export default function ValuesSection() {
                   </div>
 
                   <div style={{ position: "relative", zIndex: 1 }}>
-                    {/* Lucide icon in a glass pill */}
                     <div
                       style={{
                         width: 44,
@@ -190,7 +192,6 @@ export default function ValuesSection() {
           })}
         </StaggerContainer>
 
-        {/* Divider */}
         <div
           style={{
             display: "flex",
@@ -216,7 +217,7 @@ export default function ValuesSection() {
               textTransform: "uppercase",
             }}
           >
-            Why Us
+            {t.values.whyUs}
           </span>
           <div
             style={{
@@ -228,7 +229,6 @@ export default function ValuesSection() {
           />
         </div>
 
-        {/* Why us cards */}
         <StaggerContainer
           style={{
             display: "grid",
@@ -239,7 +239,10 @@ export default function ValuesSection() {
           {WHY_US.map((item, i) => (
             <StaggerItem key={i}>
               <motion.div
-                whileHover={{ x: 4, borderColor: "rgba(141,154,176,0.3)" }}
+                whileHover={{
+                  x: isAr ? -4 : 4,
+                  borderColor: "rgba(141,154,176,0.3)",
+                }}
                 style={{ ...card, transition: "all 0.3s ease" }}
               >
                 <div style={{ display: "flex", gap: 20 }}>
@@ -279,13 +282,21 @@ export default function ValuesSection() {
                     </p>
                   </div>
                 </div>
-                {/* Arrow on hover */}
                 <motion.div
-                  initial={{ opacity: 0, x: -6 }}
+                  initial={{ opacity: 0, x: isAr ? 6 : -6 }}
                   whileHover={{ opacity: 1, x: 0 }}
-                  style={{ position: "absolute", bottom: 20, right: 20 }}
+                  style={{
+                    position: "absolute",
+                    bottom: 20,
+                    right: isAr ? undefined : 20,
+                    left: isAr ? 20 : undefined,
+                  }}
                 >
-                  <ArrowRight size={14} color={ACCENT} />
+                  <ArrowRight
+                    size={14}
+                    color={ACCENT}
+                    style={{ transform: isAr ? "scaleX(-1)" : "none" }}
+                  />
                 </motion.div>
               </motion.div>
             </StaggerItem>

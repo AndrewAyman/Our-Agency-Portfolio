@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Users, Zap, Globe, TrendingUp } from "lucide-react";
-import { METRICS } from "@/constants";
 import { Reveal } from "@/components/ui/Reveal";
+import { useT } from "@/translations/useT";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const ACCENT = "#8D9AB0";
@@ -12,7 +12,6 @@ const ACCENT_L = "#B0BDD0";
 
 const METRIC_ICONS = [Users, Zap, Globe, TrendingUp];
 
-/* ── Animated counter ── */
 function useCounter(to: number, active: boolean, duration = 1500) {
   const [count, setCount] = useState(0);
   useEffect(() => {
@@ -44,7 +43,7 @@ function MetricCard({
   index,
   active,
 }: {
-  metric: (typeof METRICS)[0];
+  metric: { value: string; label: string; sub: string };
   index: number;
   active: boolean;
 }) {
@@ -64,7 +63,6 @@ function MetricCard({
         border: "1px solid rgba(255,255,255,0.08)",
       }}
     >
-      {/* Top glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -73,7 +71,6 @@ function MetricCard({
         }}
       />
 
-      {/* Accent top line */}
       <motion.div
         animate={{ scaleX: active ? 1 : 0, opacity: [0.4, 0.9, 0.4] }}
         transition={{
@@ -87,7 +84,6 @@ function MetricCard({
       />
 
       <div className="z-[1] relative">
-        {/* Icon */}
         <motion.div
           animate={
             active
@@ -100,9 +96,9 @@ function MetricCard({
           <Icon size={22} />
         </motion.div>
 
-        {/* Counter */}
         <div
-          className="mb-2.5 font-['Bebas_Neue',Impact,sans-serif] leading-none"
+          className="mb-2.5 font-['Bebas_Neue',Impact,sans-serif] leading-none notranslate"
+          translate="no"
           style={{
             fontSize: "clamp(2.2rem,5vw,3rem)",
             background: `linear-gradient(135deg, ${ACCENT_L}, ${ACCENT})`,
@@ -126,10 +122,10 @@ function MetricCard({
   );
 }
 
-/* ════════════════════════════════════════════ */
 export default function MetricsSection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const { t, isAr } = useT();
 
   return (
     <section
@@ -137,8 +133,8 @@ export default function MetricsSection() {
       aria-label="Results and metrics"
       className="relative px-6 py-28 overflow-hidden"
       style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+      dir={isAr ? "rtl" : "ltr"}
     >
-      {/* Center ambient — silver */}
       <motion.div
         animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.7, 0.4] }}
         transition={{ duration: 9, repeat: Infinity }}
@@ -156,9 +152,10 @@ export default function MetricsSection() {
             className="block mb-3.5 font-mono text-[11px] uppercase tracking-[0.35em]"
             style={{ color: ACCENT }}
           >
-            Real Impact
+            {t.metrics.badge}
           </span>
           <h2
+            translate="no"
             className="m-0 mb-3.5 font-['Bebas_Neue',Impact,sans-serif] leading-none"
             style={{
               fontSize: "clamp(2.2rem,6vw,5rem)",
@@ -168,27 +165,26 @@ export default function MetricsSection() {
               backgroundClip: "text",
             }}
           >
-            NUMBERS THAT MATTER
+            {t.metrics.title}
           </h2>
           <p className="mx-auto max-w-[400px] text-white/35 text-sm leading-[1.75]">
-            We don&apos;t chase vanity metrics — these numbers reflect real
-            business growth.
+            {t.metrics.sub}
           </p>
         </Reveal>
 
-        {/* Cards */}
         <div
           className="gap-[1.1rem] grid mb-6"
           style={{
             gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
           }}
         >
-          {METRICS.map((m, i) => (
-            <MetricCard key={i} metric={m} index={i} active={inView} />
-          ))}
+          {t.data.metrics.map(
+            (m: { value: string; label: string; sub: string }, i: number) => (
+              <MetricCard key={i} metric={m} index={i} active={inView} />
+            ),
+          )}
         </div>
 
-        {/* 1M+ strip */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -202,13 +198,14 @@ export default function MetricsSection() {
         >
           <div>
             <p
+              translate="no"
               className="m-0 mb-1 font-['Bebas_Neue',Impact,sans-serif] text-white tracking-[0.04em]"
               style={{ fontSize: "clamp(1.2rem,3vw,1.8rem)" }}
             >
-              1000000+ IMPRESSIONS DELIVERED
+              {t.metrics.strip}
             </p>
             <p className="m-0 font-mono text-white/32 text-xs">
-              Ad campaigns across KSA — and counting every month.
+              {t.metrics.stripSub}
             </p>
           </div>
 
@@ -224,10 +221,10 @@ export default function MetricsSection() {
               className="m-0 mb-1 font-mono text-[9px] uppercase tracking-[0.25em]"
               style={{ color: ACCENT }}
             >
-              Strategy
+              {t.metrics.strategy}
             </p>
             <p className="m-0 font-['Bebas_Neue',Impact,sans-serif] text-white text-xl tracking-[0.05em]">
-              REAL GROWTH
+              {t.metrics.growth}
             </p>
           </motion.div>
         </motion.div>

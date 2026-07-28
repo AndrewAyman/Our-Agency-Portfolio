@@ -1,49 +1,64 @@
 "use client";
-// CORRECTED FILE — replace src/components/sections/ServicesGrid.tsx with this
-// CHANGES:
-// 1. Added useT() import and usage — heading now comes from t.servicesGrid.title
-// 2. ✅ FIX: Arabic heading animated as one unit (not letter-by-letter) — prevents broken Arabic chars
-// 3. Removed hardcoded "Capabilities", "WHAT WE DO BEST", "Every engagement...", etc.
-// 4. Added t.servicesGrid.flagship, t.servicesGrid.startWith, t.servicesGrid.cta, t.servicesGrid.sub
 
 import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { ArrowRight, Check } from "lucide-react";
-import Link from "next/link";
 import {
+  ArrowRight,
+  Check,
   Palette,
   PenTool,
   TrendingUp,
   Users,
   Video,
   Globe,
+  FileText,
 } from "lucide-react";
-import { SERVICES } from "@/constants";
+import Link from "next/link";
 import { useT } from "@/translations/useT";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const LETTER_EASE = [0.19, 1, 0.22, 1] as const;
 
-const SERVICE_META: Record<
-  number,
-  { icon: React.ElementType; accent: string }
-> = {
-  1: { icon: Video, accent: "#8D9AB0" },
-  2: { icon: Palette, accent: "#B0BDD0" },
-  3: { icon: PenTool, accent: "#A0AABC" },
-  4: { icon: TrendingUp, accent: "#9AA6B8" },
-  5: { icon: Users, accent: "#B8C4D0" },
-  6: { icon: Globe, accent: "#8D9AB0" },
-};
-
 const ACCENT = "#8D9AB0";
 const ACCENT_L = "#B0BDD0";
 
+const ICON_MAP: Record<string, React.ElementType> = {
+  video: Video,
+  palette: Palette,
+  "pen-tool": PenTool,
+  "trending-up": TrendingUp,
+  users: Users,
+  globe: Globe,
+  "file-text": FileText,
+};
+
+const ACCENT_CYCLE = [
+  "#8D9AB0",
+  "#A0AABC",
+  "#9AA6B8",
+  "#B8C4D0",
+  "#8D9AB0",
+  "#A0AABC",
+];
+
+type ServiceItem = {
+  icon: string;
+  title: string;
+  desc: string;
+  tags: string[];
+  featured?: boolean;
+};
+
 /* ── Featured Card ── */
-function FeaturedCard({ shouldAnimate }: { shouldAnimate: boolean }) {
+function FeaturedCard({
+  service,
+  shouldAnimate,
+}: {
+  service: ServiceItem;
+  shouldAnimate: boolean;
+}) {
   const { t } = useT();
-  const service = SERVICES.find((s) => s.id === 2)!;
-  const { icon: Icon } = SERVICE_META[2];
+  const Icon = ICON_MAP[service.icon] ?? Palette;
   const [hovered, setHovered] = useState(false);
   const swatches = [ACCENT, ACCENT_L, "#0A2540", "#F0F4FF"];
 
@@ -78,7 +93,6 @@ function FeaturedCard({ shouldAnimate }: { shouldAnimate: boolean }) {
       />
 
       <div className="z-[1] relative gap-8 grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] p-6 sm:p-8 lg:p-14">
-        {/* Left */}
         <div>
           <div className="flex items-center gap-3 mb-5">
             <motion.div
@@ -173,7 +187,6 @@ function FeaturedCard({ shouldAnimate }: { shouldAnimate: boolean }) {
           </Link>
         </div>
 
-        {/* Right — brand mockup */}
         <div className="hidden sm:flex justify-center items-center min-h-[200px]">
           <motion.div
             animate={hovered ? { rotate: [0, 1, -1, 0] } : { rotate: 0 }}
@@ -275,27 +288,24 @@ function FeaturedCard({ shouldAnimate }: { shouldAnimate: boolean }) {
 function CompactCard({
   service,
   index,
+  accent,
   shouldAnimate,
   delay,
 }: {
-  service: (typeof SERVICES)[number];
+  service: ServiceItem;
   index: number;
+  accent: string;
   shouldAnimate: boolean;
   delay: number;
 }) {
   const [hovered, setHovered] = useState(false);
-  const meta = SERVICE_META[service.id] ?? { icon: Globe, accent: ACCENT };
-  const Icon = meta.icon;
+  const Icon = ICON_MAP[service.icon] ?? Globe;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 60 }}
       animate={shouldAnimate ? { opacity: 1, y: 0 } : {}}
-      transition={{
-        duration: 0.6,
-        delay,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      }}
+      transition={{ duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       whileHover={{ y: -6 }}
@@ -305,12 +315,12 @@ function CompactCard({
           ? "rgba(255,255,255,0.055)"
           : "rgba(255,255,255,0.03)",
         border: hovered
-          ? `1px solid ${meta.accent}55`
+          ? `1px solid ${accent}55`
           : "1px solid rgba(255,255,255,0.07)",
         backdropFilter: "blur(16px)",
         WebkitBackdropFilter: "blur(16px)",
         boxShadow: hovered
-          ? `0 20px 60px rgba(0,0,0,0.5), 0 0 36px ${meta.accent}22`
+          ? `0 20px 60px rgba(0,0,0,0.5), 0 0 36px ${accent}22`
           : "none",
         transition: "background 0.35s, border-color 0.35s, box-shadow 0.35s",
       }}
@@ -323,7 +333,7 @@ function CompactCard({
             exit={{ opacity: 0 }}
             className="absolute inset-0 pointer-events-none"
             style={{
-              background: `radial-gradient(ellipse at 25% 20%, ${meta.accent}18 0%, transparent 60%)`,
+              background: `radial-gradient(ellipse at 25% 20%, ${accent}18 0%, transparent 60%)`,
             }}
           />
         )}
@@ -337,14 +347,14 @@ function CompactCard({
             transition={{ duration: 0.4 }}
             className="top-0 right-0 left-0 absolute h-px origin-left"
             style={{
-              background: `linear-gradient(90deg, transparent, ${meta.accent}, transparent)`,
+              background: `linear-gradient(90deg, transparent, ${accent}, transparent)`,
             }}
           />
         )}
       </AnimatePresence>
 
       <motion.div
-        animate={{ color: hovered ? meta.accent : "rgba(255,255,255,0.12)" }}
+        animate={{ color: hovered ? accent : "rgba(255,255,255,0.12)" }}
         className="top-5 right-5 absolute font-mono"
         style={{ fontSize: 11, letterSpacing: "0.15em" }}
       >
@@ -357,8 +367,8 @@ function CompactCard({
             hovered
               ? {
                   scale: 1.1,
-                  background: `${meta.accent}22`,
-                  borderColor: `${meta.accent}55`,
+                  background: `${accent}22`,
+                  borderColor: `${accent}55`,
                 }
               : {
                   scale: 1,
@@ -376,7 +386,7 @@ function CompactCard({
           >
             <Icon
               size={18}
-              color={hovered ? meta.accent : "rgba(255,255,255,0.5)"}
+              color={hovered ? accent : "rgba(255,255,255,0.5)"}
             />
           </motion.div>
         </motion.div>
@@ -400,7 +410,7 @@ function CompactCard({
             transition={{ duration: 0.25 }}
             className="mt-1 shrink-0"
           >
-            <ArrowRight size={13} color={meta.accent} />
+            <ArrowRight size={13} color={accent} />
           </motion.div>
         </div>
 
@@ -425,9 +435,9 @@ function CompactCard({
                 padding: "3px 10px",
                 borderRadius: 20,
                 border: hovered
-                  ? `1px solid ${meta.accent}40`
+                  ? `1px solid ${accent}40`
                   : "1px solid rgba(255,255,255,0.09)",
-                color: hovered ? meta.accent : "rgba(255,255,255,0.35)",
+                color: hovered ? accent : "rgba(255,255,255,0.35)",
                 transition: "all 0.3s",
               }}
             >
@@ -460,10 +470,12 @@ export default function ServicesGrid() {
     }
   }, [sectionInView, hasAnimated]);
 
-  // ✅ FIX: heading comes from translations, not hardcoded
+  const SERVICES = t.data.services as ServiceItem[];
+  const featured = SERVICES.find((s) => s.featured) ?? SERVICES[0];
+  const compact = SERVICES.filter((s) => !s.featured);
+
   const headingText = t.servicesGrid.title;
   const letters = Array.from(headingText);
-  const compactServices = SERVICES.filter((s) => s.id !== 2);
 
   return (
     <section
@@ -473,10 +485,7 @@ export default function ServicesGrid() {
       style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
     >
       <motion.div
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.4, 0.7, 0.4],
-        }}
+        animate={{ scale: [1, 1.1, 1], opacity: [0.4, 0.7, 0.4] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         className="top-0 left-1/2 absolute w-[500px] sm:w-[700px] h-[400px] -translate-x-1/2 pointer-events-none"
         style={{
@@ -486,8 +495,10 @@ export default function ServicesGrid() {
         }}
       />
 
-      <div className="z-[1] relative mx-auto max-w-[1280px]">
-        {/* ── Header ── */}
+      <div
+        className="z-[1] relative mx-auto max-w-[1280px]"
+        dir={isAr ? "rtl" : "ltr"}
+      >
         <div ref={headRef} className="mb-10 sm:mb-16 text-center">
           <motion.span
             initial={{ opacity: 0, letterSpacing: "0.25em" }}
@@ -499,22 +510,20 @@ export default function ServicesGrid() {
             {t.servicesGrid.badge}
           </motion.span>
 
-          {/*
-            ✅ KEY FIX:
-            - Arabic  → animate the whole string as ONE span (حروف العربي ما تتقسمش)
-            - English → animate letter by letter (looks great for Latin chars)
-          */}
           <h2
-            translate="no"
-            className="flex flex-wrap justify-center m-0 mb-4 sm:mb-5 leading-none select-none notranslate"
+            className="flex flex-wrap justify-center m-0 mb-4 sm:mb-5 select-none"
             style={{
-              fontFamily: "var(--font-display,'Bebas Neue',Impact,sans-serif)",
-              fontSize: "clamp(2rem,6vw,5.5rem)",
+              fontFamily: isAr
+                ? "'Cairo', 'Tajawal', Tahoma, 'Segoe UI', Arial, sans-serif"
+                : "var(--font-display,'Bebas Neue',Impact,sans-serif)",
+              fontSize: isAr
+                ? "clamp(2rem,6vw,4.5rem)"
+                : "clamp(2rem,6vw,5.5rem)",
+              lineHeight: isAr ? 1.2 : 1,
               direction: isAr ? "rtl" : "ltr",
             }}
           >
             {isAr ? (
-              // Arabic: single animated block — no splitting
               <motion.span
                 initial={{ opacity: 0, y: -60, filter: "blur(10px)" }}
                 animate={
@@ -532,7 +541,6 @@ export default function ServicesGrid() {
                 {headingText}
               </motion.span>
             ) : (
-              // English: letter-by-letter (unchanged behavior)
               letters.map((char, i) => (
                 <motion.span
                   key={i}
@@ -576,25 +584,23 @@ export default function ServicesGrid() {
           </motion.p>
         </div>
 
-        {/* ── Featured ── */}
         <div className="gap-4 sm:gap-5 grid grid-cols-1 lg:grid-cols-12 mb-4 sm:mb-5">
-          <FeaturedCard shouldAnimate={hasAnimated} />
+          <FeaturedCard service={featured} shouldAnimate={hasAnimated} />
         </div>
 
-        {/* ── Compact grid ── */}
         <div className="gap-4 sm:gap-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {compactServices.map((s, i) => (
+          {compact.map((s, i) => (
             <CompactCard
-              key={s.id}
+              key={s.title}
               service={s}
               index={i + 1}
+              accent={ACCENT_CYCLE[i % ACCENT_CYCLE.length]}
               shouldAnimate={hasAnimated}
               delay={0.15 + i * 0.1}
             />
           ))}
         </div>
 
-        {/* ── CTA ── */}
         <div className="mt-10 sm:mt-14 text-center">
           <Link href="/contact">
             <motion.button
@@ -611,11 +617,7 @@ export default function ServicesGrid() {
             >
               <motion.span
                 animate={{ x: ["-120%", "120%"] }}
-                transition={{
-                  duration: 2.5,
-                  repeat: Infinity,
-                  repeatDelay: 3,
-                }}
+                transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 3 }}
                 className="absolute inset-0 pointer-events-none"
                 style={{
                   background:
@@ -623,7 +625,10 @@ export default function ServicesGrid() {
                 }}
               />
               {t.servicesGrid.cta}
-              <ArrowRight size={14} />
+              <ArrowRight
+                size={14}
+                style={{ transform: isAr ? "scaleX(-1)" : "none" }}
+              />
             </motion.button>
           </Link>
         </div>

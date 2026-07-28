@@ -3,13 +3,12 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { Search, Map, Zap, BarChart2 } from "lucide-react";
-import { PROCESS } from "@/constants";
+import { useT } from "@/translations/useT";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const ACCENT = "#8D9AB0";
 const ACCENT_L = "#B0BDD0";
 
-// ✅ FIX: map string names → Lucide components
 const ICON_MAP: Record<string, React.ElementType> = {
   search: Search,
   map: Map,
@@ -25,11 +24,19 @@ export default function ServicesProcess() {
     amount: 0.05,
   });
   const [animated, setAnimated] = useState(false);
+  const { t, isAr } = useT();
+
+  const PROCESS = t.data.process as Array<{
+    num: string;
+    icon: string;
+    title: string;
+    desc: string;
+  }>;
 
   useEffect(() => {
     if (inView && !animated) {
-      const t = setTimeout(() => setAnimated(true), 100);
-      return () => clearTimeout(t);
+      const tmr = setTimeout(() => setAnimated(true), 100);
+      return () => clearTimeout(tmr);
     }
   }, [inView, animated]);
 
@@ -38,8 +45,8 @@ export default function ServicesProcess() {
       ref={sectionRef}
       className="relative px-4 sm:px-6 py-16 sm:py-24 overflow-hidden"
       style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+      dir={isAr ? "rtl" : "ltr"}
     >
-      {/* BG glow */}
       <div
         className="bottom-0 left-1/2 absolute -translate-x-1/2 pointer-events-none"
         style={{
@@ -52,7 +59,6 @@ export default function ServicesProcess() {
       />
 
       <div className="z-[1] relative mx-auto max-w-[1280px]">
-        {/* Header */}
         <div className="mb-12 sm:mb-20 text-center">
           <motion.span
             initial={{ opacity: 0, letterSpacing: "0.25em" }}
@@ -61,13 +67,14 @@ export default function ServicesProcess() {
             className="block mb-4 sm:mb-5 font-mono font-bold uppercase"
             style={{ fontSize: 12, color: ACCENT }}
           >
-            How We Work
+            {t.process.badge}
           </motion.span>
 
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={animated ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, ease: EASE }}
+            translate="no"
             style={{
               fontFamily: "var(--font-display,'Bebas Neue',Impact,sans-serif)",
               fontSize: "clamp(2rem,6vw,5.5rem)",
@@ -79,7 +86,7 @@ export default function ServicesProcess() {
               backgroundClip: "text",
             }}
           >
-            OUR PROCESS
+            {t.process.title}
           </motion.h2>
 
           <motion.p
@@ -94,13 +101,11 @@ export default function ServicesProcess() {
               lineHeight: 1.75,
             }}
           >
-            A clear process that takes your brand from insight to execution.
+            {t.process.sub}
           </motion.p>
         </div>
 
-        {/* Timeline */}
         <div className="relative">
-          {/* Desktop connecting line */}
           <div
             className="hidden lg:block top-[34px] right-0 left-0 absolute h-px"
             style={{ background: "rgba(255,255,255,0.07)" }}
@@ -116,7 +121,6 @@ export default function ServicesProcess() {
             />
           </div>
 
-          {/* Mobile vertical line */}
           <div
             className="lg:hidden top-0 bottom-0 left-[33px] absolute w-px"
             style={{ background: "rgba(255,255,255,0.06)" }}
@@ -134,9 +138,7 @@ export default function ServicesProcess() {
 
           <div className="gap-10 sm:gap-8 lg:gap-6 grid grid-cols-1 lg:grid-cols-4">
             {PROCESS.map((step, i) => {
-              // ✅ Resolve icon string → Lucide component
               const Icon = ICON_MAP[step.icon] ?? Zap;
-
               return (
                 <motion.div
                   key={step.num}
@@ -149,7 +151,6 @@ export default function ServicesProcess() {
                   }}
                   className="relative flex lg:flex-col lg:items-center gap-5 lg:gap-0 lg:text-center"
                 >
-                  {/* Icon node */}
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={animated ? { scale: 1 } : {}}
@@ -165,10 +166,7 @@ export default function ServicesProcess() {
                       backdropFilter: "blur(10px)",
                     }}
                   >
-                    {/* ✅ Render the actual Lucide icon */}
                     <Icon size={26} color={ACCENT_L} />
-
-                    {/* Pulse ring */}
                     <motion.div
                       animate={{ scale: [1, 1.35], opacity: [0.5, 0] }}
                       transition={{
@@ -182,7 +180,6 @@ export default function ServicesProcess() {
                     />
                   </motion.div>
 
-                  {/* Text */}
                   <div className="flex-1 lg:flex-none">
                     <span
                       className="block mb-2 font-mono"
@@ -192,7 +189,7 @@ export default function ServicesProcess() {
                         color: ACCENT,
                       }}
                     >
-                      STEP {step.num}
+                      {t.process.step} {step.num}
                     </span>
                     <h3
                       style={{

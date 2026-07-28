@@ -7,6 +7,7 @@ import { FiInstagram, FiMail, FiPhone, FiArrowUp } from "react-icons/fi";
 import { SiTiktok } from "react-icons/si";
 import { FaWhatsapp } from "react-icons/fa";
 import { NAV_LINKS } from "@/constants";
+import { useT } from "@/translations/useT";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -42,7 +43,6 @@ const CONTACTS = [
   { flag: "🇪🇬", number: "+20 102 608 1399", href: "tel:+201026081399" },
 ];
 
-/* ── Animated item that appears one by one ── */
 function AnimatedItem({
   children,
   delay,
@@ -60,18 +60,13 @@ function AnimatedItem({
           ? { opacity: 1, y: 0, filter: "blur(0px)" }
           : { opacity: 0, y: 30, filter: "blur(4px)" }
       }
-      transition={{
-        duration: 0.6,
-        delay: isInView ? delay : 0,
-        ease: EASE,
-      }}
+      transition={{ duration: 0.6, delay: isInView ? delay : 0, ease: EASE }}
     >
       {children}
     </motion.div>
   );
 }
 
-/* ── Social icon with original color always visible ── */
 function SocialIcon({
   Icon,
   href,
@@ -112,7 +107,7 @@ function SocialIcon({
       style={{
         background: "rgba(255,255,255,0.04)",
         border: "1px solid rgba(255,255,255,0.09)",
-        color: color,
+        color,
       }}
     >
       <Icon size={15} />
@@ -120,7 +115,6 @@ function SocialIcon({
   );
 }
 
-/* ── Navigation link with slide animation ── */
 function NavLinkItem({
   href,
   label,
@@ -164,25 +158,29 @@ function NavLinkItem({
 export default function Footer() {
   const footerRef = useRef<HTMLElement>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const { t, isAr } = useT();
 
-  // Use once: false so animation repeats when scrolling up/down
   const isInView = useInView(footerRef, {
     once: false,
     margin: "-50px",
     amount: 0.15,
   });
 
-  // Handle scroll to top button visibility
   useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 500);
-    };
+    const handleScroll = () => setShowScrollTop(window.scrollY > 500);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
+  // Translate nav labels by matching href (NAV_LINKS still has English label fallback)
+  const NAV_LABELS: Record<string, string> = {
+    "/": t.nav.home,
+    "/about": t.nav.about,
+    "/services": t.nav.services,
+    "/our-work": t.nav.ourWork,
+    "/contact": t.nav.contact,
   };
 
   return (
@@ -193,8 +191,8 @@ export default function Footer() {
         borderTop: "1px solid rgba(255,255,255,0.08)",
         background: "#060A10",
       }}
+      dir={isAr ? "rtl" : "ltr"}
     >
-      {/* Ambient glow */}
       <motion.div
         animate={{ scale: [1, 1.12, 1], opacity: [0.5, 0.8, 0.5] }}
         transition={{ duration: 9, repeat: Infinity }}
@@ -206,7 +204,6 @@ export default function Footer() {
         }}
       />
 
-      {/* Top shimmer line */}
       <motion.div
         animate={{ x: ["-120%", "120%"] }}
         transition={{ duration: 5, repeat: Infinity, repeatDelay: 4 }}
@@ -218,16 +215,18 @@ export default function Footer() {
       />
 
       <div className="z-[1] relative mx-auto px-6 sm:px-8 pt-16 sm:pt-20 pb-6 sm:pb-8 max-w-[1280px]">
-        {/* Main grid - responsive */}
         <div className="gap-10 sm:gap-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mb-12 sm:mb-14">
-          {/* Brand column */}
+          {/* Brand */}
           <div>
             <AnimatedItem delay={0} isInView={isInView}>
               <Link
                 href="/"
                 className="inline-flex items-center gap-2.5 mb-5 no-underline"
               >
-                <span className="font-['Bebas_Neue',Impact,sans-serif] text-white text-xl tracking-[0.1em]">
+                <span
+                  className="font-['Bebas_Neue',Impact,sans-serif] text-white text-xl tracking-[0.1em] notranslate"
+                  translate="no"
+                >
                   OUR<span className="text-[#8D9AB0]">.</span>AGENCY
                 </span>
               </Link>
@@ -235,8 +234,7 @@ export default function Footer() {
 
             <AnimatedItem delay={0.08} isInView={isInView}>
               <p className="mb-6 max-w-[280px] text-[13px] text-white/30 leading-[1.75]">
-                Your vision, our mission. A young, results-driven creative
-                agency across KSA &amp; Egypt.
+                {t.footer.tagline}
               </p>
             </AnimatedItem>
 
@@ -255,11 +253,11 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Navigation column */}
+          {/* Navigation */}
           <div>
             <AnimatedItem delay={0.2} isInView={isInView}>
               <h3 className="mb-6 font-mono text-[10px] text-white/25 uppercase tracking-[0.28em]">
-                Navigation
+                {t.footer.navigation}
               </h3>
             </AnimatedItem>
             <ul className="m-0 p-0 list-none">
@@ -267,7 +265,7 @@ export default function Footer() {
                 <NavLinkItem
                   key={link.href}
                   href={link.href}
-                  label={link.label}
+                  label={NAV_LABELS[link.href] ?? link.label}
                   index={i}
                   isInView={isInView}
                 />
@@ -275,11 +273,11 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact column */}
+          {/* Contact */}
           <div>
             <AnimatedItem delay={0.35} isInView={isInView}>
               <h3 className="mb-6 font-mono text-[10px] text-white/25 uppercase tracking-[0.28em]">
-                Get In Touch
+                {t.footer.getInTouch}
               </h3>
             </AnimatedItem>
 
@@ -292,12 +290,17 @@ export default function Footer() {
                 >
                   <motion.a
                     href={c.href}
-                    whileHover={{ color: "rgba(255,255,255,0.9)", x: 4 }}
+                    whileHover={{
+                      color: "rgba(255,255,255,0.9)",
+                      x: isAr ? -4 : 4,
+                    }}
                     className="flex items-center gap-2 text-[13px] text-white/45 no-underline transition-all duration-200"
                   >
                     <FiPhone size={12} className="text-[#8D9AB0] shrink-0" />
                     <span className="text-white/45">{c.flag}</span>
-                    <span className="text-white/70">{c.number}</span>
+                    <span className="text-white/70" dir="ltr">
+                      {c.number}
+                    </span>
                   </motion.a>
                 </AnimatedItem>
               ))}
@@ -305,7 +308,7 @@ export default function Footer() {
               <AnimatedItem delay={0.65} isInView={isInView}>
                 <motion.a
                   href="mailto:ouragency259@gmail.com"
-                  whileHover={{ x: 4 }}
+                  whileHover={{ x: isAr ? -4 : 4 }}
                   className="flex items-center gap-2 text-[#8D9AB0] text-[13px] no-underline transition-all duration-200"
                 >
                   <FiMail size={12} className="shrink-0" />
@@ -329,21 +332,20 @@ export default function Footer() {
                     border: "1px solid rgba(0,122,255,0.3)",
                   }}
                 >
-                  Start a Project →
+                  {t.footer.cta}
                 </motion.button>
               </Link>
             </AnimatedItem>
           </div>
         </div>
 
-        {/* Bottom bar */}
         <AnimatedItem delay={0.85} isInView={isInView}>
           <motion.div
             className="flex sm:flex-row flex-col justify-between items-center gap-4 sm:gap-3 pt-6 sm:pt-7"
             style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
           >
             <p className="m-0 font-mono text-[10px] text-white/20 sm:text-[11px] sm:text-left text-center tracking-[0.08em]">
-              © {new Date().getFullYear()} OUR Agency. All rights reserved.
+              © {new Date().getFullYear()} {t.footer.rights}
             </p>
 
             <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-4">
@@ -356,14 +358,13 @@ export default function Footer() {
                 </span>
               ))}
               <span className="font-mono text-[10px] text-white/[0.15] sm:text-[11px] tracking-[0.1em]">
-                Your Vision, Our Mission.
+                {t.footer.slogan}
               </span>
             </div>
           </motion.div>
         </AnimatedItem>
       </div>
 
-      {/* Scroll to top button */}
       <AnimatePresence>
         {showScrollTop && (
           <motion.button

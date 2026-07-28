@@ -8,17 +8,13 @@ import { FaWhatsapp } from "react-icons/fa";
 import { FiInstagram, FiMail } from "react-icons/fi";
 import { SiTiktok } from "react-icons/si";
 import { Reveal } from "@/components/ui/Reveal";
+import { useT } from "@/translations/useT";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const ACCENT = "#8D9AB0";
 const ACCENT_L = "#B0BDD0";
 
-const WHY = [
-  { icon: Zap, text: "Fast execution, no delays" },
-  { icon: BarChart2, text: "Measurable results only" },
-  { icon: Target, text: "Custom plan per brand" },
-  { icon: Users, text: "Real growth partner" },
-];
+const WHY_ICONS = [Zap, BarChart2, Target, Users];
 
 const SOCIALS = [
   {
@@ -44,7 +40,6 @@ const SOCIALS = [
   },
 ];
 
-/* ── Rotating rings — silver ── */
 function RotatingRings() {
   return (
     <div
@@ -68,7 +63,6 @@ function RotatingRings() {
           }}
         />
       ))}
-
       {[0, 120, 240].map((startDeg, i) => (
         <motion.div
           key={startDeg}
@@ -90,10 +84,15 @@ function RotatingRings() {
   );
 }
 
-/* ════════════════════════════════════════════ */
 export default function CTASection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const { t, isAr } = useT();
+
+  const WHY = t.cta.why.map((text: string, i: number) => ({
+    icon: WHY_ICONS[i],
+    text,
+  }));
 
   return (
     <section
@@ -101,8 +100,8 @@ export default function CTASection() {
       aria-label="Call to action"
       className="relative px-6 py-28 overflow-hidden"
       style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+      dir={isAr ? "rtl" : "ltr"}
     >
-      {/* Ambient */}
       <motion.div
         animate={{ scale: [1, 1.18, 1], opacity: [0.3, 0.6, 0.3] }}
         transition={{ duration: 10, repeat: Infinity }}
@@ -116,7 +115,6 @@ export default function CTASection() {
 
       <RotatingRings />
 
-      {/* Top shimmer line */}
       <motion.div
         initial={{ scaleX: 0 }}
         animate={inView ? { scaleX: 1 } : {}}
@@ -141,7 +139,6 @@ export default function CTASection() {
               padding: "clamp(2.5rem,5vw,4.5rem)",
             }}
           >
-            {/* Corner glows */}
             <div
               className="-top-[70px] -left-[70px] absolute w-[220px] h-[220px] pointer-events-none"
               style={{
@@ -157,7 +154,6 @@ export default function CTASection() {
               }}
             />
 
-            {/* Shimmer sweep */}
             <motion.div
               animate={{ x: ["-120%", "120%"] }}
               transition={{ duration: 4, repeat: Infinity, repeatDelay: 5 }}
@@ -167,7 +163,6 @@ export default function CTASection() {
               }}
             />
 
-            {/* Badge */}
             <motion.div
               initial={{ opacity: 0, scale: 0.85 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
@@ -188,19 +183,26 @@ export default function CTASection() {
                 className="font-mono text-[10px] uppercase tracking-[0.28em]"
                 style={{ color: ACCENT }}
               >
-                Ready to grow?
+                {t.cta.badge}
               </span>
             </motion.div>
 
-            {/* Headline */}
             <motion.h2
               initial={{ opacity: 0, y: 24 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.18, ease: EASE }}
-              className="m-0 mb-6 font-['Bebas_Neue',Impact,sans-serif] text-white leading-[0.93] tracking-[-0.01em]"
-              style={{ fontSize: "clamp(2.8rem,8vw,6.5rem)" }}
+              className="m-0 mb-6 text-white tracking-[-0.01em]"
+              style={{
+                fontFamily: isAr
+                  ? "'Cairo', 'Tajawal', Tahoma, 'Segoe UI', Arial, sans-serif"
+                  : "'Bebas Neue', Impact, sans-serif",
+                fontSize: isAr
+                  ? "clamp(2.4rem,7vw,5rem)"
+                  : "clamp(2.8rem,8vw,6.5rem)",
+                lineHeight: isAr ? 1.3 : 0.93,
+              }}
             >
-              LET&apos;S BUILD YOUR{" "}
+              {t.cta.title}{" "}
               <motion.span
                 animate={{
                   textShadow: [
@@ -212,7 +214,7 @@ export default function CTASection() {
                 transition={{ duration: 3, repeat: Infinity }}
                 style={{ color: ACCENT_L }}
               >
-                BRAND
+                {t.cta.titleBlue}
               </motion.span>
             </motion.h2>
 
@@ -223,38 +225,37 @@ export default function CTASection() {
               className="mx-auto mb-10 max-w-[480px] text-white/40 leading-[1.8]"
               style={{ fontSize: "clamp(0.9rem,1.6vw,1.05rem)" }}
             >
-              From identity to ads to content — we handle the full picture so
-              you can focus on what you do best.
+              {t.cta.sub}
             </motion.p>
 
-            {/* Why-us pills — Lucide icons */}
             <div className="flex flex-wrap justify-center gap-2.5 mb-10">
-              {WHY.map((w, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                  animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-                  transition={{ delay: 0.35 + i * 0.08, duration: 0.5 }}
-                  whileHover={{
-                    scale: 1.06,
-                    background: "rgba(141,154,176,0.1)",
-                    borderColor: "rgba(141,154,176,0.3)",
-                  }}
-                  className="flex items-center gap-2.5 px-[18px] py-2 rounded-full transition-all duration-300 cursor-default"
-                  style={{
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.09)",
-                  }}
-                >
-                  <w.icon size={13} color={ACCENT} />
-                  <span className="font-mono text-white/50 text-xs">
-                    {w.text}
-                  </span>
-                </motion.div>
-              ))}
+              {WHY.map(
+                (w: { icon: React.ElementType; text: string }, i: number) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                    animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+                    transition={{ delay: 0.35 + i * 0.08, duration: 0.5 }}
+                    whileHover={{
+                      scale: 1.06,
+                      background: "rgba(141,154,176,0.1)",
+                      borderColor: "rgba(141,154,176,0.3)",
+                    }}
+                    className="flex items-center gap-2.5 px-[18px] py-2 rounded-full transition-all duration-300 cursor-default"
+                    style={{
+                      background: "rgba(255,255,255,0.04)",
+                      border: "1px solid rgba(255,255,255,0.09)",
+                    }}
+                  >
+                    <w.icon size={13} color={ACCENT} />
+                    <span className="font-mono text-white/50 text-xs">
+                      {w.text}
+                    </span>
+                  </motion.div>
+                ),
+              )}
             </div>
 
-            {/* Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -284,8 +285,11 @@ export default function CTASection() {
                         "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
                     }}
                   />
-                  Start a Project
-                  <ArrowRight size={14} />
+                  {t.cta.startBtn}
+                  <ArrowRight
+                    size={14}
+                    style={{ transform: isAr ? "scaleX(-1)" : "none" }}
+                  />
                 </motion.button>
               </Link>
 
@@ -309,18 +313,17 @@ export default function CTASection() {
                   }}
                 >
                   <FaWhatsapp size={16} />
-                  WhatsApp Us
+                  {t.cta.waBtn}
                 </motion.button>
               </a>
             </motion.div>
 
             <p className="mt-6 font-mono text-[11px] text-white/[0.18] tracking-[0.1em]">
-              We respond within 24 hours · KSA &amp; Egypt
+              {t.cta.note}
             </p>
           </motion.div>
         </Reveal>
 
-        {/* Social proof */}
         <Reveal delay={0.2}>
           <div className="flex flex-wrap justify-center gap-8 mt-14">
             {SOCIALS.map((s) => (

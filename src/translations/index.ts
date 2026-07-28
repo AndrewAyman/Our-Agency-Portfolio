@@ -1,6 +1,4 @@
-// ─── Translation System ────────────────────────────────────────────────────
-// CORRECTED FILE — replace src/translations/index.ts with this
-
+// ─── Translation System — v2 (adds missing about.* keys) ──────────────────
 export const translations = {
   en: {
     nav: {
@@ -12,7 +10,6 @@ export const translations = {
       cta: "Start a Project",
       switchLang: "عربي",
     },
-
     footer: {
       tagline:
         "A young, results-driven creative agency powering brands across KSA & Egypt.",
@@ -22,7 +19,6 @@ export const translations = {
       rights: "OUR Agency. All rights reserved.",
       slogan: "KSA · EG · Your Vision, Our Mission.",
     },
-
     hero: {
       badge: "KSA & Egypt's Creative Partner",
       headline1: "YOUR VISION",
@@ -36,15 +32,13 @@ export const translations = {
       capTitleBlue: "IMPACT",
       capCopy:
         "We don't do generic marketing. We build strategies that fit your brand, speak to your audience, and drive real growth.",
-      // ✅ NEW: stat pill labels
       stats: {
         clients: "Clients",
-        views: "Views",
+        views: "Views Generated",
         markets: "Markets",
         services: "Services",
       },
     },
-
     servicesHero: {
       badge: "Services & Capabilities",
       line1: "WHAT WE",
@@ -58,7 +52,6 @@ export const translations = {
         commitment: "Commitment",
       },
     },
-
     servicesGrid: {
       badge: "Capabilities",
       title: "WHAT WE DO BEST",
@@ -67,14 +60,12 @@ export const translations = {
       cta: "Let's Discuss Your Project",
       startWith: "Start with Branding",
     },
-
     process: {
       badge: "How We Work",
       title: "OUR PROCESS",
       sub: "A clear process that takes your brand from insight to execution.",
       step: "STEP",
     },
-
     metrics: {
       badge: "Real Impact",
       title: "NUMBERS THAT MATTER",
@@ -84,16 +75,14 @@ export const translations = {
       strategy: "Strategy",
       growth: "REAL GROWTH",
     },
-
     portfolio: {
       badge: "Case Studies",
-      title: "OUR WORK",
+      title: "OUR PORTFOLIO",
       sub: "Real projects. Real results. Across two of the Middle East's most dynamic markets.",
       all: "All Projects",
       ksa: "KSA Projects",
       egypt: "Egypt Projects",
     },
-
     ourWorkPage: {
       badge: "Portfolio & Case Studies",
       title: "OUR WORK",
@@ -105,14 +94,17 @@ export const translations = {
         countries: "Countries",
         commitment: "Commitment",
       },
+      ready: "Ready",
+      soon: "Soon",
+      tabPhotos: "Photos",
+      tabVideos: "Videos",
+      tabPdf: "Profile PDF",
+      browseBadge: "Browse by Industry",
+      browseTitle: "CASE STUDIES",
+      browseSub:
+        "Pick a sector to explore photos, videos, and the full client profile.",
     },
-
-    values: {
-      badge: "Our Values",
-      title: "WHAT DRIVES US",
-      whyUs: "Why Us",
-    },
-
+    values: { badge: "Our Values", title: "WHAT DRIVES US", whyUs: "Why Us" },
     cta: {
       badge: "Ready to grow?",
       title: "LET'S BUILD YOUR",
@@ -128,7 +120,6 @@ export const translations = {
         "Real growth partner",
       ],
     },
-
     contact: {
       badge: "Get In Touch",
       title: "LET'S BUILD SOMETHING",
@@ -158,12 +149,19 @@ export const translations = {
         web: "Web Design & Development",
         profiles: "Company Profiles",
         full: "Full Package",
+        other: "Other",
       },
     },
+    contactPage: {
+      badge: "Work With Us",
+      title: "CONTACT US",
+      sub: "Have a project in mind? We respond within 24 hours. Let's talk about how we can grow your brand.",
+    },
 
+    // ── About Page — COMPLETE ──────────────────────────────────────────
     about: {
       badge: "About OUR Agency",
-      headline: "YOUNG.\nHUNGRY.\nCREATIVE.",
+      headline: "YOUNG\nHUNGRY\nCREATIVE",
       desc: "OUR is a digital marketing agency powered by young creatives. We build marketing plans based on deep understanding, powerful content, and authentic execution that drives results. We're not just service providers — we're growth partners.",
       founded: "Founded",
       foundedVal: "KSA & Egypt",
@@ -172,41 +170,26 @@ export const translations = {
       services: "Services",
       markets: "Markets",
       sectors: "Sectors",
+
+      heroStats: [
+        { label: "Campaigns" },
+        { label: "Clients" },
+        { label: "Markets" },
+      ],
+
       vmBadge: "Who We Are",
       vmTitle: "VISION & MISSION",
-      // ✅ NEW
       ourVision: "Our Vision",
-      ourMission: "Our Mission",
       visionText:
         "To become the transformation point for ambitious brands by delivering strategies built on creativity, data, and true market understanding — creating clear growth paths and stronger brand presence.",
+      ourMission: "Our Mission",
       missionText:
         "We deliver practical marketing solutions that support brand building, attract customers, and achieve measurable results through content management, paid advertising, and impactful digital identity.",
-      processBadge: "How We Work",
-      processTitle: "OUR PROCESS",
-      // ✅ NEW: process steps array
-      processSteps: [
-        {
-          title: "Research & Discovery",
-          desc: "Deep-diving into your brand, audience, and competitive landscape to find the real opportunity.",
-        },
-        {
-          title: "Planning & Strategy",
-          desc: "A clear, custom marketing roadmap — no copy-paste templates, every plan built for one brand only.",
-        },
-        {
-          title: "Execution",
-          desc: "Content + design + ad management running in perfect sync toward one goal: measurable impact.",
-        },
-        {
-          title: "Optimization",
-          desc: "Continuous result analysis and performance refinement — because every percentage point matters.",
-        },
-      ],
+
       valuesBadge: "What Drives Us",
       valuesTitle: "OUR VALUES",
-      // ✅ NEW: values words array
       valueWords: ["Commitment", "Creativity", "Transparency", "Growth"],
-      // ✅ NEW: what makes us different
+
       differenceTitle: "WHAT MAKES US DIFFERENT",
       differencePoints: [
         "A young team that genuinely understands the market",
@@ -214,25 +197,262 @@ export const translations = {
         "Faster execution, authentic content, flexible strategies",
         "Every brand gets a completely different plan",
       ],
-      // ✅ NEW: stats strings
       clientsAcquired: "CLIENTS ACQUIRED",
       inOneCampaign: "In a single campaign",
-      // ✅ NEW: hero stats
-      heroStats: [
-        { suffix: "+", label: "Campaigns" },
-        { suffix: "", label: "Clients" },
-        { suffix: "", label: "Markets" },
+
+      processBadge: "How We Work",
+      processTitle: "OUR PROCESS",
+      processSteps: [
+        {
+          title: "Research & Discovery",
+          desc: "We start by deeply understanding your brand, audience, competitors, and the market — so every decision we make is informed, not guessed.",
+        },
+        {
+          title: "Planning & Strategy",
+          desc: "We translate insights into a clear, actionable marketing strategy — defining goals, channels, content direction, and KPIs before a single post goes live.",
+        },
+        {
+          title: "Execution",
+          desc: "This is where we build — content creation, design, video production, and ad campaign management. Every asset is crafted with purpose and precision.",
+        },
+        {
+          title: "Optimization",
+          desc: "We analyze the results, learn from the data, and continuously improve performance. Growth is not a one-time event — it's an ongoing process.",
+        },
       ],
+
       ctaBadge: "Ready to Grow?",
       ctaTitle1: "YOUR VISION",
       ctaTitle2: "OUR MISSION",
       ctaSub:
         "Let's build something that makes your competitors nervous. One brand, one plan, real results.",
       ctaBtn: "Start a Project",
+
+      // stat card labels (shown in 'What Makes Us Different' section)
+      impressionsLabel: "Impressions",
+      marketsLabel: "Markets",
+
+      // identity card values
+      servicesVal: "Branding · Ads · Content · SMM · Video",
+      marketsVal: ["Saudi Arabia", "Egypt"],
+      sectorsVal: [
+        "Construction",
+        "Medical",
+        "F&B",
+        "Podcast",
+        "E-Commerce",
+        "Tech",
+      ],
     },
 
-    trustBar: {
-      label: "Trusted by brands across KSA & Egypt",
+    trustBar: { label: "Trusted by brands across KSA & Egypt" },
+
+    data: {
+      services: [
+        {
+          icon: "video",
+          title: "Graphic Design & Video Editing",
+          desc: "Eye-catching designs and professional videos that reflect your brand and deliver your message clearly.",
+          tags: ["Motion Graphics", "Video Editing", "Visual Design"],
+        },
+        {
+          icon: "pen-tool",
+          title: "Content Creation & Copywriting",
+          desc: "Creative content written in your brand's voice to engage your audience and drive meaningful results.",
+          tags: ["Copywriting", "Reels Scripts", "Social Content"],
+        },
+        {
+          icon: "trending-up",
+          title: "Paid Ads & Performance Marketing",
+          desc: "Performance-driven campaigns focused on leads, sales, bookings, and measurable results.",
+          tags: ["Meta Ads", "Google Ads", "TikTok Ads"],
+        },
+        {
+          icon: "users",
+          title: "Social Media Management",
+          desc: "We manage your social presence from strategy and content planning to publishing, analytics, and optimization.",
+          tags: ["Content Planning", "Community Management", "Analytics"],
+        },
+        {
+          icon: "globe",
+          title: "Web Design & Development",
+          desc: "Modern, responsive websites designed to elevate your brand and turn visitors into clients.",
+          tags: ["Landing Pages", "Business Sites", "UI/UX"],
+        },
+        {
+          icon: "file-text",
+          title: "Company Profiles",
+          desc: "Professional company profiles that showcase your services, strengths, and business value with clarity and impact.",
+          tags: ["Company Profile", "Corporate Presentation", "PDF Design"],
+        },
+        {
+          icon: "palette",
+          title: "Branding & Visual Identity",
+          desc: "We create complete visual identities that make your brand clear, consistent, and recognizable.",
+          tags: ["Logo Design", "Visual Identity", "Brand Guidelines"],
+          featured: true,
+        },
+      ],
+      values: [
+        {
+          icon: "trending-up",
+          title: "Growth",
+          desc: "Continuous development is in our DNA. We never stop learning, optimizing, and pushing for better results — for ourselves and for every brand we work with.",
+        },
+        {
+          icon: "eye",
+          title: "Transparency",
+          desc: "No black boxes. You get full visibility into our strategy, spending, and results. Honest reporting and open communication — always.",
+        },
+        {
+          icon: "zap",
+          title: "Creativity",
+          desc: "We reject the generic. Every campaign, every design, and every piece of content is crafted to stand out and make a real impression in a crowded market.",
+        },
+        {
+          icon: "shield",
+          title: "Commitment",
+          desc: "We treat your brand like it's our own. Full commitment to quality, deadlines, and your goals — we don't just deliver, we go the extra mile.",
+        },
+      ],
+      whyUs: [
+        {
+          num: "01",
+          title: "A Young Team That Understands the Market",
+          desc: "We are not a traditional agency running old playbooks. Our young, hungry team has deep knowledge of the KSA and Egypt markets — their culture, consumer behavior, and digital landscape.",
+        },
+        {
+          num: "02",
+          title: "We Focus on Results Not Just Presence",
+          desc: "Likes and views don't pay the bills. We build strategies around real business outcomes — leads, bookings, sales, and measurable growth that directly impacts your bottom line.",
+        },
+        {
+          num: "03",
+          title: "Faster Execution & Real Content",
+          desc: "No bureaucracy, no delays. We move fast, produce authentic content, and adapt our strategies flexibly based on what the data and the market tell us.",
+        },
+        {
+          num: "04",
+          title: "A Custom Plan for Every Brand",
+          desc: "We don't believe in copy-paste strategies. Every brand gets its own tailored marketing plan built on its unique goals, audience, and competitive landscape.",
+        },
+      ],
+      metrics: [
+        { value: "1M+", label: "Impressions Delivered", sub: "In KSA alone" },
+        {
+          value: "3",
+          label: "Countries Served",
+          sub: "KSA · Egypt · and growing",
+        },
+        { value: "7", label: "Core Services", sub: "Full-funnel capability" },
+        {
+          value: "100%",
+          label: "Commitment",
+          sub: "To every brand we take on",
+        },
+      ],
+      process: [
+        {
+          num: "01",
+          icon: "search",
+          title: "Research & Discovery",
+          desc: "We start by understanding your brand, audience, competitors, and market before making any move.",
+        },
+        {
+          num: "02",
+          icon: "map",
+          title: "Planning & Strategy",
+          desc: "We turn insights into a clear strategy with goals, channels, content direction, and KPIs.",
+        },
+        {
+          num: "03",
+          icon: "zap",
+          title: "Execution",
+          desc: "We create, design, film, edit, launch, and manage every asset with purpose.",
+        },
+        {
+          num: "04",
+          icon: "bar-chart-2",
+          title: "Optimization",
+          desc: "We analyze performance, learn from the data, and keep improving for better results.",
+        },
+      ],
+      portfolio: [
+        {
+          id: 1,
+          region: "KSA",
+          sector: "Construction",
+          title: "Construction & Engineering — KSA",
+          desc: "Performance campaigns and content strategies for construction and engineering companies, built to attract serious B2B clients and increase sales inquiries.",
+          result: "+Sales Demand",
+          tags: ["Performance Ads", "B2B Strategy", "Content"],
+          color: "#8D9AB0",
+        },
+        {
+          id: 2,
+          region: "KSA",
+          sector: "Branding",
+          title: "Brand Visual Identity — KSA",
+          desc: "Complete visual identity systems for Saudi brands, including logos, guidelines, content tone, and brand documentation.",
+          result: "Full Identity",
+          tags: ["Branding", "Visual Guidelines", "Logo"],
+          color: "#A0AABC",
+        },
+        {
+          id: 3,
+          region: "KSA",
+          sector: "Paid Ads",
+          title: "Impressions Campaign — KSA +1000000",
+          desc: "High-performance paid ad campaigns in the Saudi market, reaching over 1M impressions through targeted audiences and trust-building creatives.",
+          result: "1M+ Impressions",
+          tags: ["Meta Ads", "Creative", "Performance"],
+          color: "#B0BDD0",
+        },
+        {
+          id: 4,
+          region: "Egypt",
+          sector: "Medical",
+          title: "Doctors & Clinics — Egypt",
+          desc: "Social media management, medical content, before/after visuals, patient stories, and targeted ads that generate real bookings.",
+          result: "Real Leads",
+          tags: ["SMM", "Ads", "Medical Content"],
+          color: "#8D9AB0",
+        },
+        {
+          id: 5,
+          region: "Egypt",
+          sector: "Podcast",
+          title: "Podcast & Media Show — Egypt",
+          desc: "Full-service podcast production, from concept and visual identity to episode management, editing, reels, and social media growth.",
+          result: "Full Production",
+          tags: ["Video Editing", "Reels", "SMM"],
+          color: "#9AA6B8",
+        },
+        {
+          id: 6,
+          region: "Egypt",
+          sector: "F&B",
+          title: "Restaurants & Food Brands — Egypt",
+          desc: "Visual identity, food content, photography, social media management, and campaigns built to drive orders and sales.",
+          result: "+Orders & Sales",
+          tags: ["Branding", "Photography", "Content"],
+          color: "#A0AABC",
+        },
+      ],
+      clients: [
+        "Construction Sector",
+        "Engineering Firms",
+        "Medical Clinics",
+        "Healthcare Specialists",
+        "Restaurants & Cafes",
+        "Podcast Creators",
+        "E-Commerce Stores",
+        "Real Estate Brands",
+        "Food & Beverage",
+        "Media Shows",
+        "Consulting Firms",
+        "Service Businesses",
+      ],
     },
   },
 
@@ -247,7 +467,6 @@ export const translations = {
       cta: "ابدأ مشروعك",
       switchLang: "English",
     },
-
     footer: {
       tagline:
         "وكالة تسويق رقمي شابة وطموحة تبني براندات قوية في السعودية ومصر.",
@@ -257,7 +476,6 @@ export const translations = {
       rights: "OUR Agency. جميع الحقوق محفوظة.",
       slogan: "السعودية · مصر · رؤيتك، مهمتنا.",
     },
-
     hero: {
       badge: "شريكك الإبداعي في السعودية ومصر",
       headline1: "رؤيتك",
@@ -278,12 +496,11 @@ export const translations = {
         services: "خدمة",
       },
     },
-
     servicesHero: {
       badge: "الخدمات والقدرات",
-      line1: "ما نستطيع",
-      line2: "بناؤه",
-      sub: "خمس قدرات أساسية، وهوس واحد: تحويل البراندات إلى قادة سوق في السعودية ومصر.",
+      line1: "ماذا نستطيع",
+      line2: "أن نبنيه",
+      sub: "سبع قدرات أساسية، وهوس واحد: تحويل البراندات إلى قادة سوق في السعودية ومصر.",
       subBold: "السعودية ومصر",
       stats: {
         services: "خدمات أساسية",
@@ -292,7 +509,6 @@ export const translations = {
         commitment: "التزام",
       },
     },
-
     servicesGrid: {
       badge: "قدراتنا",
       title: "ما نتقنه",
@@ -301,14 +517,12 @@ export const translations = {
       cta: "تحدث معنا عن مشروعك",
       startWith: "ابدأ بالبراندينج",
     },
-
     process: {
       badge: "كيف نعمل",
       title: "منهجيتنا",
       sub: "إطار عمل واضح يأخذ براندك من الفكرة إلى التنفيذ.",
       step: "خطوة",
     },
-
     metrics: {
       badge: "تأثير حقيقي",
       title: "أرقام تفرق",
@@ -318,7 +532,6 @@ export const translations = {
       strategy: "الاستراتيجية",
       growth: "نمو حقيقي",
     },
-
     portfolio: {
       badge: "دراسات حالة",
       title: "أعمالنا",
@@ -327,9 +540,8 @@ export const translations = {
       ksa: "مشاريع السعودية",
       egypt: "مشاريع مصر",
     },
-
     ourWorkPage: {
-      badge: "المحفظة ودراسات الحالة",
+      badge: "البورتفوليو ودراسات الحالة",
       title: "أعمالنا",
       sub: "مشاريع حقيقية. نتائج حقيقية. من هويات البراند إلى الحملات الإعلانية — إليك ما بنيناه في السعودية ومصر.",
       subBold: "السعودية ومصر",
@@ -339,14 +551,17 @@ export const translations = {
         countries: "دول",
         commitment: "التزام",
       },
+      ready: "جاهز",
+      soon: "قريباً",
+      tabPhotos: "صور",
+      tabVideos: "فيديوهات",
+      tabPdf: "البروفايل التعريفي",
+      browseBadge: "تصفح حسب القطاع",
+      browseTitle: "دراسات الحالة",
+      browseSub:
+        "اختر قطاعاً لاستكشاف الصور والفيديوهات والبروفايل الكامل للعميل.",
     },
-
-    values: {
-      badge: "قيمنا",
-      title: "ما يحركنا",
-      whyUs: "ليه احنا؟",
-    },
-
+    values: { badge: "قيمنا", title: "ما يحركنا", whyUs: "ليه احنا؟" },
     cta: {
       badge: "مستعد للنمو؟",
       title: "هنبني",
@@ -362,7 +577,6 @@ export const translations = {
         "شريك نمو حقيقي",
       ],
     },
-
     contact: {
       badge: "تواصل معنا",
       title: "هنبني حاجة مع بعض",
@@ -373,7 +587,7 @@ export const translations = {
       nameLbl: "الاسم *",
       namePh: "اسمك الكامل",
       emailLbl: "البريد الإلكتروني *",
-      emailPh: "hello@company.com",
+      emailPh: "hello@gmail.com",
       serviceLbl: "الخدمة المطلوبة",
       servicePh: "اختر خدمة...",
       msgLbl: "الرسالة *",
@@ -392,12 +606,19 @@ export const translations = {
         web: "تصميم وتطوير المواقع",
         profiles: "البروفايل التعريفية",
         full: "الباقة الكاملة",
+        other: "أخري",
       },
     },
+    contactPage: {
+      badge: "اعمل معنا",
+      title: "تواصل معنا",
+      sub: "عندك مشروع في بالك؟ نرد في خلال 24 ساعة. يلا نتكلم عن إزاي هنطور براندك.",
+    },
 
+    // ── About Page — COMPLETE ──────────────────────────────────────────
     about: {
       badge: "عن وكالتنا",
-      headline: "شباب.\nطموحون.\nمبدعون.",
+      headline: "شباب\nطموحون\nمبدعون",
       desc: "OUR وكالة تسويق رقمي يقودها شباب مبدع. نبني خطط تسويقية مبنية على فهم عميق، محتوى قوي، وتنفيذ حقيقي يحقق نتائج. لسنا مجرد مزودي خدمة — نحن شركاء نمو.",
       founded: "التأسيس",
       foundedVal: "السعودية ومصر",
@@ -406,61 +627,277 @@ export const translations = {
       services: "الخدمات",
       markets: "الأسواق",
       sectors: "القطاعات",
+
+      heroStats: [{ label: "حملة" }, { label: "عميل" }, { label: "سوق" }],
+
       vmBadge: "من نحن",
       vmTitle: "الرؤية والرسالة",
       ourVision: "رؤيتنا",
-      ourMission: "رسالتنا",
       visionText:
-        "أن نصبح نقطة التحول للعلامات التجارية الطموحة من خلال تقديم استراتيجيات مبنية على الإبداع والبيانات والفهم الحقيقي للسوق — مما يخلق مسارات نمو واضحة وحضوراً أقوى للعلامة التجارية.",
+        "أن نصبح نقطة التحول للبراندات الطموحة من خلال تقديم استراتيجيات مبنية على الإبداع والبيانات والفهم الحقيقي للسوق — مما يخلق مسارات نمو واضحة وحضوراً أقوى للبراند.",
+      ourMission: "رسالتنا",
       missionText:
-        "نقدم حلولاً تسويقية عملية تدعم بناء العلامة التجارية، وتجذب العملاء، وتحقق نتائج قابلة للقياس من خلال إدارة المحتوى، والإعلانات المدفوعة، والهوية الرقمية المؤثرة.",
+        "نقدم حلولاً تسويقية عملية تدعم بناء البراند وتجذب العملاء وتحقق نتائج قابلة للقياس من خلال إدارة المحتوى والإعلانات المدفوعة وبناء هوية رقمية مؤثرة.",
+
+      valuesBadge: "ما يحركنا",
+      valuesTitle: "قيمنا",
+      valueWords: ["الالتزام", "الإبداع", "الشفافية", "النمو"],
+
+      differenceTitle: "ما يميزنا",
+      differencePoints: [
+        "فريق شاب يفهم السوق بشكل حقيقي",
+        "نركز على النتائج وليس فقط الظهور",
+        "تنفيذ أسرع، محتوى أصيل، استراتيجيات مرنة",
+        "لكل براند خطة مختلفة تماماً",
+      ],
+      clientsAcquired: "عميل تم اكتسابهم",
+      inOneCampaign: "في حملة واحدة",
+
       processBadge: "كيف نعمل",
       processTitle: "منهجيتنا",
       processSteps: [
         {
           title: "البحث والاكتشاف",
-          desc: "التعمق في علامتك التجارية وجمهورك والمشهد التنافسي للعثور على الفرصة الحقيقية.",
+          desc: "نبدأ بفهم براندك وجمهورك ومنافسيك والسوق بعمق — عشان كل قرار نتخذه يكون مبني على معرفة، مش تخمين.",
         },
         {
           title: "التخطيط والاستراتيجية",
-          desc: "خارطة طريق تسويقية واضحة ومخصصة — لا قوالب جاهزة، كل خطة مصممة لعلامة تجارية واحدة فقط.",
+          desc: "نحول الرؤى إلى استراتيجية تسويقية واضحة وقابلة للتنفيذ — بأهداف وقنوات واتجاه محتوى ومؤشرات أداء قبل ما ننشر أي حاجة.",
         },
         {
           title: "التنفيذ",
-          desc: "المحتوى والتصميم وإدارة الإعلانات تعمل بتناسق تام نحو هدف واحد: التأثير القابل للقياس.",
+          desc: "هنا بنبني — إنشاء محتوى، تصميم، إنتاج فيديو، وإدارة حملات إعلانية. كل عنصر بيتصمم بهدف ودقة.",
         },
         {
           title: "التحسين",
-          desc: "التحليل المستمر للنتائج وتحسين الأداء — لأن كل نقطة مئوية مهمة.",
+          desc: "نحلل النتائج، نتعلم من البيانات، ونحسّن الأداء باستمرار. النمو مش حدث لمرة واحدة — ده عملية مستمرة.",
         },
       ],
-      valuesBadge: "ما يحركنا",
-      valuesTitle: "قيمنا",
-      valueWords: ["التزام", "إبداع", "شفافية", "نمو"],
-      differenceTitle: "ما يميزنا",
-      differencePoints: [
-        "فريق شاب يفهم السوق حقاً",
-        "نركز على النتائج — لا مجرد الانطباعات",
-        "تنفيذ أسرع، محتوى أصيل، استراتيجيات مرنة",
-        "كل علامة تجارية تحصل على خطة مختلفة تماماً",
-      ],
-      clientsAcquired: "عميل تم اكتسابه",
-      inOneCampaign: "في حملة واحدة",
-      heroStats: [
-        { suffix: "+", label: "حملة" },
-        { suffix: "", label: "عميل" },
-        { suffix: "", label: "سوق" },
-      ],
+
       ctaBadge: "مستعد للنمو؟",
       ctaTitle1: "رؤيتك",
       ctaTitle2: "مهمتنا",
       ctaSub:
         "هنبني حاجة تخلي منافسيك قلقانين. براند واحد، خطة واحدة، نتائج حقيقية.",
       ctaBtn: "ابدأ مشروعك",
+
+      // stat card labels (shown in 'What Makes Us Different' section)
+      impressionsLabel: "انطباع",
+      marketsLabel: "أسواق",
+
+      // identity card values
+      servicesVal: "براندينج · إعلانات · محتوى · سوشيال · فيديو",
+      marketsVal: ["السعودية", "مصر"],
+      sectorsVal: [
+        "إنشاءات",
+        "طبي",
+        "مطاعم",
+        "بودكاست",
+        "تجارة إلكترونية",
+        "تقنية",
+      ],
     },
 
-    trustBar: {
-      label: "موثوق به من براندات في السعودية ومصر",
+    trustBar: { label: "موثوق به من براندات في السعودية ومصر" },
+
+    data: {
+      services: [
+        {
+          icon: "video",
+          title: "التصميم الجرافيكي والمونتاج",
+          desc: "تصاميم جذابة وفيديوهات احترافية تعكس براندك وتوصل رسالتك بوضوح.",
+          tags: ["موشن جرافيك", "مونتاج فيديو", "تصميم بصري"],
+        },
+        {
+          icon: "pen-tool",
+          title: "إنشاء المحتوى والكتابة",
+          desc: "محتوى إبداعي مكتوب بصوت براندك يجذب جمهورك ويحقق نتائج ملموسة.",
+          tags: ["كتابة محتوى", "سكريبتات ريلز", "محتوى سوشيال"],
+        },
+        {
+          icon: "trending-up",
+          title: "الإعلانات الممولة والتسويق بالأداء",
+          desc: "حملات مبنية على الأداء تركز على العملاء المحتملين والمبيعات والحجوزات والنتائج القابلة للقياس.",
+          tags: ["إعلانات ميتا", "إعلانات جوجل", "إعلانات تيك توك"],
+        },
+        {
+          icon: "users",
+          title: "إدارة السوشيال ميديا",
+          desc: "ندير حضورك على السوشيال ميديا من الاستراتيجية وتخطيط المحتوى إلى النشر والتحليلات والتحسين.",
+          tags: ["تخطيط المحتوى", "إدارة المجتمع", "تحليلات"],
+        },
+        {
+          icon: "globe",
+          title: "تصميم وتطوير المواقع",
+          desc: "مواقع حديثة ومتجاوبة مصممة لترفع من قيمة براندك وتحول الزوار لعملاء.",
+          tags: ["صفحات هبوط", "مواقع أعمال", "UI/UX"],
+        },
+        {
+          icon: "file-text",
+          title: "البروفايل التعريفية",
+          desc: "بروفايلات تعريفية احترافية تعرض خدماتك ونقاط قوتك وقيمتك التجارية بوضوح وتأثير.",
+          tags: ["بروفايل الشركة", "عرض تقديمي", "تصميم PDF"],
+        },
+        {
+          icon: "palette",
+          title: "البراندينج والهوية البصرية",
+          desc: "نصنع هويات بصرية متكاملة تجعل براندك واضحاً ومتسقاً ويسهل التعرف عليه.",
+          tags: ["تصميم الشعار", "الهوية البصرية", "إرشادات البراند"],
+          featured: true,
+        },
+      ],
+      values: [
+        {
+          icon: "trending-up",
+          title: "النمو",
+          desc: "التطور المستمر جزء من هويتنا. لا نتوقف عن التعلم والتحسين والسعي لنتائج أفضل — لأنفسنا ولكل براند نعمل معه.",
+        },
+        {
+          icon: "eye",
+          title: "الشفافية",
+          desc: "لا صناديق سوداء. لديك رؤية كاملة لاستراتيجيتنا وإنفاقنا ونتائجنا. تقارير صادقة وتواصل مفتوح — دائماً.",
+        },
+        {
+          icon: "zap",
+          title: "الإبداع",
+          desc: "نرفض العادي. كل حملة وكل تصميم وكل محتوى مصمم ليبرز ويترك انطباعاً حقيقياً في سوق مزدحم.",
+        },
+        {
+          icon: "shield",
+          title: "الالتزام",
+          desc: "نتعامل مع براندك وكأنه براندنا. التزام كامل بالجودة والمواعيد وأهدافك — لا نكتفي بالتسليم، بل نبذل جهداً إضافياً.",
+        },
+      ],
+      whyUs: [
+        {
+          num: "01",
+          title: "فريق شاب يفهم السوق بشكل حقيقي",
+          desc: "لسنا وكالة تقليدية تتبع أساليب قديمة. فريقنا الشاب والطموح لديه معرفة عميقة بأسواق السعودية ومصر — ثقافتهم وسلوك المستهلك والمشهد الرقمي.",
+        },
+        {
+          num: "02",
+          title: "نركز على النتائج وليس فقط الظهور",
+          desc: "الإعجابات والمشاهدات لا تدفع الفواتير. نبني استراتيجيات حول نتائج تجارية حقيقية — عملاء محتملين، حجوزات، مبيعات، ونمو قابل للقياس يؤثر مباشرة على أرباحك.",
+        },
+        {
+          num: "03",
+          title: "تنفيذ أسرع ومحتوى حقيقي",
+          desc: "لا بيروقراطية، لا تأخير. نتحرك بسرعة، ننتج محتوى أصيلاً، ونكيّف استراتيجياتنا بمرونة بناءً على ما تخبرنا به البيانات والسوق.",
+        },
+        {
+          num: "04",
+          title: "خطة مخصصة لكل براند",
+          desc: "لا نؤمن باستراتيجيات النسخ واللصق. كل براند يحصل على خطة تسويقية مصممة خصيصاً بناءً على أهدافه الفريدة وجمهوره ومشهده التنافسي.",
+        },
+      ],
+      metrics: [
+        { value: "1M+", label: "انطباع تم تحقيقه", sub: "في السعودية فقط" },
+        { value: "3", label: "دول نخدمها", sub: "السعودية · مصر · وفي تزايد" },
+        { value: "7", label: "خدمات أساسية", sub: "قدرة تسويق متكاملة" },
+        { value: "100%", label: "التزام", sub: "لكل براند نعمل معه" },
+      ],
+      process: [
+        {
+          num: "01",
+          icon: "search",
+          title: "البحث والاكتشاف",
+          desc: "نبدأ بفهم براندك وجمهورك ومنافسيك والسوق قبل اتخاذ أي خطوة.",
+        },
+        {
+          num: "02",
+          icon: "map",
+          title: "التخطيط والاستراتيجية",
+          desc: "نحول الرؤى إلى استراتيجية واضحة بأهداف وقنوات واتجاه محتوى ومؤشرات أداء.",
+        },
+        {
+          num: "03",
+          icon: "zap",
+          title: "التنفيذ",
+          desc: "ننشئ، نصمم، نصور، نحرر، نطلق، وندير كل عنصر بهدف واضح.",
+        },
+        {
+          num: "04",
+          icon: "bar-chart-2",
+          title: "التحسين",
+          desc: "نحلل الأداء، نتعلم من البيانات، ونستمر في التحسين لنتائج أفضل.",
+        },
+      ],
+      portfolio: [
+        {
+          id: 1,
+          region: "KSA",
+          sector: "إنشاءات",
+          title: "الإنشاءات والهندسة — السعودية",
+          desc: "حملات أداء واستراتيجيات محتوى لشركات الإنشاءات والهندسة، مصممة لجذب عملاء B2B جادين وزيادة استفسارات المبيعات.",
+          result: "+طلب مبيعات",
+          tags: ["إعلانات أداء", "استراتيجية B2B", "محتوى"],
+          color: "#8D9AB0",
+        },
+        {
+          id: 2,
+          region: "KSA",
+          sector: "براندينج",
+          title: "الهوية البصرية للبراند — السعودية",
+          desc: "أنظمة هوية بصرية كاملة لبراندات سعودية، تشمل الشعارات والإرشادات ونبرة المحتوى وتوثيق البراند.",
+          result: "هوية كاملة",
+          tags: ["براندينج", "إرشادات بصرية", "شعار"],
+          color: "#A0AABC",
+        },
+        {
+          id: 3,
+          region: "KSA",
+          sector: "إعلانات مدفوعة",
+          title: "حملة +1000000 انطباع — السعودية",
+          desc: "حملات إعلانية عالية الأداء في السوق السعودي، وصلت لأكثر من مليون انطباع من خلال استهداف دقيق ومحتوى إبداعي يبني الثقة.",
+          result: "+1M انطباع",
+          tags: ["إعلانات ميتا", "إبداع", "أداء"],
+          color: "#B0BDD0",
+        },
+        {
+          id: 4,
+          region: "Egypt",
+          sector: "طبي",
+          title: "الأطباء والعيادات — مصر",
+          desc: "إدارة سوشيال ميديا، محتوى طبي، صور قبل/بعد، قصص المرضى، وإعلانات مستهدفة تحقق حجوزات حقيقية.",
+          result: "عملاء حقيقيون",
+          tags: ["سوشيال ميديا", "إعلانات", "محتوى طبي"],
+          color: "#8D9AB0",
+        },
+        {
+          id: 5,
+          region: "Egypt",
+          sector: "بودكاست",
+          title: "بودكاست وبرنامج إعلامي — مصر",
+          desc: "إنتاج بودكاست متكامل، من الفكرة والهوية البصرية إلى إدارة الحلقات والمونتاج والريلز ونمو السوشيال ميديا.",
+          result: "إنتاج كامل",
+          tags: ["مونتاج فيديو", "ريلز", "سوشيال ميديا"],
+          color: "#9AA6B8",
+        },
+        {
+          id: 6,
+          region: "Egypt",
+          sector: "مطاعم",
+          title: "مطاعم وبراندات غذائية — مصر",
+          desc: "هوية بصرية، محتوى طعام، تصوير، إدارة سوشيال ميديا، وحملات مصممة لزيادة الطلبات والمبيعات.",
+          result: "+طلبات ومبيعات",
+          tags: ["براندينج", "تصوير", "محتوى"],
+          color: "#A0AABC",
+        },
+      ],
+      clients: [
+        "قطاع الإنشاءات",
+        "شركات الهندسة",
+        "العيادات الطبية",
+        "متخصصو الرعاية الصحية",
+        "مطاعم ومقاهي",
+        "صناع البودكاست",
+        "متاجر إلكترونية",
+        "براندات عقارية",
+        "أغذية ومشروبات",
+        "برامج إعلامية",
+        "شركات استشارية",
+        "شركات خدمية",
+      ],
     },
   },
 };

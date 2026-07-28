@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Send, Phone, Mail, CheckCircle, AlertCircle } from "lucide-react";
-import { FiInstagram } from "react-icons/fi";
+import { FiInstagram, FiFacebook } from "react-icons/fi";
 import { SiTiktok } from "react-icons/si";
 import { CONTACTS } from "@/constants";
 import { Reveal, StaggerContainer, StaggerItem } from "@/components/ui/Reveal";
+import { useT } from "@/translations/useT";
 
 const card = {
   background: "rgba(255,255,255,0.04)",
@@ -40,17 +41,11 @@ const labelStyle = {
   marginBottom: 8,
 };
 
-// ─────────────────────────────────────────────────────────────────
-// HOW TO GET YOUR WEB3FORMS KEY (free, 2 minutes):
-//  1. Go to  https://web3forms.com
-//  2. Enter  andrewaymanstore@gmail.com
-//  3. Click "Create Access Key"
-//  4. Check your Gmail inbox → copy the key
-//  5. Paste it below replacing  YOUR_ACCESS_KEY_HERE
-// ─────────────────────────────────────────────────────────────────
 const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY ?? "";
 
 export default function ContactSection() {
+  const { t, isAr } = useT();
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -89,11 +84,17 @@ export default function ContactSection() {
         setSubmitted(true);
       } else {
         setError(
-          "Something went wrong. Please try again or contact us directly.",
+          isAr
+            ? "حدث خطأ ما. حاول تاني أو تواصل معنا مباشرة."
+            : "Something went wrong. Please try again or contact us directly.",
         );
       }
     } catch {
-      setError("Network error. Please check your connection and try again.");
+      setError(
+        isAr
+          ? "خطأ في الشبكة. تأكد من اتصالك بالإنترنت وحاول تاني."
+          : "Network error. Please check your connection and try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -102,7 +103,20 @@ export default function ContactSection() {
   const socialIcons: Record<string, React.ReactNode> = {
     instagram: <FiInstagram size={14} />,
     tiktok: <SiTiktok size={14} />,
+    facebook: <FiFacebook size={14} />,
   };
+
+  const SERVICE_OPTIONS: Array<[string, string]> = [
+    ["branding", t.contact.services.branding],
+    ["ads", t.contact.services.ads],
+    ["content", t.contact.services.content],
+    ["smm", t.contact.services.smm],
+    ["design", t.contact.services.design],
+    ["web", t.contact.services.web],
+    ["profiles", t.contact.services.profiles],
+    ["full", t.contact.services.full],
+    ["other", t.contact.services.other],
+  ];
 
   return (
     <section
@@ -111,6 +125,7 @@ export default function ContactSection() {
         padding: "5rem 1.5rem",
         overflow: "hidden",
       }}
+      dir={isAr ? "rtl" : "ltr"}
     >
       <div
         style={{
@@ -122,7 +137,7 @@ export default function ContactSection() {
           height: 500,
           pointerEvents: "none",
           background:
-            "radial-gradient(ellipse,rgba(0,122,255,0.1) 0%,transparent 70%)",
+            "radial-gradient(ellipse,rgba(141,154,176,0.1) 0%,transparent 70%)",
           filter: "blur(80px)",
         }}
       />
@@ -159,7 +174,7 @@ export default function ContactSection() {
                   }}
                 >
                   <Phone size={15} color="#8D9AB0" />
-                  <span style={labelStyle}>Phone</span>
+                  <span style={labelStyle}>{t.contact.phone}</span>
                 </div>
                 {CONTACTS.phones.map((p) => (
                   <div key={p.number} style={{ marginBottom: 14 }}>
@@ -176,6 +191,7 @@ export default function ContactSection() {
                     </div>
                     <a
                       href={`tel:${p.number.replace(/\s/g, "")}`}
+                      dir="ltr"
                       style={{
                         fontSize: 14,
                         color: "rgba(255,255,255,0.78)",
@@ -201,7 +217,7 @@ export default function ContactSection() {
                   }}
                 >
                   <Mail size={15} color="#8D9AB0" />
-                  <span style={labelStyle}>Email</span>
+                  <span style={labelStyle}>{t.contact.email}</span>
                 </div>
                 <a
                   href={`mailto:${CONTACTS.email}`}
@@ -219,7 +235,9 @@ export default function ContactSection() {
             {/* Socials */}
             <StaggerItem>
               <div style={card}>
-                <div style={{ ...labelStyle, marginBottom: 16 }}>Follow Us</div>
+                <div style={{ ...labelStyle, marginBottom: 16 }}>
+                  {t.contact.followUs}
+                </div>
                 <div
                   style={{ display: "flex", flexDirection: "column", gap: 10 }}
                 >
@@ -228,7 +246,7 @@ export default function ContactSection() {
                       key={s.label}
                       href={s.href}
                       target="_blank"
-                      whileHover={{ scale: 1.02, x: 2 }}
+                      whileHover={{ scale: 1.02, x: isAr ? -2 : 2 }}
                       style={{
                         display: "flex",
                         alignItems: "center",
@@ -240,29 +258,21 @@ export default function ContactSection() {
                         textDecoration: "none",
                       }}
                     >
-                      <span
-                        style={{
-                          color: "rgba(255,255,255,0.4)",
-                          display: "flex",
-                        }}
-                      >
-                        {socialIcons[s.icon] ?? <FiInstagram size={14} />}
-                      </span>
+                      {socialIcons[s.icon] ?? <FiFacebook size={14} />}
                       <div>
                         <div
                           style={{
-                            fontSize: 10,
-                            color: "rgba(255,255,255,0.3)",
-                            fontFamily:
-                              "var(--font-mono,'JetBrains Mono',monospace)",
+                            fontSize: 13,
+                            color: "white",
+                            fontWeight: 500,
                           }}
                         >
                           {s.label}
                         </div>
                         <div
                           style={{
-                            fontSize: 13,
-                            color: "rgba(255,255,255,0.65)",
+                            fontSize: 12,
+                            color: "rgba(255,255,255,0.4)",
                           }}
                         >
                           {s.handle}
@@ -275,7 +285,7 @@ export default function ContactSection() {
             </StaggerItem>
           </StaggerContainer>
 
-          {/* ── Right — Form ── */}
+          {/* ── Right — form ── */}
           <Reveal direction="left">
             <div style={{ ...card, padding: "2rem" }}>
               {submitted ? (
@@ -298,7 +308,7 @@ export default function ContactSection() {
                       marginBottom: 10,
                     }}
                   >
-                    MESSAGE SENT!
+                    {t.contact.successTitle}
                   </h3>
                   <p
                     style={{
@@ -308,7 +318,7 @@ export default function ContactSection() {
                       margin: "0 auto 24px",
                     }}
                   >
-                    We&apos;ll get back to you within 24 hours.
+                    {t.contact.successSub}
                   </p>
                   <button
                     onClick={() => {
@@ -331,7 +341,7 @@ export default function ContactSection() {
                       textTransform: "uppercase",
                     }}
                   >
-                    Send another message
+                    {t.contact.again}
                   </button>
                 </motion.div>
               ) : (
@@ -352,19 +362,19 @@ export default function ContactSection() {
                     }}
                   >
                     <div>
-                      <label style={labelStyle}>Name *</label>
+                      <label style={labelStyle}>{t.contact.nameLbl}</label>
                       <input
                         required
                         value={form.name}
                         onChange={(e) =>
                           setForm({ ...form, name: e.target.value })
                         }
-                        placeholder="Your full name"
+                        placeholder={t.contact.namePh}
                         style={inputStyle}
                       />
                     </div>
                     <div>
-                      <label style={labelStyle}>Email *</label>
+                      <label style={labelStyle}>{t.contact.emailLbl}</label>
                       <input
                         required
                         type="email"
@@ -372,15 +382,16 @@ export default function ContactSection() {
                         onChange={(e) =>
                           setForm({ ...form, email: e.target.value })
                         }
-                        placeholder="hello@gmail.com"
+                        placeholder={t.contact.emailPh}
                         style={inputStyle}
+                        dir="ltr"
                       />
                     </div>
                   </div>
 
-                  {/* Service — with Other added */}
+                  {/* Service */}
                   <div>
-                    <label style={labelStyle}>Service Needed</label>
+                    <label style={labelStyle}>{t.contact.serviceLbl}</label>
                     <select
                       value={form.service}
                       onChange={(e) =>
@@ -389,45 +400,30 @@ export default function ContactSection() {
                       style={{ ...inputStyle, appearance: "none" as const }}
                     >
                       <option value="" style={{ background: "#1a1a1a" }}>
-                        Select a service...
+                        {t.contact.servicePh}
                       </option>
-                      <option
-                        value="branding"
-                        style={{ background: "#1a1a1a" }}
-                      >
-                        Branding &amp; Visual Identity
-                      </option>
-                      <option value="ads" style={{ background: "#1a1a1a" }}>
-                        Paid Ads &amp; Performance Marketing
-                      </option>
-                      <option value="content" style={{ background: "#1a1a1a" }}>
-                        Content Creation &amp; Copywriting
-                      </option>
-                      <option value="smm" style={{ background: "#1a1a1a" }}>
-                        Social Media Management
-                      </option>
-                      <option value="design" style={{ background: "#1a1a1a" }}>
-                        Graphic Design &amp; Video Editing
-                      </option>
-                      <option value="full" style={{ background: "#1a1a1a" }}>
-                        Full Package
-                      </option>
-                      <option value="other" style={{ background: "#1a1a1a" }}>
-                        Other
-                      </option>
+                      {SERVICE_OPTIONS.map(([val, label]) => (
+                        <option
+                          key={val}
+                          value={val}
+                          style={{ background: "#1a1a1a" }}
+                        >
+                          {label}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
                   {/* Message */}
                   <div>
-                    <label style={labelStyle}>Message *</label>
+                    <label style={labelStyle}>{t.contact.msgLbl}</label>
                     <textarea
                       required
                       value={form.message}
                       onChange={(e) =>
                         setForm({ ...form, message: e.target.value })
                       }
-                      placeholder="Tell us about your project, goals, and timeline..."
+                      placeholder={t.contact.msgPh}
                       rows={5}
                       style={{ ...inputStyle, resize: "none" }}
                     />
@@ -461,7 +457,7 @@ export default function ContactSection() {
                     disabled={loading}
                     whileHover={{
                       scale: 1.02,
-                      boxShadow: "0 0 40px rgba(0,122,255,0.4)",
+                      boxShadow: "0 0 40px rgba(141,154,176,0.4)",
                     }}
                     whileTap={{ scale: 0.98 }}
                     style={{
@@ -497,12 +493,16 @@ export default function ContactSection() {
                             borderRadius: "50%",
                           }}
                         />
-                        Sending...
+                        {t.contact.sending}
                       </>
                     ) : (
                       <>
                         {" "}
-                        Send Message <Send size={14} />{" "}
+                        {t.contact.send}{" "}
+                        <Send
+                          size={14}
+                          style={{ transform: isAr ? "scaleX(-1)" : "none" }}
+                        />{" "}
                       </>
                     )}
                   </motion.button>

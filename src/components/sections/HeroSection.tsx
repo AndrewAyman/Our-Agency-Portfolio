@@ -1,13 +1,4 @@
 "use client";
-// CORRECTED FILE — replace src/components/sections/HeroSection.tsx with this
-// CHANGES:
-// 1. Added: import { useT } from "@/translations/useT"
-// 2. ✅ FIX StatPill: once: true → once: false + hasAnimated ref guard
-//    (counter showed "0" in Arabic because RTL layout shift triggered before isInView fires)
-// 3. ✅ FIX StatPill: toLocaleString() → toLocaleString("en-US") (prevents Arabic numerals ٠١٢)
-// 4. Added useT() to HeroContent → stat labels now come from t.hero.stats.*
-// 5. Added useT() to HeroContent → badge, headlines, sub, CTAs now come from t.hero.*
-// 6. CapabilitiesSection: badge, title, copy now come from t.hero.cap* keys
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -19,14 +10,11 @@ import {
   AnimatePresence,
   useScroll,
   MotionValue,
-  animate,
-  useInView,
 } from "framer-motion";
 import { ArrowRight, Zap } from "lucide-react";
 import { useT } from "@/translations/useT";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-const CYCLING_WORDS = ["BRANDING", "ADS", "CONTENT", "GROWTH", "VIDEO"];
 
 /* ── MAGNETIC CURSOR BLOB ── */
 function MagneticBlob() {
@@ -35,7 +23,6 @@ function MagneticBlob() {
   const my = useMotionValue(0);
   const sx = useSpring(mx, { stiffness: 40, damping: 20 });
   const sy = useSpring(my, { stiffness: 40, damping: 20 });
-
   const x = useTransform(sx, (v) => v - 250);
   const y = useTransform(sy, (v) => v - 250);
 
@@ -110,7 +97,6 @@ function ParticleField() {
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
@@ -127,22 +113,18 @@ function ParticleField() {
           }
         }
       }
-
       particles.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
         p.pulse += 0.03;
-
         if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
         const pulseOpacity = p.opacity + Math.sin(p.pulse) * 0.1;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(141, 154, 176, ${Math.max(0.05, pulseOpacity)})`;
         ctx.fill();
       });
-
       animId = requestAnimationFrame(draw);
     };
     draw();
@@ -222,16 +204,17 @@ function FloatingOrbs() {
   );
 }
 
-/* ── WORD CYCLER ── */
-function WordCycler() {
+/* ── WORD CYCLER — now uses translated words ── */
+function WordCycler({ words }: { words: string[] }) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % CYCLING_WORDS.length);
-    }, 2200);
+    const interval = setInterval(
+      () => setIndex((prev) => (prev + 1) % words.length),
+      2200,
+    );
     return () => clearInterval(interval);
-  }, []);
+  }, [words.length]);
 
   return (
     <motion.span
@@ -240,7 +223,7 @@ function WordCycler() {
     >
       <AnimatePresence mode="popLayout">
         <motion.span
-          key={CYCLING_WORDS[index]}
+          key={words[index]}
           initial={{ y: "80%", opacity: 0 }}
           animate={{ y: "0%", opacity: 1 }}
           exit={{ y: "-80%", opacity: 0 }}
@@ -251,7 +234,7 @@ function WordCycler() {
             lineHeight: "1.2",
           }}
         >
-          {CYCLING_WORDS[index]}
+          {words[index]}
         </motion.span>
       </AnimatePresence>
     </motion.span>
@@ -259,7 +242,7 @@ function WordCycler() {
 }
 
 /* ── SCROLL INDICATOR ── */
-function ScrollIndicator() {
+function ScrollIndicator({ label }: { label: string }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -268,7 +251,7 @@ function ScrollIndicator() {
       className="bottom-4 left-1/2 z-20 absolute flex flex-col items-center gap-1.5 -translate-x-1/2 pointer-events-none"
     >
       <span className="font-mono text-[9px] text-white/20 uppercase tracking-[0.35em] select-none">
-        SCROLL
+        {label}
       </span>
       <motion.div
         animate={{ y: [0, 6, 0] }}
@@ -279,13 +262,14 @@ function ScrollIndicator() {
   );
 }
 
-/* ── SIDE RIBBONS ── */
-function SideRibbon({ side }: { side: "left" | "right" }) {
-  const words =
-    side === "left"
-      ? ["CREATIVE", "INNOVATION", "DESIGN", "STRATEGY"]
-      : ["GROWTH", "RESULTS", "IMPACT", "LEADERSHIP"];
-
+/* ── SIDE RIBBONS — now uses translated words ── */
+function SideRibbon({
+  side,
+  words,
+}: {
+  side: "left" | "right";
+  words: string[];
+}) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -323,40 +307,30 @@ interface StatPillProps {
 function StatPill({ targetNumber, suffix = "", label, delay }: StatPillProps) {
   const [displayValue, setDisplayValue] = useState("0");
 
-  // ✅ FIX: pure setInterval — no framer-motion animate, no useInView
-  // Guaranteed to run regardless of RTL layout shifts or scroll position.
   useEffect(() => {
     let intervalId: ReturnType<typeof setInterval> | null = null;
-
     const startTimer = setTimeout(
       () => {
-        const DURATION = 2000; // ms
-        const STEPS = 80;
-        const STEP_MS = DURATION / STEPS;
+        const DURATION = 2000,
+          STEPS = 80,
+          STEP_MS = DURATION / STEPS;
         let step = 0;
-
-        const fmt = (n: number) => {
-          if (n >= 1000000) return (n / 1000000).toFixed(0) + "M";
-          return n.toLocaleString("en-US"); // force Western numerals
-        };
-
+        const fmt = (n: number) =>
+          n >= 1000000
+            ? (n / 1000000).toFixed(0) + "M"
+            : n.toLocaleString("en-US");
         intervalId = setInterval(() => {
           step++;
-          // cubic ease-out
           const eased = 1 - Math.pow(1 - step / STEPS, 3);
           const current = Math.floor(eased * targetNumber);
-
           if (step >= STEPS) {
             clearInterval(intervalId!);
             setDisplayValue(fmt(targetNumber));
-          } else {
-            setDisplayValue(fmt(current));
-          }
+          } else setDisplayValue(fmt(current));
         }, STEP_MS);
       },
       delay * 1000 + 500,
     );
-
     return () => {
       clearTimeout(startTimer);
       if (intervalId) clearInterval(intervalId);
@@ -372,7 +346,10 @@ function StatPill({ targetNumber, suffix = "", label, delay }: StatPillProps) {
       whileHover={{ scale: 1.08, y: -3 }}
       className="bg-white/5 backdrop-blur-md px-5 py-2.5 border border-white/10 rounded-full min-w-[115px] text-center cursor-default"
     >
-      <div className="mb-0.5 font-['Bebas_Neue',Impact,sans-serif] text-white text-2xl leading-none notranslate">
+      <div
+        className="mb-0.5 font-['Bebas_Neue',Impact,sans-serif] text-white text-2xl leading-none notranslate"
+        translate="no"
+      >
         {displayValue}
         {suffix}
       </div>
@@ -385,11 +362,32 @@ function StatPill({ targetNumber, suffix = "", label, delay }: StatPillProps) {
 
 /* ── SECTION 1: MAIN HERO CONTENT ── */
 function HeroContent() {
-  // ✅ Added: all text now comes from translations
-  const { t } = useT();
+  const { t, isAr } = useT();
+
+  const cyclingWords = isAr
+    ? ["البراندينج", "الإعلانات", "المحتوى", "النمو", "الفيديو"]
+    : ["BRANDING", "ADS", "CONTENT", "GROWTH", "VIDEO"];
+
+  const sideLeftWords = isAr
+    ? ["إبداع", "ابتكار", "تصميم", "استراتيجية"]
+    : ["CREATIVE", "INNOVATION", "DESIGN", "STRATEGY"];
+  const sideRightWords = isAr
+    ? ["نمو", "نتائج", "تأثير", "قيادة"]
+    : ["GROWTH", "RESULTS", "IMPACT", "LEADERSHIP"];
+  const scrollLabel = isAr ? "تصفح" : "SCROLL";
+
+  const subBefore = isAr
+    ? "وكالة شابة مهووسة بالنتائج، تحول البراندات لقادة سوق من خلال "
+    : "A young, results-obsessed agency turning brands into market leaders through ";
+  const subAfter = isAr
+    ? " — في السعودية ومصر."
+    : " — across Saudi Arabia & Egypt.";
 
   return (
-    <div className="relative flex flex-col justify-center items-center bg-[#080C14] px-6 pt-20 pb-24 w-full min-h-screen overflow-hidden text-center">
+    <div
+      className="relative flex flex-col justify-center items-center bg-[#080C14] px-6 pt-20 pb-24 w-full min-h-screen overflow-hidden text-center"
+      dir={isAr ? "rtl" : "ltr"}
+    >
       <MagneticBlob />
       <ParticleField />
       <FloatingOrbs />
@@ -399,10 +397,7 @@ function HeroContent() {
         animate={{ opacity: [0.4, 0.7, 0.4] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         style={{
-          backgroundImage: `
-            linear-gradient(rgba(141, 154, 176,0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(141, 154, 176,0.05) 1px, transparent 1px)
-          `,
+          backgroundImage: `linear-gradient(rgba(141, 154, 176,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(141, 154, 176,0.05) 1px, transparent 1px)`,
           backgroundSize: "60px 60px",
         }}
       />
@@ -422,8 +417,8 @@ function HeroContent() {
         }}
       />
 
-      <SideRibbon side="left" />
-      <SideRibbon side="right" />
+      <SideRibbon side="left" words={sideLeftWords} />
+      <SideRibbon side="right" words={sideRightWords} />
 
       <div className="z-10 relative flex flex-col justify-center items-center mx-auto w-full max-w-[950px] text-center">
         {/* Badge */}
@@ -467,17 +462,19 @@ function HeroContent() {
                 delay: 0.25 + i * 0.12,
                 ease: EASE,
               }}
-              className={`block font-['Bebas_Neue',Impact,sans-serif] leading-[0.92] tracking-[-0.01em] text-[clamp(4rem,12vw,10rem)] ${
-                line.isBlue ? "text-[#8D9AB0]" : "text-[#EFF4FF]"
-              }`}
-              style={
-                line.isBlue
+              className={`block tracking-[-0.01em] text-[clamp(4rem,12vw,10rem)] ${line.isBlue ? "text-[#8D9AB0]" : "text-[#EFF4FF]"}`}
+              style={{
+                fontFamily: isAr
+                  ? "'Cairo', 'Tajawal', Tahoma, 'Segoe UI', Arial, sans-serif"
+                  : "'Bebas Neue', Impact, sans-serif",
+                lineHeight: isAr ? 1.15 : 0.92,
+                ...(line.isBlue
                   ? {
                       textShadow:
                         "0 0 60px rgba(141, 154, 176,0.5), 0 0 120px rgba(141, 154, 176,0.2)",
                     }
-                  : {}
-              }
+                  : {}),
+              }}
             >
               {line.text}
             </motion.div>
@@ -491,8 +488,9 @@ function HeroContent() {
           transition={{ duration: 0.7, delay: 0.6 }}
           className="mx-auto mb-10 max-w-[700px] font-mono text-[clamp(0.85rem,2vw,1rem)] text-white/40 leading-relaxed"
         >
-          A young, results-obsessed agency turning brands into market leaders
-          through <WordCycler /> — across Saudi Arabia & Egypt.
+          {subBefore}
+          <WordCycler words={cyclingWords} />
+          {subAfter}
         </motion.p>
 
         {/* CTAs */}
@@ -514,7 +512,10 @@ function HeroContent() {
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none"
               />
               {t.hero.cta}
-              <ArrowRight size={14} />
+              <ArrowRight
+                size={14}
+                style={{ transform: isAr ? "scaleX(-1)" : "none" }}
+              />
             </motion.button>
           </Link>
 
@@ -533,7 +534,7 @@ function HeroContent() {
           </Link>
         </motion.div>
 
-        {/* ✅ Stat pills — labels from translations */}
+        {/* Stat pills */}
         <div className="flex flex-wrap justify-center gap-3 mt-14 mb-4">
           <StatPill
             targetNumber={60}
@@ -557,41 +558,70 @@ function HeroContent() {
         </div>
       </div>
 
-      <ScrollIndicator />
+      <ScrollIndicator label={scrollLabel} />
     </div>
   );
 }
 
 /* ── SECTION 2: CAPABILITIES SHOWCASE ── */
 function CapabilitiesSection() {
-  const { t } = useT();
+  const { t, isAr } = useT();
 
-  const capabilities = [
-    {
-      num: "01",
-      title: "BRAND IDENTITY",
-      tag: "BRANDING",
-      desc: "Brands built to be remembered. We create visual identities that make your brand clear, consistent, and instantly recognizable.",
-      tags: ["Logo Design", "Visual System", "Brand Guidelines"],
-    },
-    {
-      num: "02",
-      title: "PERFORMANCE ADS",
-      tag: "GROWTH",
-      desc: "Campaigns built for real growth. We launch performance-driven ads focused on leads, sales, and measurable results.",
-      tags: ["Meta Ads", "Google Ads", "TikTok Ads"],
-    },
-    {
-      num: "03",
-      title: "CONTENT CREATION",
-      tag: "VIDEO & MEDIA",
-      desc: "Content that turns attention into action. We create scroll-stopping content that connects with your audience and drives intent.",
-      tags: ["Reels", "Copywriting", "Social Content"],
-    },
-  ];
+  const capabilities = isAr
+    ? [
+        {
+          num: "01",
+          title: "هوية البراند",
+          tag: "براندينج",
+          desc: "براندات مصممة لتُذكر. نصنع هويات بصرية تجعل براندك واضحاً ومتسقاً وسهل التعرف عليه فوراً.",
+          tags: ["تصميم الشعار", "نظام بصري", "إرشادات البراند"],
+        },
+        {
+          num: "02",
+          title: "إعلانات الأداء",
+          tag: "نمو",
+          desc: "حملات مصممة لنمو حقيقي. نطلق إعلانات مبنية على الأداء تركز على العملاء المحتملين والمبيعات والنتائج القابلة للقياس.",
+          tags: ["إعلانات ميتا", "إعلانات جوجل", "إعلانات تيك توك"],
+        },
+        {
+          num: "03",
+          title: "إنشاء المحتوى",
+          tag: "فيديو وميديا",
+          desc: "محتوى يحول الانتباه إلى فعل. ننشئ محتوى يوقف السكرول ويتواصل مع جمهورك ويحفز النية.",
+          tags: ["ريلز", "كتابة محتوى", "محتوى سوشيال"],
+        },
+      ]
+    : [
+        {
+          num: "01",
+          title: "BRAND IDENTITY",
+          tag: "BRANDING",
+          desc: "Brands built to be remembered. We create visual identities that make your brand clear, consistent, and instantly recognizable.",
+          tags: ["Logo Design", "Visual System", "Brand Guidelines"],
+        },
+        {
+          num: "02",
+          title: "PERFORMANCE ADS",
+          tag: "GROWTH",
+          desc: "Campaigns built for real growth. We launch performance-driven ads focused on leads, sales, and measurable results.",
+          tags: ["Meta Ads", "Google Ads", "TikTok Ads"],
+        },
+        {
+          num: "03",
+          title: "CONTENT CREATION",
+          tag: "VIDEO & MEDIA",
+          desc: "Content that turns attention into action. We create scroll-stopping content that connects with your audience and drives intent.",
+          tags: ["Reels", "Copywriting", "Social Content"],
+        },
+      ];
+
+  const exploreLabel = isAr ? "استكشف" : "EXPLORE";
 
   return (
-    <div className="relative flex flex-col justify-center bg-[#0C101A] px-6 py-16 lg:py-24 border-white/5 border-t w-full min-h-fit lg:min-h-screen overflow-hidden text-white">
+    <div
+      className="relative flex flex-col justify-center bg-[#0C101A] px-6 py-16 lg:py-24 border-white/5 border-t w-full min-h-fit lg:min-h-screen overflow-hidden text-white"
+      dir={isAr ? "rtl" : "ltr"}
+    >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(141,154,176,0.03),transparent_50%)] pointer-events-none" />
 
       <div className="z-10 relative mx-auto w-full max-w-7xl">
@@ -604,7 +634,15 @@ function CapabilitiesSection() {
               </span>
             </div>
 
-            <h2 className="font-['Bebas_Neue',Impact,sans-serif] text-[clamp(2.5rem,7vw,5.5rem)] text-white leading-[0.95] tracking-wide">
+            <h2
+              className="text-[clamp(2.5rem,7vw,5.5rem)] text-white tracking-wide"
+              style={{
+                fontFamily: isAr
+                  ? "'Cairo', 'Tajawal', Tahoma, 'Segoe UI', Arial, sans-serif"
+                  : "'Bebas Neue', Impact, sans-serif",
+                lineHeight: isAr ? 1.2 : 0.95,
+              }}
+            >
               {t.hero.capTitle}{" "}
               <span
                 className="bg-clip-text bg-gradient-to-r from-[#8D9AB0] to-[#A8B4C5] text-transparent"
@@ -615,7 +653,10 @@ function CapabilitiesSection() {
             </h2>
           </div>
 
-          <p className="max-w-md font-mono text-white/40 text-xs md:text-sm text-left leading-relaxed">
+          {/* ✅ FIX: text alignment respects RTL in Arabic */}
+          <p
+            className={`max-w-md font-mono text-white/40 text-xs md:text-sm ${isAr ? "text-right" : "text-left"} leading-relaxed`}
+          >
             {t.hero.capCopy}
           </p>
         </div>
@@ -656,7 +697,10 @@ function CapabilitiesSection() {
                     {item.title}
                   </h3>
 
-                  <p className="font-sans font-light text-white/50 lg:text-[13px] text-xs text-left leading-relaxed tracking-wide">
+                  {/* ✅ FIX: card description alignment respects RTL in Arabic */}
+                  <p
+                    className={`font-sans font-light text-white/50 lg:text-[13px] text-xs ${isAr ? "text-right" : "text-left"} leading-relaxed tracking-wide`}
+                  >
                     {item.desc}
                   </p>
 
@@ -674,11 +718,12 @@ function CapabilitiesSection() {
 
                 <div className="flex justify-end items-center gap-2 opacity-40 group-hover:opacity-100 mt-5 pt-4 border-white/[0.04] border-t transition-opacity duration-300">
                   <span className="font-mono text-[10px] text-white/50 group-hover:text-white tracking-widest transition-colors">
-                    EXPLORE
+                    {exploreLabel}
                   </span>
                   <ArrowRight
                     size={12}
                     className="text-[#8D9AB0] transition-transform group-hover:translate-x-1 transform"
+                    style={{ transform: isAr ? "scaleX(-1)" : "none" }}
                   />
                 </div>
               </div>
@@ -705,7 +750,6 @@ function LayeredCard({
   scrollYProgress,
 }: CardWrapperProps) {
   const isLast = index === totalCards - 1;
-
   const startRange = index / totalCards;
   const endRange = (index + 1) / totalCards;
 
@@ -748,7 +792,6 @@ function LayeredCard({
 /* ── MAIN EXPORT COMPONENT ── */
 export default function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
-
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],

@@ -1,14 +1,5 @@
 "use client";
 // CORRECTED FILE — replace src/app/about/page.tsx with this
-// CHANGES:
-// 1. Added: import { useT } from "@/translations/useT"
-// 2. ✅ FIX TitleDropLetters/TitleRiseLetters: Arabic → one animated block, not letter-by-letter
-// 3. ✅ FIX TitleBlurReveal: Arabic direction fix
-// 4. ✅ FIX TitleGlitch: Arabic skew direction fix
-// 5. ✅ FIX TitleTypewriter: Arabic → blur-fade fallback (typewriter breaks Arabic chars)
-// 6. ✅ AboutPage: hero words now from t.about.headline.split('\n')
-// 7. ✅ AboutPage: VALUES + PROCESS computed from translations
-// 8. ✅ AboutPage: all hardcoded strings (Eyebrow, card labels, CTA) now from t.about.*
 
 import { useEffect, useRef, useState, useMemo } from "react";
 import {
@@ -77,8 +68,6 @@ function GradientHeadline({
 
 /* ─── TITLE ANIMATION VARIANTS ─── */
 
-// Variant 1: Letters fall from top
-// ✅ FIX: Arabic → whole string animated as one span, no split("")
 function TitleDropLetters({
   text,
   delay = 0,
@@ -139,8 +128,6 @@ function TitleDropLetters({
   );
 }
 
-// Variant 2: Letters rise from bottom (reverse)
-// ✅ FIX: Arabic → whole string animated as one span
 function TitleRiseLetters({
   text,
   delay = 0,
@@ -200,8 +187,6 @@ function TitleRiseLetters({
   );
 }
 
-// Variant 3: Blur then sharpen, word by word
-// ✅ FIX: Arabic → x direction reversed (RTL)
 function TitleBlurReveal({
   children,
   delay = 0,
@@ -246,8 +231,6 @@ function TitleBlurReveal({
   );
 }
 
-// Variant 4: Glitch effect with skew
-// ✅ FIX: Arabic → skew direction reversed
 function TitleGlitch({ text, delay = 0 }: { text: string; delay?: number }) {
   const { isAr } = useT();
   const ref = useRef(null);
@@ -278,7 +261,6 @@ function TitleGlitch({ text, delay = 0 }: { text: string; delay?: number }) {
   );
 }
 
-// Variant 5: Scale + fade from center (no letter splitting — already safe)
 function TitleScaleFade({
   children,
   delay = 0,
@@ -306,8 +288,6 @@ function TitleScaleFade({
   );
 }
 
-// Variant 6: Typewriter effect
-// ✅ FIX: Arabic → falls back to blur-fade (typewriter builds chars one by one → breaks Arabic)
 function TitleTypewriter({
   text,
   delay = 0,
@@ -322,7 +302,7 @@ function TitleTypewriter({
   const [started, setStarted] = useState(false);
 
   useEffect(() => {
-    if (isAr) return; // Arabic: use fade fallback below
+    if (isAr) return;
     if (inView && !started) {
       setStarted(true);
       setDisplayed("");
@@ -342,7 +322,6 @@ function TitleTypewriter({
     }
   }, [inView, text, delay, started, isAr]);
 
-  // Arabic fallback: blur-fade the whole string
   if (isAr) {
     return (
       <motion.h2
@@ -767,7 +746,6 @@ const VALUE_COLORS = ["#8D9AB0", "#A8B4C5", "#C2CAD6", "#8D9AB0"];
 
 /* ────────────────────────────────────────────────── */
 export default function AboutPage() {
-  // ✅ All translations
   const { t, isAr } = useT();
 
   const heroRef = useRef(null);
@@ -780,7 +758,6 @@ export default function AboutPage() {
 
   const [activeTab, setActiveTab] = useState<"ksa" | "egypt">("ksa");
 
-  // ✅ Computed from translations
   const heroWords = t.about.headline.split("\n");
 
   const VALUES = t.about.valueWords.map((word, i) => ({
@@ -874,10 +851,8 @@ export default function AboutPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               >
-                {/* ✅ Badge from translations */}
                 <Eyebrow>{t.about.badge}</Eyebrow>
 
-                {/* ✅ Hero words from translations (split by \n) */}
                 <div className="mb-7 overflow-hidden">
                   {heroWords.map((word, i) => (
                     <motion.div
@@ -901,7 +876,6 @@ export default function AboutPage() {
                   ))}
                 </div>
                 <AnimatedDivider />
-                {/* ✅ Description from translations */}
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -919,7 +893,6 @@ export default function AboutPage() {
                 transition={{ delay: 1.1 }}
                 className="flex flex-wrap gap-6 sm:gap-8 mt-10"
               >
-                {/* ✅ Hero stats from translations */}
                 {[
                   { value: 60, suffix: "+", label: t.about.heroStats[0].label },
                   { value: 9, suffix: "", label: t.about.heroStats[1].label },
@@ -971,8 +944,9 @@ export default function AboutPage() {
                     <div className="mb-1 font-mono text-[9px] text-white/30 uppercase tracking-[0.3em]">
                       {t.about.services}
                     </div>
+                    {/* ✅ FIX: use translated services value */}
                     <div className="text-white/70 text-xs">
-                      Branding · Ads · Content · SMM · Video
+                      {t.about.servicesVal}
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-4 px-4 py-3">
@@ -981,7 +955,8 @@ export default function AboutPage() {
                         {t.about.markets}
                       </div>
                       <div className="flex gap-1.5">
-                        {["KSA", "Egypt"].map((m) => (
+                        {/* ✅ FIX: use translated markets */}
+                        {t.about.marketsVal.map((m) => (
                           <span
                             key={m}
                             className="bg-white/[0.04] px-2.5 py-1 border border-white/[0.08] rounded-lg text-[11px] text-white/55"
@@ -996,7 +971,8 @@ export default function AboutPage() {
                         {t.about.sectors}
                       </div>
                       <div className="flex flex-wrap gap-1.5">
-                        {["Construction", "Medical", "F&B", "Tech"].map((s) => (
+                        {/* ✅ FIX: use translated sectors (first 4) */}
+                        {t.about.sectorsVal.slice(0, 4).map((s) => (
                           <span
                             key={s}
                             className="px-2.5 py-1 border border-[rgba(141,154,176,0.25)] rounded-full text-[11px] text-[rgba(141,154,176,0.85)]"
@@ -1070,14 +1046,15 @@ export default function AboutPage() {
                       "radial-gradient(ellipse at 75% 25%,rgba(141, 154, 176,0.12) 0%,transparent 55%)",
                   }}
                 />
-                {/* ✅ Identity card labels from translations */}
+                {/* ✅ FIX: Identity card with translated values */}
                 <div className="z-10 relative flex flex-col gap-6">
                   {[
                     { label: t.about.type, value: t.about.typeVal },
                     { label: t.about.founded, value: t.about.foundedVal },
                     {
                       label: t.about.services,
-                      value: "Branding · Ads · Content · SMM · Video",
+                      // ✅ FIX: use translated services value
+                      value: t.about.servicesVal,
                     },
                   ].map(({ label, value }) => (
                     <div key={label}>
@@ -1092,7 +1069,8 @@ export default function AboutPage() {
                       {t.about.markets}
                     </div>
                     <div className="flex flex-wrap gap-2.5">
-                      {["Saudi Arabia", "Egypt"].map((m) => (
+                      {/* ✅ FIX: use translated markets */}
+                      {t.about.marketsVal.map((m) => (
                         <motion.span
                           key={m}
                           whileHover={{
@@ -1113,14 +1091,8 @@ export default function AboutPage() {
                       {t.about.sectors}
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {[
-                        "Construction",
-                        "Medical",
-                        "F&B",
-                        "Podcast",
-                        "E-Commerce",
-                        "Tech",
-                      ].map((s, i) => (
+                      {/* ✅ FIX: use translated sectors */}
+                      {t.about.sectorsVal.map((s, i) => (
                         <motion.span
                           key={s}
                           initial={{ opacity: 0, scale: 0.8 }}
@@ -1157,7 +1129,6 @@ export default function AboutPage() {
         />
         <div className="z-10 relative mx-auto max-w-[1280px]">
           <FadeUp className="mb-16 text-center">
-            {/* ✅ Labels from translations */}
             <Eyebrow>{t.about.vmBadge}</Eyebrow>
             <TitleDropLetters text={t.about.vmTitle} />
           </FadeUp>
@@ -1237,12 +1208,10 @@ export default function AboutPage() {
         />
         <div className="z-10 relative mx-auto max-w-[1280px]">
           <FadeUp className="mb-20 text-center">
-            {/* ✅ Labels from translations */}
             <Eyebrow>{t.about.valuesBadge}</Eyebrow>
             <TitleRiseLetters text={t.about.valuesTitle} />
           </FadeUp>
           <div className="gap-4 sm:gap-5 grid grid-cols-2 lg:grid-cols-4">
-            {/* ✅ VALUES computed from t.about.valueWords */}
             {VALUES.map((v, i) => (
               <FadeUp key={v.word} delay={i * 0.1}>
                 <motion.div
@@ -1292,11 +1261,9 @@ export default function AboutPage() {
           <div className="items-center gap-12 lg:gap-20 grid grid-cols-1 lg:grid-cols-2">
             <div>
               <FadeUp>
-                {/* ✅ Title from translations */}
                 <TitleBlurReveal>{t.about.differenceTitle}</TitleBlurReveal>
               </FadeUp>
               <div className="flex flex-col gap-5 mt-9">
-                {/* ✅ Points from translations */}
                 {t.about.differencePoints.map((point, i) => (
                   <FadeUp key={i} delay={i * 0.1}>
                     <motion.div
@@ -1378,7 +1345,6 @@ export default function AboutPage() {
                   >
                     <Counter to={60} suffix="+" />
                   </motion.div>
-                  {/* ✅ Labels from translations */}
                   <div
                     className="mb-2 text-[1.4rem] text-white/55 tracking-[0.1em]"
                     style={{ fontFamily: "'Bebas Neue', Impact, sans-serif" }}
@@ -1389,9 +1355,10 @@ export default function AboutPage() {
                     {t.about.inOneCampaign}
                   </div>
                   <div className="flex justify-center gap-8 mt-6 pt-6 border-white/[0.06] border-t">
+                    {/* ✅ FIX: use translated labels */}
                     {[
-                      { n: "1M+", label: "Impressions" },
-                      { n: "2", label: "Markets" },
+                      { n: "1M+", label: t.about.impressionsLabel },
+                      { n: "2", label: t.about.marketsLabel },
                     ].map((s) => (
                       <motion.div
                         key={s.label}
@@ -1423,7 +1390,6 @@ export default function AboutPage() {
       <section className="px-4 sm:px-6 py-28 border-white/[0.06] border-t">
         <div className="mx-auto max-w-[1280px]">
           <FadeUp className="mb-20 text-center">
-            {/* ✅ Labels from translations */}
             <Eyebrow>{t.about.processBadge}</Eyebrow>
             <TitleTypewriter text={t.about.processTitle} />
           </FadeUp>
@@ -1443,7 +1409,6 @@ export default function AboutPage() {
                   "linear-gradient(90deg, transparent, rgba(141, 154, 176,0.4), rgba(141, 154, 176,0.4), transparent)",
               }}
             />
-            {/* ✅ PROCESS computed from t.about.processSteps */}
             {PROCESS.map((step, i) => (
               <FadeUp key={step.num} delay={i * 0.12}>
                 <motion.div
@@ -1535,7 +1500,6 @@ export default function AboutPage() {
         </div>
 
         <FadeUp className="z-10 relative text-center">
-          {/* ✅ CTA labels from translations */}
           <Eyebrow>{t.about.ctaBadge}</Eyebrow>
           <div className="mb-6">
             <TitleGlitch text={t.about.ctaTitle1} delay={0} />
@@ -1546,7 +1510,7 @@ export default function AboutPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <motion.a
-              href="mailto:ouragency259@gmail.com"
+              href="/contact"
               whileHover={{
                 scale: 1.06,
                 boxShadow: "0 20px 60px rgba(141, 154, 176,0.45)",

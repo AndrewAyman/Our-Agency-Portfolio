@@ -11,40 +11,27 @@ import {
   FaMobileAlt,
   FaChartLine,
 } from "react-icons/fa";
-import { CLIENTS } from "@/constants";
+import { useT } from "@/translations/useT";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const ACCENT = "#8D9AB0";
 
-const getIcon = (name: string) => {
-  const n = name.toLowerCase();
-  if (
-    n.includes("construct") ||
-    n.includes("engineer") ||
-    n.includes("contract")
-  )
-    return FaHardHat;
-  if (
-    n.includes("medical") ||
-    n.includes("doctor") ||
-    n.includes("health") ||
-    n.includes("clinic")
-  )
-    return FaHospital;
-  if (
-    n.includes("restaurant") ||
-    n.includes("café") ||
-    n.includes("food") ||
-    n.includes("beverage")
-  )
-    return FaUtensils;
-  if (n.includes("podcast") || n.includes("media") || n.includes("show"))
-    return FaMicrophone;
-  if (n.includes("e-commerce") || n.includes("store") || n.includes("shop"))
-    return FaShoppingBag;
-  if (n.includes("tech") || n.includes("digital")) return FaMobileAlt;
-  return FaChartLine;
-};
+// Icon detection works on the English label list positionally,
+// since Arabic labels are matched to the same index/category.
+const ICON_BY_INDEX = [
+  FaHardHat, // Construction
+  FaHardHat, // Engineering
+  FaHospital, // Medical Clinics
+  FaHospital, // Healthcare Specialists
+  FaUtensils, // Restaurants
+  FaMicrophone, // Podcast
+  FaShoppingBag, // E-Commerce
+  FaChartLine, // Real Estate
+  FaUtensils, // Food & Beverage
+  FaMicrophone, // Media Shows
+  FaChartLine, // Consulting
+  FaMobileAlt, // Service Businesses
+];
 
 function MarqueeRow({
   items,
@@ -66,7 +53,7 @@ function MarqueeRow({
         }}
       >
         {doubled.map((client, i) => {
-          const Icon = getIcon(client);
+          const Icon = ICON_BY_INDEX[i % ICON_BY_INDEX.length] ?? FaChartLine;
           return (
             <div
               key={i}
@@ -106,6 +93,9 @@ function MarqueeRow({
 export default function TrustBar() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
+  const { t, isAr } = useT();
+
+  const CLIENTS = t.data.clients as string[];
   const half = Math.ceil(CLIENTS.length / 2);
   const row1 = CLIENTS.slice(0, half);
   const row2 = CLIENTS.slice(half);
@@ -119,8 +109,8 @@ export default function TrustBar() {
         borderTop: "1px solid rgba(255,255,255,0.06)",
         borderBottom: "1px solid rgba(255,255,255,0.06)",
       }}
+      dir={isAr ? "rtl" : "ltr"}
     >
-      {/* Fade edges */}
       <div
         aria-hidden
         className="left-0 z-[2] absolute inset-y-0 w-[120px] pointer-events-none"
@@ -134,7 +124,6 @@ export default function TrustBar() {
         style={{ background: "linear-gradient(to left, #0D1117, transparent)" }}
       />
 
-      {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -155,14 +144,13 @@ export default function TrustBar() {
             style={{ background: ACCENT }}
           />
           <span className="font-mono text-[10px] text-white/35 uppercase tracking-[0.3em]">
-            Trusted by brands across KSA &amp; Egypt
+            {t.trustBar.label}
           </span>
         </div>
       </motion.div>
 
-      {/* Row 1 */}
       <motion.div
-        initial={{ opacity: 0, x: -30 }}
+        initial={{ opacity: 0, x: isAr ? 30 : -30 }}
         animate={inView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
         className="mb-2.5"
@@ -170,10 +158,9 @@ export default function TrustBar() {
         <MarqueeRow items={row1.length >= 3 ? row1 : CLIENTS} speed={30} />
       </motion.div>
 
-      {/* Row 2 */}
       {row2.length >= 2 && (
         <motion.div
-          initial={{ opacity: 0, x: 30 }}
+          initial={{ opacity: 0, x: isAr ? -30 : 30 }}
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.25, ease: EASE }}
         >

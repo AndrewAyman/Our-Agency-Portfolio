@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { PORTFOLIO } from "@/constants";
 import { Reveal } from "@/components/ui/Reveal";
+import { useT } from "@/translations/useT";
 
 const ACCENT = "#8D9AB0";
 const ACCENT_L = "#B0BDD0";
@@ -24,9 +24,28 @@ const card = {
 
 export default function PortfolioSection() {
   const [filter, setFilter] = useState<Filter>("All");
+  const { t, isAr } = useT();
+
+  const PORTFOLIO = t.data.portfolio as Array<{
+    id: number;
+    region: string;
+    sector: string;
+    title: string;
+    desc: string;
+    result: string;
+    tags: string[];
+    color: string;
+  }>;
+
   const filtered = PORTFOLIO.filter(
     (p) => filter === "All" || p.region === filter,
   );
+
+  const FILTER_LABELS: Record<Filter, string> = {
+    All: t.portfolio.all,
+    KSA: t.portfolio.ksa,
+    Egypt: t.portfolio.egypt,
+  };
 
   return (
     <section
@@ -36,6 +55,7 @@ export default function PortfolioSection() {
         overflow: "hidden",
         borderTop: "1px solid rgba(255,255,255,0.06)",
       }}
+      dir={isAr ? "rtl" : "ltr"}
     >
       <div
         style={{
@@ -72,10 +92,10 @@ export default function PortfolioSection() {
               marginBottom: 12,
             }}
           >
-            Case Studies
+            {t.portfolio.badge}
           </span>
-          {/* ✅ No comma */}
           <h2
+            translate="no"
             style={{
               fontFamily: "var(--font-display,'Bebas Neue',Impact,sans-serif)",
               fontSize: "clamp(2.5rem,6vw,5rem)",
@@ -87,7 +107,7 @@ export default function PortfolioSection() {
               backgroundClip: "text",
             }}
           >
-            OUR PORTFOLIO
+            {t.portfolio.title}
           </h2>
           <p
             style={{
@@ -97,12 +117,10 @@ export default function PortfolioSection() {
               margin: "0 auto",
             }}
           >
-            Real projects. Real results. Across two of the Middle East&apos;s
-            most dynamic markets.
+            {t.portfolio.sub}
           </p>
         </Reveal>
 
-        {/* Filter — silver active */}
         <Reveal
           delay={0.1}
           style={{
@@ -138,13 +156,12 @@ export default function PortfolioSection() {
                   fontWeight: filter === f ? 700 : 500,
                 }}
               >
-                {f === "All" ? "All Projects" : `${f} Projects`}
+                {FILTER_LABELS[f]}
               </button>
             ))}
           </div>
         </Reveal>
 
-        {/* Grid */}
         <motion.div
           layout
           style={{
@@ -165,7 +182,6 @@ export default function PortfolioSection() {
                 transition={{ duration: 0.35 }}
                 style={card}
               >
-                {/* Top silver bar */}
                 <div
                   style={{
                     position: "absolute",
