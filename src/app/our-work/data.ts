@@ -10,18 +10,16 @@ import {
   Code2,
   Globe,
   Briefcase,
-  Share2, // بديل Instagram
-  Link, // بديل Linkedin
+  Instagram,
+  Linkedin,
 } from "lucide-react";
 
 export type Sector = {
   id: string;
   label: string;
-  labelAr?: string;
   Icon: any;
   accent: string;
   desc: string;
-  descAr?: string;
   images: string[];
   videos: {
     title: string;
@@ -43,12 +41,9 @@ export const SECTORS: Sector[] = [
   {
     id: "dental",
     label: "Dental & Cosmetics",
-    labelAr: "طب الأسنان والتجميل",
     Icon: Stethoscope,
     accent: "#8D9AB0",
     desc: "Brand identity, social media, and video content for dental clinics and cosmetic practices.",
-    descAr:
-      "هوية بصرية، سوشيال ميديا، ومحتوى فيديو لعيادات طب الأسنان والتجميل.",
     images: [
       "/profiles/dental/images/post 1/1.png",
       "/profiles/dental/images/post 1/2.png",
@@ -81,6 +76,13 @@ export const SECTORS: Sector[] = [
       "/profiles/dental/images/June/post 8/2.png",
       "/profiles/dental/images/June/6.png",
       "/profiles/dental/images/June/9.png",
+      "/profiles/dental/images/1.png",
+      "/profiles/dental/images/2.png",
+      "/profiles/dental/images/3.png",
+      "/profiles/dental/images/4.png",
+      "/profiles/dental/images/5.png",
+      "/profiles/dental/images/6.png",
+
     ],
     videos: [
       {
@@ -100,17 +102,26 @@ export const SECTORS: Sector[] = [
         youtubeUrl: "https://www.youtube.com/embed/rCDQVXIP-cg",
       },
     ],
-    pdfs: [],
-    links: [],
+    pdfs: [
+      // {
+      //   title: "Company Profile",
+      //   url: "/profiles/dental/profile/banet alemar profile lite2.pdf",
+      // },
+    ],
+    links: [
+      // {
+      //   title: "Dental Clinic Website",
+      //   url: "https://example-dental.com",
+      //   type: "website",
+      // },
+    ],
   },
   {
     id: "construction",
     label: "Construction",
-    labelAr: "الإنشاءات والمقاولات",
     Icon: Building2,
     accent: "#A8B4C5",
     desc: "Full marketing solutions for construction companies, stone & marble contractors.",
-    descAr: "حلول تسويقية متكاملة لشركات الإنشاءات والمقاولات والرخام.",
     images: [
       "/profiles/construction/1.png",
       "/profiles/construction/2.png",
@@ -132,50 +143,123 @@ export const SECTORS: Sector[] = [
       "/profiles/construction/18.png",
       "/profiles/construction/19.png",
       "/profiles/construction/20.png",
+      "/profiles/construction/21.png",
+      "/profiles/construction/22.png",
+      "/profiles/construction/23.png",
+      "/profiles/construction/24.png",
+      "/profiles/construction/25.png",
+      "/profiles/construction/26.png",
+      "/profiles/construction/27.jpg",
+      "/profiles/construction/28.jpg",
+      "/profiles/construction/29.jpg",
+      "/profiles/construction/30.jpg",
+      "/profiles/construction/31.png",
+      "/profiles/construction/32.png",
+      "/profiles/construction/33.png",
+      "/profiles/construction/34.png",
+      "/profiles/construction/35.png",
+      "/profiles/construction/36.png",
+      "/profiles/construction/37.png",
+      "/profiles/construction/39.png",
+      "/profiles/construction/40.png",
+      "/profiles/construction/41.png",
+      "/profiles/construction/42.png",
+      "/profiles/construction/43.png",
+      "/profiles/construction/44.png",
+      "/profiles/construction/45.png",
+      "/profiles/construction/46.png",
+      "/profiles/construction/47.png",
     ],
     videos: [
       {
         title: "Construction Project Showcase",
-        youtubeUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        youtubeUrl: "https://youtube.com/embed/V1ZNek9V0wo",
+      },
+      {
+        title: "Construction Project Showcase",
+        youtubeUrl: "https://youtube.com/embed/LT52R8auFtU",
+      },
+      {
+        title: "Construction Project Showcase",
+        youtubeUrl: "https://youtube.com/embed/wvyCovwNLUc",
+      },
+      {
+        title: "Construction Project Showcase",
+        youtubeUrl: "https://youtube.com/embed/8QSbuaJ68YY",
+      },
+            {
+        title: "Construction Project Showcase",
+        youtubeUrl: "https://youtube.com/embed/Tku0FWwZqjU",
+      },
+         {
+        title: "Construction Project Showcase",
+        youtubeUrl: "https://youtube.com/embed/kWXkVwoWG7Y",
+      },
+      
+             {
+        title: "Construction Project Showcase",
+        youtubeUrl: "https://youtube.com/embed/i_EG4xWnLRw",
+      },
+      
+                   {
+        title: "Construction Project Showcase",
+        youtubeUrl: "https://youtube.com/embed/pjhp3yBmI04",
+      },
+      
+                      {
+        title: "Construction Project Showcase",
+        youtubeUrl: "https://youtube.com/embed/Wlt5gKr6hx0",
       },
     ],
     pdfs: [
       {
-        title: "Company Profile",
-        url: "/construction/baneta.pdf",
+        title: "yamas Profile",
+        url: "/profiles/construction/yamas.pdf",
       },
       {
         title: "baneta Portfolio",
         url: "/profiles/construction/baneta.pdf",
       },
     ],
-  },
-  {
-    id: "gym",
-    label: "Gym & Fitness",
-    labelAr: "الجيم واللياقة البدنية",
-    Icon: Dumbbell,
-    accent: "#8D9AB0",
-    desc: "Energetic branding, reels, and performance ads for gyms and fitness studios.",
-    descAr: "براندينج نشيط وريلز وإعلانات أداء لصالات الجيم ومراكز اللياقة.",
-    images: [],
-    videos: [
+    links: [
       {
-        title: "Gym Motivation Reel",
-        youtubeUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        title: "sadif",
+        url: "https://www.sadif.sa/",
+        type: "website",
       },
+      {
+        title: "Yamas ",
+        url: "https://www.yamas.com.sa/ar",
+        type: "website",
+      },
+      // {
+      //   title: "Project Portfolio Gallery",
+      //   url: "https://www.baneta-eg.com/projects",
+      //   type: "portfolio",
+      // },
     ],
-    pdfs: [],
   },
+  // {
+  //   id: "gym",
+  //   label: "Gym & Fitness",
+  //   Icon: Dumbbell,
+  //   accent: "#8D9AB0",
+  //   desc: "Energetic branding, reels, and performance ads for gyms and fitness studios.",
+  //   images: [],
+  //   videos: [
+  //     {
+  //       title: "Gym Motivation Reel",
+  //       youtubeUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+  //     }
+  //   ],
+  //   pdfs: [],
+  // },
   {
     id: "food",
     label: "Restaurant",
-    labelAr: "المطاعم والكافيهات",
     Icon: Utensils,
     accent: "#E8A87C",
     desc: "Branding, social media management, and video production for restaurants, cafes, and hospitality brands.",
-    descAr:
-      "براندينج وإدارة سوشيال ميديا وإنتاج فيديو للمطاعم والكافيهات وبراندات الضيافة.",
     images: [
       "/profiles/Food/1.PNG",
       "/profiles/Food/2.PNG",
@@ -206,11 +290,23 @@ export const SECTORS: Sector[] = [
       "/profiles/Food/30.png",
       "/profiles/Food/31.png",
       "/profiles/Food/32.png",
+      "/profiles/Food/33.png",
+      "/profiles/Food/34.png",
+      "/profiles/Food/35.png",
+      "/profiles/Food/36.png",
+      "/profiles/Food/37.png",
+      "/profiles/Food/38.png",
+      "/profiles/Food/39.png",
     ],
     videos: [
       {
         title: "Restaurant Branding Reel",
         youtubeUrl: "https://youtube.com/embed/jWhP0R5Pcsg",
+      },
+      
+           {
+        title: "Restaurant Branding Reel",
+        youtubeUrl: "https://youtube.com/embed/GBwLX6aF7Ho",
       },
     ],
     pdfs: [
@@ -218,18 +314,38 @@ export const SECTORS: Sector[] = [
         title: "aziza Portfolio",
         url: "/profiles/Food/aziza identity.pdf",
       },
+          {
+        title: "aziza Portfolio",
+        url: "/profiles/Food/COVER.pdf",
+      },
+          {
+        title: "aziza Portfolio",
+        url: "/profiles/Food/PACKAGE.pdf",
+      },
+          {
+        title: "aziza Portfolio",
+        url: "/profiles/Food/Aziza_Stickers.pdf",
+      },
     ],
-    links: [],
+    links: [
+      // {
+      //   title: "Restaurant Website",
+      //   url: "https://example-restaurant.com",
+      //   type: "website",
+      // },
+      // {
+      //   title: "Instagram Page",
+      //   url: "https://instagram.com/example",
+      //   type: "social",
+      // },
+    ],
   },
   {
     id: "clothes",
     label: "Fashion & Clothing",
-    labelAr: "الأزياء والملابس",
     Icon: Palette,
     accent: "#E8A87C",
     desc: "Fashion branding, social media campaigns, and visual content for clothing brands and boutiques.",
-    descAr:
-      "براندينج أزياء وحملات سوشيال ميديا ومحتوى بصري لبراندات الملابس والبوتيكات.",
     images: [
       "/profiles/clothes/1.jpg",
       "/profiles/clothes/2.jpg",
@@ -245,23 +361,28 @@ export const SECTORS: Sector[] = [
       {
         title: "Clothing Collection Showcase",
         youtubeUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      },
+      }
     ],
     pdfs: [
-      {
-        title: "Fashion Brand Portfolio",
-        url: "/profiles/clothes/fashion-portfolio.pdf",
-      },
+      // {
+      //   title: "Fashion Brand Portfolio",
+      //   url: "/profiles/clothes/fashion-portfolio.pdf",
+      // },
+    ],
+    links: [
+      // {
+      //   title: "Fashion Brand Website",
+      //   url: "https://example-fashion.com",
+      //   type: "website",
+      // },
     ],
   },
   {
     id: "ai",
     label: "Software & AI Solutions",
-    labelAr: "البرمجيات وحلول الذكاء الاصطناعي",
     Icon: Code2,
     accent: "#6C63FF",
     desc: "Custom software development, AI solutions, and digital transformation for businesses.",
-    descAr: "تطوير برمجيات مخصصة وحلول ذكاء اصطناعي وتحول رقمي للأعمال.",
     images: [
       "/profiles/Software/1.png",
       "/profiles/Software/2.png",
@@ -284,6 +405,16 @@ export const SECTORS: Sector[] = [
       "/profiles/Software/19.png",
       "/profiles/Software/20.png",
       "/profiles/Software/21.png",
+      "/profiles/Software/22.jpg",
+      "/profiles/Software/23.jpg",
+      "/profiles/Software/24.jpg",
+      "/profiles/Software/25.jpg",
+      "/profiles/Software/26.jpg",
+      "/profiles/Software/27.jpg",
+      "/profiles/Software/28.jpg",
+      "/profiles/Software/29.jpg",
+      "/profiles/Software/30.jpg",
+      "/profiles/Software/31.jpg",
     ],
     videos: [
       {
@@ -302,16 +433,37 @@ export const SECTORS: Sector[] = [
         title: "Elite Pay",
         youtubeUrl: "https://youtube.com/embed/JU9ChDvm_tQ",
       },
+      {
+        title: "Elite Pay",
+        youtubeUrl: "https://youtube.com/embed/fIeJ4Ir9mtA",
+      },
     ],
     pdfs: [
       {
         title: "Software Portfolio",
-        url: "/profiles/ai/software-portfolio.pdf",
+        url: "/profiles/Software/Egypt pp.pptx",
       },
+      // {
+      //   title: "AI Solutions Brochure",
+      //   url: "/profiles/ai/ai-brochure.pdf",
+      // },
+    ],
+    links: [
       {
-        title: "AI Solutions Brochure",
-        url: "/profiles/ai/ai-brochure.pdf",
+        title: "ahmed-portfolio",
+        url: "https://ahmed-portfolio-lake.vercel.app/",
+        type: "website",
       },
+      // {
+      //   title: "GitHub Portfolio",
+      //   url: "https://github.com/example",
+      //   type: "portfolio",
+      // },
+      // {
+      //   title: "LinkedIn Page",
+      //   url: "https://linkedin.com/company/example",
+      //   type: "social",
+      // },
     ],
   },
 ];

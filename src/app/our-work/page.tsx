@@ -25,7 +25,6 @@ import {
   Globe,
 } from "lucide-react";
 import { SECTORS, type Sector } from "./data";
-import { useT } from "@/translations/useT";
 
 /* ──────────────────────────────────────────────────────
    FORMAT TIME
@@ -128,7 +127,7 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
       v.currentTime = Math.max(0, Math.min(v.duration, v.currentTime + sec));
       resetHideTimer();
     },
-    [resetHideTimer],
+    [resetHideTimer]
   );
 
   const toggleMute = () => {
@@ -464,7 +463,7 @@ function EmptyState() {
 }
 
 /* ──────────────────────────────────────────────────────
-   SECTOR CARD — ✅ FIX: uses Arabic label/desc when isAr
+   SECTOR CARD
 ────────────────────────────────────────────────────── */
 function SectorCard({
   sector,
@@ -476,13 +475,7 @@ function SectorCard({
   onClick: () => void;
 }) {
   const hasContent =
-    sector.images.length + sector.videos.length + (sector.pdfs?.length ?? 0) >
-    0;
-  const { t, isAr } = useT();
-
-  // ✅ Use Arabic label/desc when in Arabic mode
-  const displayLabel = isAr && sector.labelAr ? sector.labelAr : sector.label;
-  const displayDesc = isAr && sector.descAr ? sector.descAr : sector.desc;
+    sector.images.length + sector.videos.length + sector.pdfs.length > 0;
 
   return (
     <motion.div
@@ -543,7 +536,7 @@ function SectorCard({
 
         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <span className="font-mono text-[10px] text-white/35 tracking-widest">
-            {isAr ? "فتح" : "OPEN"}
+            OPEN
           </span>
           <ChevronRight size={11} className="text-white/25" />
         </div>
@@ -553,16 +546,14 @@ function SectorCard({
         <h3
           className="mb-2 text-white leading-tight tracking-wide"
           style={{
-            fontFamily: isAr
-              ? "'Cairo', 'Tajawal', Tahoma, sans-serif"
-              : "'Bebas Neue', Impact, sans-serif",
+            fontFamily: "'Bebas Neue', Impact, sans-serif",
             fontSize: "clamp(1.25rem,2.5vw,1.55rem)",
           }}
         >
-          {displayLabel}
+          {sector.label}
         </h3>
         <p className="text-[12px] text-white/38 leading-relaxed">
-          {displayDesc}
+          {sector.desc}
         </p>
       </div>
 
@@ -574,7 +565,8 @@ function SectorCard({
           {[
             { icon: Images, count: sector.images.length },
             { icon: Video, count: sector.videos.length },
-            { icon: FileText, count: sector.pdfs?.length ?? 0 },
+            { icon: FileText, count: sector.pdfs.length },
+            { icon: Globe, count: sector.links?.length || 0 },
           ].map(({ icon: Icon, count }, idx) => (
             <div key={idx} className="flex items-center gap-1">
               <Icon size={11} className="text-white/22" />
@@ -597,7 +589,7 @@ function SectorCard({
             }}
           />
           <span className="font-mono text-[9px] text-white/22 uppercase tracking-[0.2em]">
-            {hasContent ? t.ourWorkPage.ready : t.ourWorkPage.soon}
+            {hasContent ? "Ready" : "Soon"}
           </span>
         </div>
       </div>
@@ -618,10 +610,6 @@ function SectorPage({
   onBack: () => void;
 }) {
   const [activeTab, setActiveTab] = useState<Tab>("images");
-  const { t, isAr } = useT();
-
-  // ✅ Use Arabic label in Arabic mode
-  const displayLabel = isAr && sector.labelAr ? sector.labelAr : sector.label;
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -633,21 +621,27 @@ function SectorPage({
   const TABS: { id: Tab; label: string; icon: any; count: number | null }[] = [
     {
       id: "images",
-      label: t.ourWorkPage.tabPhotos,
+      label: "Photos",
       icon: Images,
       count: sector.images.length || null,
     },
     {
       id: "videos",
-      label: t.ourWorkPage.tabVideos,
+      label: "Videos",
       icon: Video,
       count: sector.videos.length || null,
     },
     {
       id: "pdf",
-      label: t.ourWorkPage.tabPdf,
+      label: "Documents",
       icon: FileText,
-      count: sector.pdfs?.length ?? null,
+      count: sector.pdfs.length || null,
+    },
+    {
+      id: "links",
+      label: "Websites",
+      icon: Globe,
+      count: sector.links?.length || null,
     },
   ];
 
@@ -685,7 +679,7 @@ function SectorPage({
             <ArrowLeft size={14} className="text-white/60" />
           </div>
           <span className="hidden sm:block font-mono text-white/40 text-xs tracking-widest">
-            {isAr ? "أعمالنا" : "OUR WORK"}
+            OUR WORK
           </span>
         </motion.button>
 
@@ -706,14 +700,12 @@ function SectorPage({
           <h2
             className="m-0 text-white leading-none"
             style={{
-              fontFamily: isAr
-                ? "'Cairo', 'Tajawal', Tahoma, sans-serif"
-                : "'Bebas Neue', Impact, sans-serif",
+              fontFamily: "'Bebas Neue', Impact, sans-serif",
               fontSize: "clamp(1.2rem,3vw,1.6rem)",
               letterSpacing: "0.05em",
             }}
           >
-            {displayLabel}
+            {sector.label}
           </h2>
         </div>
 
@@ -790,7 +782,7 @@ function SectorPage({
                     >
                       <img
                         src={src}
-                        alt={`${displayLabel} ${i + 1}`}
+                        alt={`${sector.label} ${i + 1}`}
                         className="block w-full h-auto"
                       />
                     </motion.div>
@@ -837,12 +829,13 @@ function SectorPage({
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.22 }}
             >
-              {!sector.pdfs || sector.pdfs.length === 0 ? (
+              {sector.pdfs.length === 0 ? (
                 <EmptyState />
               ) : (
-                <div className="flex flex-col gap-5">
-                  {sector.pdfs.map((pdf, i) => (
-                    <div key={i}>
+                <div className="flex flex-col gap-6">
+                  {sector.pdfs.map((pdf, index) => (
+                    <div key={index} className="flex flex-col gap-4">
+                      {/* PDF Header */}
                       <div
                         className="flex flex-wrap justify-between items-center gap-3 px-5 py-3 rounded-2xl"
                         style={{
@@ -869,41 +862,114 @@ function SectorPage({
                               {pdf.title}
                             </p>
                             <p className="font-mono text-white/30 text-xs">
-                              PDF Document
+                              PDF Document • {sector.label}
                             </p>
                           </div>
                         </div>
-                        <a
-                          href={pdf.url}
-                          download
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-white text-xs no-underline tracking-wide"
-                          style={{ background: sector.accent }}
-                        >
-                          <ExternalLink size={12} />
-                          {isAr ? "تحميل" : "Download"}
-                        </a>
+                        <div className="flex gap-2">
+                          <a
+                            href={pdf.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-white text-xs no-underline tracking-wide hover:opacity-80 transition"
+                            style={{ background: sector.accent }}
+                          >
+                            <ExternalLink size={12} />
+                            Open
+                          </a>
+                          <a
+                            href={pdf.url}
+                            download
+                            className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-white/70 text-xs no-underline tracking-wide hover:text-white hover:bg-white/10 transition"
+                            style={{
+                              background: "rgba(255,255,255,0.06)",
+                              border: "1px solid rgba(255,255,255,0.08)",
+                            }}
+                          >
+                            <Download size={12} />
+                            Download
+                          </a>
+                        </div>
                       </div>
 
+                      {/* PDF Viewer */}
                       <div
-                        className="mt-4 rounded-2xl overflow-hidden"
+                        className="rounded-2xl overflow-hidden"
                         style={{
                           border: "1px solid rgba(255,255,255,0.07)",
-                          minHeight: "calc(100vh - 240px)",
+                          minHeight: "500px",
                         }}
                       >
                         <iframe
                           src={pdf.url + "#toolbar=1&view=FitH"}
                           className="w-full h-full"
                           style={{
-                            minHeight: "calc(100vh - 240px)",
+                            minHeight: "500px",
                             background: "#111",
+                            width: "100%",
                           }}
-                          title={`${displayLabel} - ${pdf.title}`}
+                          title={pdf.title}
                         />
                       </div>
                     </div>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* Links */}
+          {activeTab === "links" && (
+            <motion.div
+              key="links"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22 }}
+            >
+              {!sector.links || sector.links.length === 0 ? (
+                <EmptyState />
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {sector.links.map((link, index) => (
+                    <motion.a
+                      key={index}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="group flex items-center justify-between p-5 rounded-2xl transition-all hover:scale-[1.02]"
+                      style={{
+                        background: "rgba(255,255,255,0.03)",
+                        border: "1px solid rgba(255,255,255,0.07)",
+                      }}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div
+                          className="flex justify-center items-center rounded-xl w-10 h-10"
+                          style={{
+                            background: `${sector.accent}14`,
+                            border: `1px solid ${sector.accent}30`,
+                          }}
+                        >
+                          <Globe size={18} style={{ color: sector.accent }} />
+                        </div>
+                        <div>
+                          <p className="font-medium text-white/90 text-sm">
+                            {link.title}
+                          </p>
+                          <p className="text-white/40 text-xs truncate max-w-[200px]">
+                            {link.url.replace(/^https?:\/\//, '')}
+                          </p>
+                        </div>
+                      </div>
+                      <ChevronRight
+                        size={18}
+                        className="text-white/20 group-hover:text-white/60 transition group-hover:translate-x-1"
+                      />
+                    </motion.a>
                   ))}
                 </div>
               )}
@@ -928,7 +994,6 @@ function SectorPage({
 ══════════════════════════════════════════════════════ */
 export default function OurWorkPage() {
   const [activeSector, setActiveSector] = useState<Sector | null>(null);
-  const { t, isAr } = useT();
 
   return (
     <>
@@ -969,10 +1034,7 @@ export default function OurWorkPage() {
           }}
         />
 
-        <div
-          className="z-[1] relative mx-auto max-w-[1280px] text-center"
-          dir={isAr ? "rtl" : "ltr"}
-        >
+        <div className="z-[1] relative mx-auto max-w-[1280px] text-center">
           <Reveal>
             <div
               className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full"
@@ -989,14 +1051,13 @@ export default function OurWorkPage() {
                   color: "rgba(141,154,176,0.7)",
                 }}
               >
-                {t.ourWorkPage.badge}
+                Portfolio &amp; Case Studies
               </span>
             </div>
           </Reveal>
 
           <Reveal delay={0.1}>
             <h1
-              translate="no"
               className="m-0 mb-5 leading-none"
               style={{
                 fontFamily:
@@ -1009,7 +1070,7 @@ export default function OurWorkPage() {
                 backgroundClip: "text",
               }}
             >
-              {t.ourWorkPage.title}
+              OUR WORK
             </h1>
           </Reveal>
 
@@ -1023,17 +1084,18 @@ export default function OurWorkPage() {
                 lineHeight: 1.8,
               }}
             >
-              {t.portfolio.sub}
+              Real projects. Real results. Across two of the Middle East&apos;s
+              most dynamic markets.
             </p>
           </Reveal>
 
           <Reveal delay={0.3}>
             <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
               {[
-                { value: "1M+", label: t.ourWorkPage.stats.impressions },
-                { value: "6+", label: t.ourWorkPage.stats.sectors },
-                { value: "2", label: t.ourWorkPage.stats.countries },
-                { value: "100%", label: t.ourWorkPage.stats.commitment },
+                { value: "1M+", label: "Impressions" },
+                { value: "6+", label: "Sectors" },
+                { value: "2", label: "Countries" },
+                { value: "100%", label: "Commitment" },
               ].map((s, i) => (
                 <div
                   key={i}
@@ -1079,7 +1141,7 @@ export default function OurWorkPage() {
 
       {/* Sectors Grid */}
       <section className="bg-[#0A0C12] px-4 sm:px-6 py-20 sm:py-28 border-white/[0.06] border-t">
-        <div className="mx-auto max-w-[1280px]" dir={isAr ? "rtl" : "ltr"}>
+        <div className="mx-auto max-w-[1280px]">
           <Reveal className="mb-12 sm:mb-16">
             <div className="flex sm:flex-row flex-col justify-between sm:items-end gap-4">
               <div>
@@ -1087,10 +1149,9 @@ export default function OurWorkPage() {
                   className="block mb-3 font-mono text-[11px] uppercase tracking-[0.35em]"
                   style={{ color: "rgba(141,154,176,0.7)" }}
                 >
-                  {t.ourWorkPage.browseBadge}
+                  Browse by Industry
                 </span>
                 <h2
-                  translate="no"
                   className="m-0 leading-none"
                   style={{
                     fontFamily:
@@ -1103,11 +1164,12 @@ export default function OurWorkPage() {
                     backgroundClip: "text",
                   }}
                 >
-                  {t.ourWorkPage.browseTitle}
+                  CASE STUDIES
                 </h2>
               </div>
               <p className="max-w-xs text-white/28 text-sm leading-relaxed">
-                {t.ourWorkPage.browseSub}
+                Pick a sector to explore photos, videos, and the full client
+                profile.
               </p>
             </div>
           </Reveal>
