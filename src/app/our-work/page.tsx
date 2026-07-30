@@ -6,6 +6,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Reveal } from "@/components/ui/Reveal";
 import CTASection from "@/components/sections/CTASection";
+import { useT } from "@/translations/useT";
 import {
   Images,
   Video,
@@ -127,7 +128,7 @@ function VideoPlayer({ src, accent }: { src: string; accent: string }) {
       v.currentTime = Math.max(0, Math.min(v.duration, v.currentTime + sec));
       resetHideTimer();
     },
-    [resetHideTimer]
+    [resetHideTimer],
   );
 
   const toggleMute = () => {
@@ -469,10 +470,14 @@ function SectorCard({
   sector,
   index,
   onClick,
+  translatedLabel,
+  translatedDesc,
 }: {
   sector: Sector;
   index: number;
   onClick: () => void;
+  translatedLabel: string;
+  translatedDesc: string;
 }) {
   const hasContent =
     sector.images.length + sector.videos.length + sector.pdfs.length > 0;
@@ -550,10 +555,10 @@ function SectorCard({
             fontSize: "clamp(1.25rem,2.5vw,1.55rem)",
           }}
         >
-          {sector.label}
+          {translatedLabel}
         </h3>
         <p className="text-[12px] text-white/38 leading-relaxed">
-          {sector.desc}
+          {translatedDesc}
         </p>
       </div>
 
@@ -605,9 +610,11 @@ type Tab = "images" | "videos" | "pdf" | "links";
 function SectorPage({
   sector,
   onBack,
+  translatedLabel,
 }: {
   sector: Sector;
   onBack: () => void;
+  translatedLabel: string;
 }) {
   const [activeTab, setActiveTab] = useState<Tab>("images");
 
@@ -705,7 +712,7 @@ function SectorPage({
               letterSpacing: "0.05em",
             }}
           >
-            {sector.label}
+            {translatedLabel}
           </h2>
         </div>
 
@@ -782,7 +789,7 @@ function SectorPage({
                     >
                       <img
                         src={src}
-                        alt={`${sector.label} ${i + 1}`}
+                        alt={`${translatedLabel} ${i + 1}`}
                         className="block w-full h-auto"
                       />
                     </motion.div>
@@ -862,7 +869,7 @@ function SectorPage({
                               {pdf.title}
                             </p>
                             <p className="font-mono text-white/30 text-xs">
-                              PDF Document • {sector.label}
+                              PDF Document • {translatedLabel}
                             </p>
                           </div>
                         </div>
@@ -871,7 +878,7 @@ function SectorPage({
                             href={pdf.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-white text-xs no-underline tracking-wide hover:opacity-80 transition"
+                            className="flex items-center gap-2 hover:opacity-80 px-4 py-2 rounded-xl font-semibold text-white text-xs no-underline tracking-wide transition"
                             style={{ background: sector.accent }}
                           >
                             <ExternalLink size={12} />
@@ -880,7 +887,7 @@ function SectorPage({
                           <a
                             href={pdf.url}
                             download
-                            className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-white/70 text-xs no-underline tracking-wide hover:text-white hover:bg-white/10 transition"
+                            className="flex items-center gap-2 hover:bg-white/10 px-4 py-2 rounded-xl font-semibold text-white/70 hover:text-white text-xs no-underline tracking-wide transition"
                             style={{
                               background: "rgba(255,255,255,0.06)",
                               border: "1px solid rgba(255,255,255,0.08)",
@@ -930,7 +937,7 @@ function SectorPage({
               {!sector.links || sector.links.length === 0 ? (
                 <EmptyState />
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="gap-4 grid grid-cols-1 md:grid-cols-2">
                   {sector.links.map((link, index) => (
                     <motion.a
                       key={index}
@@ -940,7 +947,7 @@ function SectorPage({
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05 }}
-                      className="group flex items-center justify-between p-5 rounded-2xl transition-all hover:scale-[1.02]"
+                      className="group flex justify-between items-center p-5 rounded-2xl hover:scale-[1.02] transition-all"
                       style={{
                         background: "rgba(255,255,255,0.03)",
                         border: "1px solid rgba(255,255,255,0.07)",
@@ -960,8 +967,8 @@ function SectorPage({
                           <p className="font-medium text-white/90 text-sm">
                             {link.title}
                           </p>
-                          <p className="text-white/40 text-xs truncate max-w-[200px]">
-                            {link.url.replace(/^https?:\/\//, '')}
+                          <p className="max-w-[200px] text-white/40 text-xs truncate">
+                            {link.url.replace(/^https?:\/\//, "")}
                           </p>
                         </div>
                       </div>
@@ -994,6 +1001,7 @@ function SectorPage({
 ══════════════════════════════════════════════════════ */
 export default function OurWorkPage() {
   const [activeSector, setActiveSector] = useState<Sector | null>(null);
+  const { t, isAr } = useT(); // <--- استدعاء الترجمة
 
   return (
     <>
@@ -1005,6 +1013,7 @@ export default function OurWorkPage() {
           background:
             "radial-gradient(ellipse 80% 50% at 50% 0%, #0d1a28 0%, #0D1117 55%, #0A0A0A 100%)",
         }}
+        dir={isAr ? "rtl" : "ltr"}
       >
         <div
           style={{
@@ -1051,7 +1060,7 @@ export default function OurWorkPage() {
                   color: "rgba(141,154,176,0.7)",
                 }}
               >
-                Portfolio &amp; Case Studies
+                {t.ourWorkPage.badge}
               </span>
             </div>
           </Reveal>
@@ -1070,7 +1079,7 @@ export default function OurWorkPage() {
                 backgroundClip: "text",
               }}
             >
-              OUR WORK
+              {t.ourWorkPage.title}
             </h1>
           </Reveal>
 
@@ -1084,18 +1093,17 @@ export default function OurWorkPage() {
                 lineHeight: 1.8,
               }}
             >
-              Real projects. Real results. Across two of the Middle East&apos;s
-              most dynamic markets.
+              {t.ourWorkPage.sub}
             </p>
           </Reveal>
 
           <Reveal delay={0.3}>
             <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
               {[
-                { value: "1M+", label: "Impressions" },
-                { value: "6+", label: "Sectors" },
-                { value: "2", label: "Countries" },
-                { value: "100%", label: "Commitment" },
+                { value: "1M+", key: "impressions" },
+                { value: "6+", key: "sectors" },
+                { value: "2", key: "countries" },
+                { value: "100%", key: "commitment" },
               ].map((s, i) => (
                 <div
                   key={i}
@@ -1130,7 +1138,11 @@ export default function OurWorkPage() {
                       maxWidth: 70,
                     }}
                   >
-                    {s.label}
+                    {
+                      t.ourWorkPage.stats[
+                        s.key as keyof typeof t.ourWorkPage.stats
+                      ]
+                    }
                   </span>
                 </div>
               ))}
@@ -1149,7 +1161,7 @@ export default function OurWorkPage() {
                   className="block mb-3 font-mono text-[11px] uppercase tracking-[0.35em]"
                   style={{ color: "rgba(141,154,176,0.7)" }}
                 >
-                  Browse by Industry
+                  {t.ourWorkPage.browseBadge}
                 </span>
                 <h2
                   className="m-0 leading-none"
@@ -1164,25 +1176,35 @@ export default function OurWorkPage() {
                     backgroundClip: "text",
                   }}
                 >
-                  CASE STUDIES
+                  {t.ourWorkPage.browseTitle}
                 </h2>
               </div>
               <p className="max-w-xs text-white/28 text-sm leading-relaxed">
-                Pick a sector to explore photos, videos, and the full client
-                profile.
+                {t.ourWorkPage.browseSub}
               </p>
             </div>
           </Reveal>
 
           <div className="gap-4 sm:gap-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            {SECTORS.map((sector, i) => (
-              <SectorCard
-                key={sector.id}
-                sector={sector}
-                index={i}
-                onClick={() => setActiveSector(sector)}
-              />
-            ))}
+            {SECTORS.map((sector, i) => {
+              // جلب الترجمة الخاصة بهذا القطاع
+              const translatedLabel =
+                t.sectors[sector.id as keyof typeof t.sectors]?.label ||
+                sector.label;
+              const translatedDesc =
+                t.sectors[sector.id as keyof typeof t.sectors]?.desc ||
+                sector.desc;
+              return (
+                <SectorCard
+                  key={sector.id}
+                  sector={sector}
+                  index={i}
+                  onClick={() => setActiveSector(sector)}
+                  translatedLabel={translatedLabel}
+                  translatedDesc={translatedDesc}
+                />
+              );
+            })}
           </div>
         </div>
       </section>
@@ -1193,6 +1215,10 @@ export default function OurWorkPage() {
           <SectorPage
             sector={activeSector}
             onBack={() => setActiveSector(null)}
+            translatedLabel={
+              t.sectors[activeSector.id as keyof typeof t.sectors]?.label ||
+              activeSector.label
+            }
           />
         )}
       </AnimatePresence>

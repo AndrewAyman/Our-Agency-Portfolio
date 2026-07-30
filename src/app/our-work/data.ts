@@ -82,7 +82,6 @@ export const SECTORS: Sector[] = [
       "/profiles/dental/images/4.png",
       "/profiles/dental/images/5.png",
       "/profiles/dental/images/6.png",
-
     ],
     videos: [
       {
@@ -187,26 +186,26 @@ export const SECTORS: Sector[] = [
         title: "Construction Project Showcase",
         youtubeUrl: "https://youtube.com/embed/8QSbuaJ68YY",
       },
-            {
+      {
         title: "Construction Project Showcase",
         youtubeUrl: "https://youtube.com/embed/Tku0FWwZqjU",
       },
-         {
+      {
         title: "Construction Project Showcase",
         youtubeUrl: "https://youtube.com/embed/kWXkVwoWG7Y",
       },
-      
-             {
+
+      {
         title: "Construction Project Showcase",
         youtubeUrl: "https://youtube.com/embed/i_EG4xWnLRw",
       },
-      
-                   {
+
+      {
         title: "Construction Project Showcase",
         youtubeUrl: "https://youtube.com/embed/pjhp3yBmI04",
       },
-      
-                      {
+
+      {
         title: "Construction Project Showcase",
         youtubeUrl: "https://youtube.com/embed/Wlt5gKr6hx0",
       },
@@ -239,21 +238,21 @@ export const SECTORS: Sector[] = [
       // },
     ],
   },
-  // {
-  //   id: "gym",
-  //   label: "Gym & Fitness",
-  //   Icon: Dumbbell,
-  //   accent: "#8D9AB0",
-  //   desc: "Energetic branding, reels, and performance ads for gyms and fitness studios.",
-  //   images: [],
-  //   videos: [
-  //     {
-  //       title: "Gym Motivation Reel",
-  //       youtubeUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-  //     }
-  //   ],
-  //   pdfs: [],
-  // },
+  {
+    id: "gym",
+    label: "Gym & Fitness",
+    Icon: Dumbbell,
+    accent: "#8D9AB0",
+    desc: "Energetic branding, reels, and performance ads for gyms and fitness studios.",
+    images: [],
+    videos: [
+      {
+        title: "Gym Motivation Reel",
+        youtubeUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      },
+    ],
+    pdfs: [],
+  },
   {
     id: "food",
     label: "Restaurant",
@@ -303,8 +302,8 @@ export const SECTORS: Sector[] = [
         title: "Restaurant Branding Reel",
         youtubeUrl: "https://youtube.com/embed/jWhP0R5Pcsg",
       },
-      
-           {
+
+      {
         title: "Restaurant Branding Reel",
         youtubeUrl: "https://youtube.com/embed/GBwLX6aF7Ho",
       },
@@ -314,15 +313,15 @@ export const SECTORS: Sector[] = [
         title: "aziza Portfolio",
         url: "/profiles/Food/aziza identity.pdf",
       },
-          {
+      {
         title: "aziza Portfolio",
         url: "/profiles/Food/COVER.pdf",
       },
-          {
+      {
         title: "aziza Portfolio",
         url: "/profiles/Food/PACKAGE.pdf",
       },
-          {
+      {
         title: "aziza Portfolio",
         url: "/profiles/Food/Aziza_Stickers.pdf",
       },
@@ -361,7 +360,7 @@ export const SECTORS: Sector[] = [
       {
         title: "Clothing Collection Showcase",
         youtubeUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      }
+      },
     ],
     pdfs: [
       // {

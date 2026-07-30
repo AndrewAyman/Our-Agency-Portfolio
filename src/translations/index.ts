@@ -104,6 +104,35 @@ export const translations = {
       browseSub:
         "Pick a sector to explore photos, videos, and the full client profile.",
     },
+    // ════════════════════════════════════════════════════
+    // 🔥 NEW: Sectors Translation (Added for Our Work Page)
+    // ════════════════════════════════════════════════════
+    sectors: {
+      dental: {
+        label: "Dental & Cosmetics",
+        desc: "Brand identity, social media, and video content for dental clinics and cosmetic practices.",
+      },
+      construction: {
+        label: "Construction",
+        desc: "Full marketing solutions for construction companies, stone & marble contractors.",
+      },
+      gym: {
+        label: "Gym & Fitness",
+        desc: "Energetic branding, reels, and performance ads for gyms and fitness studios.",
+      },
+      food: {
+        label: "Restaurant",
+        desc: "Branding, social media management, and video production for restaurants, cafes, and hospitality brands.",
+      },
+      clothes: {
+        label: "Fashion & Clothing",
+        desc: "Fashion branding, social media campaigns, and visual content for clothing brands and boutiques.",
+      },
+      ai: {
+        label: "Software & AI Solutions",
+        desc: "Custom software development, AI solutions, and digital transformation for businesses.",
+      },
+    },
     values: { badge: "Our Values", title: "WHAT DRIVES US", whyUs: "Why Us" },
     cta: {
       badge: "Ready to grow?",
@@ -560,6 +589,35 @@ export const translations = {
       browseTitle: "دراسات الحالة",
       browseSub:
         "اختر قطاعاً لاستكشاف الصور والفيديوهات والبروفايل الكامل للعميل.",
+    },
+    // ════════════════════════════════════════════════════
+    // 🔥 NEW: Sectors Translation (Added for Our Work Page)
+    // ════════════════════════════════════════════════════
+    sectors: {
+      dental: {
+        label: "طب الأسنان والتجميل",
+        desc: "هوية العلامة التجارية، ومحتوى السوشيال ميديا والفيديو لعيادات الأسنان وعيادات التجميل.",
+      },
+      construction: {
+        label: "الإنشاءات",
+        desc: "حلول تسويقية متكاملة لشركات الإنشاءات ومقاولي الحجر والرخام.",
+      },
+      gym: {
+        label: "الجيم واللياقة البدنية",
+        desc: "علامات تجارية مفعمة بالحيوية، ريلز، وإعلانات أداء للجيم واستديوهات اللياقة.",
+      },
+      food: {
+        label: "المطاعم",
+        desc: "البراندينج، إدارة السوشيال ميديا، وإنتاج الفيديو للمطاعم والمقاهي وعلامات الضيافة.",
+      },
+      clothes: {
+        label: "الأزياء والملابس",
+        desc: "براندينج الأزياء، حملات السوشيال ميديا، والمحتوى البصري لعلامات الملابس والمتاجر.",
+      },
+      ai: {
+        label: "حلول البرمجيات والذكاء الاصطناعي",
+        desc: "تطوير برمجيات مخصصة، حلول ذكاء اصطناعي، وتحول رقمي للشركات.",
+      },
     },
     values: { badge: "قيمنا", title: "ما يحركنا", whyUs: "ليه احنا؟" },
     cta: {
