@@ -10,8 +10,6 @@ import {
   Code2,
   Globe,
   Briefcase,
-  Instagram,
-  Linkedin,
 } from "lucide-react";
 
 export type Sector = {
